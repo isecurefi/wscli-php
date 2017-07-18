@@ -115,6 +115,7 @@ namespace
         unlink($item->name);
 
         echo " x The download was corrupted.$n";
+        exit(1);
     }
 
     echo " - Checking if valid Phar...$n";
