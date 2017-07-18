@@ -85,7 +85,7 @@ namespace
     // Retrieve manifest
     echo " - Downloading manifest...$n";
 
-    $manifest = file_get_contents('https://github.com/isecurefi/wscli/manifest.json');
+    $manifest = file_get_contents('https://isecurefi.github.io/wscli-php/manifest.json');
 
     echo " - Reading manifest...$n";
 
