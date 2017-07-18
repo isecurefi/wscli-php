@@ -105,13 +105,14 @@ namespace
         echo " x No application download was found.$n";
     }
 
-    echo " - Downloading wscli v", Dumper::toString($item->version), "...$n";
+    echo " - Downloading " . $item->name . " v", Dumper::toString($item->version), "...$n";
 
     file_put_contents($item->name, file_get_contents($item->url));
+    file_put_contents($item->name . ".pubkey", file_get_contents($item->publicKey));
 
     echo " - Checking file checksum...$n";
 
-    if ($item->sha1 !== sha1_file($item->name)) {
+    if ($item->sha256 !== hash("sha256", file_get_contents($item->name))) {
         unlink($item->name);
 
         echo " x The download was corrupted.$n";
