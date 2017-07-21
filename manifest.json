@@ -1,8 +1,7 @@
 [
   {
     "name": "wscli.phar",
-    "sha256": "ed9b5ce81e5bb2a1dc2d258d3aeac4345b295925a4ffa9d009115d59cd761c60",
-    "sha1": "c0d63c92d4da51248efbf09b598b12bfbd3bcd89",
+    "sha1": "6f8b7e5eda0c6fd9949f179a4d82ef07f036786a",
     "url": "https://isecurefi.github.io/wscli-php/downloads/wscli-0.0.7.phar",
     "version": "0.0.7",
     "publicKey": "https://isecurefi.github.io/wscli-php/pubkeys/wscli-0.0.7.phar.pubkey"
