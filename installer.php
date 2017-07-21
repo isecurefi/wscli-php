@@ -145,7 +145,7 @@ namespace
     }
     */
     
-    echo "{$n}wscli installed!$n";
+    echo "{$n}wscli installed on local directory. You may want to copy it into e.g. /usr/local/bin/.{$n}";
 
     /**
      * Checks a condition, outputs a message, and exits if failed.
