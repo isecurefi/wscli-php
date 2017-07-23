@@ -30,11 +30,6 @@ linked accounts for certificate sharing, importing and exporting
 certificates (exported certificates are encrypted for the selected PGP
 key).
 
-> *NOTE: The `wscli` itself is distributed as PHAR file. PHP was selected
-> as the first programming language to write beefed up SDK and command
-> line client as most of our clients use PHP on their backends. Other
-> languages are also supported on request (C#, Javascript, Python, ..).*
-
 ### Install wscli tool
 
 You can install `wscli` with the following commands. The tool is a
@@ -57,6 +52,11 @@ $ wscli --update
 Note that `wscli` can be updated to the latest version with `wscli
 --update` command. Rollback is also supported with `wscli --rollback`
 command.
+
+> *NOTE: The `wscli` itself is distributed as PHAR file. PHP was selected
+> as the first programming language to write beefed up SDK and command
+> line client as most of our clients use PHP on their backends. Other
+> languages are also supported on request (C#, Javascript, Python, ..).*
 
 ## WSCLI SDK for PHP
 
