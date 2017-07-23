@@ -6,11 +6,6 @@ The `wscli` is [ISECure](https://www.isecure.fi) WS-Channel SaaS
 command line client. It uses WSCLI SDK for PHP that is boosted version
 of Swagger generated client SDK. See details about the SDK below.
 
-> *NOTE: The `wscli` itself is distributed as PHAR file. PHP was selected
-> as the first programming language to write beefed up SDK and command
-> line client as most of our clients use PHP on their backends. Other
-> languages are also supported on request (C#, Javascript, Python, ..).*
-
 ISECure WS-Channel runs on AWS API Gateway and follows somewhat
 RESTful API style. See
 [Swagger API specification](https://isecure.fi/wsapi_v2.json) and
@@ -19,17 +14,26 @@ more information.
 
 WS-Channel service supports banks in Finland and uses SEPA WebServices
 interface towards banks. It supports certificate enrollment and file
-transfers. **For clients it provides beefed up interface with WS-Channel
-service account management, certificate enrollment, file transfers and
-PGP based file upload authorizations. It also supports sharing
-WS-Channel certificates between multiple accounts under the same
-(integrator) API Key.** Read more from the
-[online API documentation](https://isecure.fi/wsapi_v2/index.html).
+transfers.
 
-Account includes both admin and data accounts. Admin account requires
-SMS one-time password during login (MFA) and allows configuring the
-account, e.g. managing PGP keys and linked accounts for certificate
-sharing, importing and exporting certificates for PGP keys.
+> **For clients it provides beefed up interface with WS-Channel
+> service account management, certificate enrollment, file transfers
+> and PGP based file upload authorizations. It also supports sharing
+> WS-Channel certificates between multiple accounts under the same
+> (integrator) API Key. See the
+> [online API documentation](https://isecure.fi/wsapi_v2/index.html).**
+
+Account includes both `admin` and `data` accounts (separate
+passwords). Admin account requires SMS one-time password during login
+(2FA) and allows configuring the account, e.g. managing PGP keys and
+linked accounts for certificate sharing, importing and exporting
+certificates (exported certificates are encrypted for the selected PGP
+key).
+
+> *NOTE: The `wscli` itself is distributed as PHAR file. PHP was selected
+> as the first programming language to write beefed up SDK and command
+> line client as most of our clients use PHP on their backends. Other
+> languages are also supported on request (C#, Javascript, Python, ..).*
 
 ### Install wscli tool
 
