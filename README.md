@@ -6,8 +6,8 @@ client SDK.
 
 ISECure WS-Channel runs on AWS API Gateway and follows somewhat
 RESTful API style and offers
-[https://isecure.fi/wsapi_v2.json](Swagger API specification) and
-[https://isecure.fi/wsapi_v2/index.html](online API documentation).
+[Swagger API specification](https://isecure.fi/wsapi_v2.json) and
+[online API documentation](https://isecure.fi/wsapi_v2/index.html).
 
 WS-Channel service supports banks in Finland and uses SEPA WebServices
 interface towards banks. It supports certificate enrollment and file
@@ -16,7 +16,7 @@ service account management, certificate enrollment, file transfers and
 PGP based file upload authorizations. It also supports sharing
 WS-Channel certificates between multiple accounts under the same
 (integrator) API Key. Read more from the
-[https://isecure.fi/wsapi_v2/index.html](online API documentation).
+[online API documentation](https://isecure.fi/wsapi_v2/index.html).
 
 Account includes both admin and data accounts. Admin account requires
 SMS one-time password during login (MFA) and allows configuring the
