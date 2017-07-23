@@ -1,4 +1,6 @@
-# WSCLI for PHP
+# WSCLI and WSCLI SDK for PHP
+
+## WSCLI
 
 The `wscli` is ISECure WS-Channel SaaS command line client. It uses
 WSCLI SDK for PHP that is boosted version of Swagger generated
@@ -23,9 +25,10 @@ SMS one-time password during login (MFA) and allows configuring the
 account, e.g. managing PGP keys and linked accounts for certificate
 sharing, importing and exporting certificates for PGP keys.
 
-## Install wscli
+### Install wscli tool
 
-You can install `wscli` with the following commands.
+You can install `wscli` with the following commands. The tool is a
+PHAR file.
 
 ```shell
 $ curl -LSs https://isecurefi.github.io/wscli-php/installer.php | php
@@ -45,19 +48,32 @@ Note that `wscli` can be updated to the latest version with `wscli
 --update` command. Rollback is also supported with `wscli --rollback`
 command.
 
-# WSCLI SDK for PHP
+## WSCLI SDK for PHP
 
 `wscli` uses WSCLI SDK for PHP that is based on Swagger generated
 client side SDK. It uses API to automatically fetch challenge,
 utilizes required password RSA encryption and phone/email verification
-logic. It allows clients to focus on simple things, like "login" and
-"register". The SDK adds session support by optionally storing session
-credentials into `~/.wscli/settings.yaml` file. This allows running
-commands like `wscli login ...` and then after that `wscli files
-listFiles ...`.
+logic.
+
+*The SDK allows clients to focus on simple things, like calling
+`register()` and then `login()`.*
+
+The SDK supports storing settings on a file, including session
+credentials fetched during login. By default the file is
+`~/.wscli/settings.yaml`. This allows running commands like
+
+```
+$ wscli login
+$ wscli files listFiles --status=ALL --filetype=KTL
+```
 
 On the other parts than `account` and `session` the SDK is basically
 on the same level Swagger generated SDK. However, on the `files` API,
 the SDK adds support for downloading set of files similar to the
 listing files API. It just downloads file one by one using the
-corresponding `downloadFile` API.
+corresponding `downloadFile` API and by first calling `listFiles`.
+
+### Download WSCLI SDK for PHP
+
+See WSCLI SDK and WSCLI client releases on GitHub
+[isecurefi/wscli-php](https://github.com/isecurefi/wscli-php) project.
