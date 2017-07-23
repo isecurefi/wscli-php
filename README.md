@@ -2,14 +2,15 @@
 
 ## WSCLI
 
-The `wscli` is ISECure WS-Channel SaaS command line client. It uses
-WSCLI SDK for PHP that is boosted version of Swagger generated
-client SDK.
+The `wscli` is [ISECure](https://www.isecure.fi) WS-Channel SaaS
+command line client. It uses WSCLI SDK for PHP that is boosted version
+of Swagger generated client SDK. See details about the SDK below.
 
 ISECure WS-Channel runs on AWS API Gateway and follows somewhat
-RESTful API style and offers
+RESTful API style. See
 [Swagger API specification](https://isecure.fi/wsapi_v2.json) and
-[online API documentation](https://isecure.fi/wsapi_v2/index.html).
+[online API documentation](https://isecure.fi/wsapi_v2/index.html) for
+more information.
 
 WS-Channel service supports banks in Finland and uses SEPA WebServices
 interface towards banks. It supports certificate enrollment and file
