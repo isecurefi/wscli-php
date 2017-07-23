@@ -6,10 +6,10 @@ The `wscli` is [ISECure](https://www.isecure.fi) WS-Channel SaaS
 command line client. It uses WSCLI SDK for PHP that is boosted version
 of Swagger generated client SDK. See details about the SDK below.
 
-NOTE: The `wscli` itself is distributed as PHAR file. PHP was selected
-as the first programming language to write beefed up SDK and command
-line client as most of our clients use PHP on their backends. Other
-languages are also supported on request (C#, Javascript, Python, ..).
+> *NOTE: The `wscli` itself is distributed as PHAR file. PHP was selected
+> as the first programming language to write beefed up SDK and command
+> line client as most of our clients use PHP on their backends. Other
+> languages are also supported on request (C#, Javascript, Python, ..).*
 
 ISECure WS-Channel runs on AWS API Gateway and follows somewhat
 RESTful API style. See
@@ -19,11 +19,11 @@ more information.
 
 WS-Channel service supports banks in Finland and uses SEPA WebServices
 interface towards banks. It supports certificate enrollment and file
-transfers. For clients it provides beefed up interface with WS-Channel
+transfers. **For clients it provides beefed up interface with WS-Channel
 service account management, certificate enrollment, file transfers and
 PGP based file upload authorizations. It also supports sharing
 WS-Channel certificates between multiple accounts under the same
-(integrator) API Key. Read more from the
+(integrator) API Key.** Read more from the
 [online API documentation](https://isecure.fi/wsapi_v2/index.html).
 
 Account includes both admin and data accounts. Admin account requires
@@ -59,10 +59,11 @@ command.
 `wscli` uses WSCLI SDK for PHP that is based on Swagger generated
 client side SDK. It uses API to automatically fetch challenge,
 utilizes required password RSA encryption and phone/email verification
-logic.
+logic during registration.
 
-*The SDK allows clients to focus on simple things, like calling
-`register()` and then `login()`.*
+> **The SDK allows clients to focus on simple things, like calling
+> `register()` and then `login()` with or without parameters (when
+> settings are stored on configuration file).**
 
 The SDK supports storing settings on a file, including session
 credentials fetched during login. By default the file is
