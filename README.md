@@ -6,6 +6,11 @@ The `wscli` is [ISECure](https://www.isecure.fi) WS-Channel SaaS
 command line client. It uses WSCLI SDK for PHP that is boosted version
 of Swagger generated client SDK. See details about the SDK below.
 
+NOTE: The `wscli` itself is distributed as PHAR file. PHP was selected
+as the first programming language to write beefed up SDK and command
+line client as most of our clients use PHP on their backends. Other
+languages are also supported on request (C#, Javascript, Python, ..).
+
 ISECure WS-Channel runs on AWS API Gateway and follows somewhat
 RESTful API style. See
 [Swagger API specification](https://isecure.fi/wsapi_v2.json) and
