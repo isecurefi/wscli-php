@@ -1,16 +1,63 @@
-## WSCLI-PHP
+# WSCLI for PHP
 
-### Install
+The `wscli` is ISECure WS-Channel SaaS command line client. It uses
+WSCLI SDK for PHP that is boosted version of Swagger generated
+client SDK.
 
-You can install `wscli` with the following commands. Note that you may
-run wscli.phar without installing it into `/usr/local/bin/wscli`.
+ISECure WS-Channel runs on AWS API Gateway and follows somewhat
+RESTful API style and offers
+[https://isecure.fi/wsapi_v2.json](Swagger API specification) and
+[https://isecure.fi/wsapi_v2/index.html](online API documentation).
+
+WS-Channel service supports banks in Finland and uses SEPA WebServices
+interface towards banks. It supports certificate enrollment and file
+transfers. For clients it provides beefed up interface with WS-Channel
+service account management, certificate enrollment, file transfers and
+PGP based file upload authorizations. It also supports sharing
+WS-Channel certificates between multiple accounts under the same
+(integrator) API Key. Read more from the
+[https://isecure.fi/wsapi_v2/index.html](online API documentation).
+
+Account includes both admin and data accounts. Admin account requires
+SMS one-time password during login (MFA) and allows configuring the
+account, e.g. managing PGP keys and linked accounts for certificate
+sharing, importing and exporting certificates for PGP keys.
+
+## Install wscli
+
+You can install `wscli` with the following commands.
 
 ```shell
 $ curl -LSs https://isecurefi.github.io/wscli-php/installer.php | php
-$ sudo cp wscli.phar /usr/local/bin/wscli
+$ ./wscli.phar --version
 ```
 
-```
-$ wscli update
+Optionally setup as `/usr/local/bin/wscli`:
+
+```shell
+$ sudo cp wscli.phar /usr/local/bin/wscli
+$ sudo cp wscli.phar.pubkey /usr/local/bin/wscli.pubkey
 $ wscli --version
+$ wscli --update
 ```
+
+Note that `wscli` can be updated to the latest version with `wscli
+--update` command. Rollback is also supported with `wscli --rollback`
+command.
+
+# WSCLI SDK for PHP
+
+`wscli` uses WSCLI SDK for PHP that is based on Swagger generated
+client side SDK. It uses API to automatically fetch challenge,
+utilizes required password RSA encryption and phone/email verification
+logic. It allows clients to focus on simple things, like "login" and
+"register". The SDK adds session support by optionally storing session
+credentials into `~/.wscli/settings.yaml` file. This allows running
+commands like `wscli login ...` and then after that `wscli files
+listFiles ...`.
+
+On the other parts than `account` and `session` the SDK is basically
+on the same level Swagger generated SDK. However, on the `files` API,
+the SDK adds support for downloading set of files similar to the
+listing files API. It just downloads file one by one using the
+corresponding `downloadFile` API.
