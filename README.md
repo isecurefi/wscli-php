@@ -1,5 +1,3 @@
-# WSCLI and WSCLI SDK for PHP
-
 ## WSCLI
 
 The `wscli` is [ISECure](https://www.isecure.fi) WS-Channel SaaS
