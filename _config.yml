@@ -1,3 +1,4 @@
 theme: jekyll-theme-minimal
 title: WSCLI and WSCLI SDK for PHP
 description: wscli is ISECure WS-Channel command line client
+show_downloads: false
