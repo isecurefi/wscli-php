@@ -29,7 +29,7 @@ cp /tmp/wscli.phar .
 cp /tmp/wscli.phar.pubkey .
 SHA1=$(openssl sha1 wscli.phar | cut -f 2 -d ' ')
 echo $SHA1 > wscli.phar.version
-git add wcsli.phar
+git add wscli.phar
 git add wscli.phar.pubkey
 git add wscli.phar.version
 git commit -m "Version $TAG with sha1 $SHA1" wscli.phar.version wscli.phar wscli.phar.pubkey
