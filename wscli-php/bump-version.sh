@@ -2,8 +2,6 @@
 
 set -e
 
-GHPAGES="../../../../wscli-php/"
-
 if [ $# -ne 1 ]; then
   echo "Usage: `basename $0` <tag>"
   exit 65
@@ -23,8 +21,6 @@ make release
 #
 
 (
-    cp wscli.phar ${GHPAGES}wscli.phar
-    cd ${GHPAGES}
     git checkout gh-pages
     git add wscli.phar
 )
@@ -33,15 +29,16 @@ SHA1=$(openssl sha1 wscli.phar | cut -f 2 -d ' ')
 if [ -f wscli.phar.pubkey ];
 then
     (
-        cp wscli.phar.pubkey ${GHPAGES}wscli.phar.pubkey
-        cd ${GHPAGES}
+        git checkout gh-pages
         git add wscli.phar.pubkey
     )
 fi
 (
-    cd ${GHPAGES}
+    git checkout gh-pages
     echo $SHA1 > wscli.phar.version
     git add wscli.phar.version
     git commit -m "Version $TAG with sha1 $SHA1" wscli.phar.version wscli.phar
     git push
 )
+
+git checkout master
