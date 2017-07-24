@@ -20,11 +20,13 @@ make release
 # Copy executable file into GH pages
 #
 
-cp wscli.phar ..
-cp wscli.phar.pubkey ..
+cp wscli.phar /tmp/
+cp wscli.phar.pubkey /tmp/
 cd ..
 
 git checkout gh-pages
+cp /tmp/wscli.phar .
+cp /tmp/wscli.phar.pubkey .
 SHA1=$(openssl sha1 wscli.phar | cut -f 2 -d ' ')
 echo $SHA1 > wscli.phar.version
 git add wcsli.phar
