@@ -50,32 +50,26 @@ class WsCli
         $this->certs = new \Swagger\Client\Api\CertsApi($apiClient);
     }
 
-    public function __call($name, $args)
+    private function handleAccount($apiName, $cmd)
     {
-        $apiName = strtolower($this->opts['<api>']);
-        $cmd = $this->opts['<cmd>'];
-        $this->log->debug("callname: " . implode(',',$args) . "->" . $name);
-        $this->log->debug("from api: " . $apiName . "->" . $cmd);
-
-        switch ($apiName) {
-        case "account":
-            if (!array_key_exists('email', $this->opts)) {
-                $this->log->error("email not specified!");
-                $error = 1;
-            }
-            if (!array_key_exists('mode', $this->opts)) {
-                $this->log->error("mode not specified!");
-                $error = 1;
-            }
-            if (!$this->getChallenge()) {
-                $this->log->error("Could not get challenge.");
-                $error = 1;
-            }
-            if (!$this->getEncryptedPassword()) {
-                $this->log->error("Could not get encrypted password.");
-                $error = 1;
-            }
-            switch ($cmd) {
+        $error = false;
+        if (!array_key_exists('email', $this->opts)) {
+            $this->log->error("email not specified!");
+            $error = 1;
+        }
+        if (!array_key_exists('mode', $this->opts)) {
+            $this->log->error("mode not specified!");
+            $error = 1;
+        }
+        if (!$this->getChallenge()) {
+            $this->log->error("Could not get challenge.");
+            $error = 1;
+        }
+        if (!$this->getEncryptedPassword()) {
+            $this->log->error("Could not get encrypted password.");
+            $error = 1;
+        }
+        switch ($cmd) {
             case "register":
                 if (!array_key_exists('password', $this->opts)) {
                     $this->log->error("password not specified!");
@@ -84,10 +78,12 @@ class WsCli
                 if ($error) {
                     return $error;
                 }
-                $resp = $this->${"apiName"}->${"cmd"}($this->getBodyParams(),
-                                                      $this->opts['email'],
-                                                      $this->opts['mode']);
-                $this->log->debug(print_r($resp, true));
+                $resp = $this->${"apiName"}->${"cmd"}(
+                $this->getBodyParams(),
+                                                  $this->opts['email'],
+                                                  $this->opts['mode']
+                    );
+                    $this->log->debug(print_r($resp, true));
                 return $resp;
             case "verifyemail":
                 while (strlen($this->opts['code']) != 6) {
@@ -96,16 +92,20 @@ class WsCli
                 if ($error) {
                     return $error;
                 }
-                $resp = $this->${"apiName"}->${"cmd"}($this->getBodyParams(),
-                                                      $this->opts['email'],
-                                                      $this->opts['mode']);
-                $this->log->debug(print_r($resp, true));
+                $resp = $this->${"apiName"}->${"cmd"}(
+                $this->getBodyParams(),
+                                                  $this->opts['email'],
+                                                  $this->opts['mode']
+                    );
+                    $this->log->debug(print_r($resp, true));
                 if ($name != $this->opts['<cmd>']) {
-                    $this->log->debug("Callbacking to " . implode(',',$args) . "->" . $name);
+                    $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
                     $this->opts['<cmd>'] = $name;
-                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";;
+                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
+                    ;
                     return $this->__call($cmd, [$apiName]);
                 }
+                    // no break
             case "verifyEmail":
                 while (strlen((string)$this->opts['code']) != 6) {
                     $this->opts['code'] = readline("Give email verification code: ");
@@ -113,18 +113,21 @@ class WsCli
                 if ($error) {
                     return $error;
                 }
-                $resp = $this->${"apiName"}->${"cmd"}($this->getBodyParams(),
-                                                      $this->opts['email'],
-                                                      $this->opts['mode']);
-                $this->log->debug(print_r($resp, true));
+                $resp = $this->${"apiName"}->${"cmd"}(
+                    $this->getBodyParams(),
+                                              $this->opts['email'],
+                                              $this->opts['mode']
+                        );
+                        $this->log->debug(print_r($resp, true));
                 if ($name != $this->opts['<cmd>']) {
-                    $this->log->debug("Callbacking to " . implode(',',$args) . "->" . $name);
+                    $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
                     $this->opts['<cmd>'] = $name;
-                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";;
+                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
+                    ;
                     return $this->__call($cmd, [$apiName]);
                 }
                 return $resp;
-                break;
+            break;
             case "verifyPhone":
                 while (strlen((string)$this->opts['code']) != 6) {
                     $this->opts['code'] = readline("Give phone registration code: ");
@@ -132,15 +135,18 @@ class WsCli
                 if ($error) {
                     return $error;
                 }
-                $resp = $this->${"apiName"}->${"cmd"}($this->getBodyParams(),
-                                                      $this->opts['email'],
-                                                      $this->opts['mode'],
-                                                      $this->opts['phone']);
-                $this->log->debug(print_r($resp, true));
+                $resp = $this->${"apiName"}->${"cmd"}(
+                $this->getBodyParams(),
+                                                  $this->opts['email'],
+                                                  $this->opts['mode'],
+                                                  $this->opts['phone']
+                    );
+                    $this->log->debug(print_r($resp, true));
                 if ($name != $this->opts['<cmd>']) {
-                    $this->log->debug("Callbacking to " . implode(',',$args) . "->" . $name);
+                    $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
                     $this->opts['<cmd>'] = $name;
-                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";;
+                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
+                    ;
                     return $this->__call($cmd, [$apiName]);
                 }
                 return $resp;
@@ -157,10 +163,12 @@ class WsCli
             default:
                 $this->log->error("Unknown api command");
                 break;
-            }
-            break;
-        case "session":
-            switch ($cmd) {
+        }
+    }
+
+    private function handleSession($apiName, $cmd)
+    {
+        switch ($cmd) {
             case "loginmfa":
             case "login":
                 $error = false;
@@ -179,7 +187,7 @@ class WsCli
                     $this->log->error("Could not get challenge.");
                     $error = 1;
                 }
-                if (!array_key_exists('password',$this->opts)) {
+                if (!array_key_exists('password', $this->opts)) {
                     $this->opts['password'] = '';
                     while (strlen((string)$this->opts['password']) < 20) {
                         $this->opts['password'] = readline("Give password (at least 20 chars, upper/lower letters and special chars): ");
@@ -192,11 +200,13 @@ class WsCli
                 if ($error) {
                     return $error;
                 }
-                $resp = $this->${"apiName"}->${"cmd"}($this->getBodyParams(),
-                                                      $this->opts['email'],
-                                                      $this->opts['mode']);
-                $this->opts['code'] = ''; // Reset code if any
-                $this->log->debug(print_r($resp, true));
+                $resp = $this->${"apiName"}->${"cmd"}(
+                $this->getBodyParams(),
+                                                  $this->opts['email'],
+                                                  $this->opts['mode']
+                    );
+                    $this->opts['code'] = ''; // Reset code if any
+                    $this->log->debug(print_r($resp, true));
                 if ($resp['response_code'] == "00") {
                     if (strstr($resp['response_text'], "Verify phone number")) {
                         $this->opts['<api>'] = "account";
@@ -206,7 +216,7 @@ class WsCli
                     if (strstr($resp['response_text'], "Give SMS code")) {
                         while (strlen((string)$this->opts['code']) != 6) {
                             $this->opts['code'] = readline("Give SMS code: ");
-                        } 
+                        }
                         $this->opts['session'] = $resp['session'];
                         $this->opts['<cmd>'] = "loginmfa";
                         return $this->__call("login", [$apiName]);
@@ -223,21 +233,23 @@ class WsCli
                         #$this->updateConfig("idtokenexpiry: " . JWT::decode($resp['id_token], "", "")['']
                         $exp = date("Y-m-d H:i:s", time()+$resp['expires_in']-10);
                         $this->log->debug("idtokenexpiry: " . $exp);
-                        if ($exp === FALSE) {
+                        if ($exp === false) {
                             $this->log->error("Could not form idtoken expiry date. Setting to +3300s");
                             $exp = time() + 3300;
                         }
                         $this->updateConfig("idtokenexpiry: \"" . $exp . "\"");
-                    } 
+                    }
                 }
                 return $resp;
             default:
                 $this->log->error("Unknown api command");
                 break;
-            }
-            break;
-        case "files":
-            switch ($cmd) {
+        }
+    }
+
+    private function handleFiles($apiName, $cmd)
+    {
+        switch ($cmd) {
             case "listFiles":
                 $error = 0;
                 if (!array_key_exists('idtoken', $this->opts)) {
@@ -259,11 +271,13 @@ class WsCli
                 if ($error) {
                     return $error;
                 }
-                $resp = $this->${"apiName"}->listFiles($this->opts['idtoken'],
-                                                       $this->opts['bank'],
-                                                       $this->opts['status'],
-                                                       $this->opts['filetype']);
-                $this->log->debug(print_r($resp, true));
+                $resp = $this->${"apiName"}->listFiles(
+                    $this->opts['idtoken'],
+                    $this->opts['bank'],
+                    $this->opts['status'],
+                    $this->opts['filetype']
+                );
+                    $this->log->debug(print_r($resp, true));
                 return $resp;
             case "downloadFile":
                 $this->log->error("Unimplemented API command");
@@ -275,14 +289,60 @@ class WsCli
             default:
                 $this->log->error("Unknown api command");
                 return 3;
-            }
-            break;
-        case "pgp":
-            break;
-        case "certs":
-            break;
-        default:
-            break;
+        }
+    }
+
+    private function handlePgp($apiName, $cmd)
+    {
+        switch ($cmd) {
+            case "listKeys":
+            case "uploadKey":
+            case "deleteKey":
+                $this->log->error("Unimplemented API command");
+                return 3;
+            default:
+                $this->log->error("Unknown api command");
+                return 3;
+        }
+    }
+
+    private function handleCerts($apiName, $cmd)
+    {
+        switch ($cmd) {
+            case "enrollCert":
+            case "importCert":
+            case "exportCert":
+            case "shareCerts":
+            case "unshareCerts":
+            case "listCerts":
+                $this->log->error("Unimplemented API command");
+                return 3;
+            default:
+                $this->log->error("Unknown api command");
+                return 3;
+        }
+    }
+
+    public function __call($name, $args)
+    {
+        $apiName = strtolower($this->opts['<api>']);
+        $cmd = $this->opts['<cmd>'];
+        $this->log->debug("callname: " . implode(',', $args) . "->" . $name);
+        $this->log->debug("from api: " . $apiName . "->" . $cmd);
+
+        switch ($apiName) {
+            case "account":
+                return $this->handleAccount($apiName, $cmd);
+            case "session":
+                return $this->handleSession($apiName, $cmd);
+            case "files":
+                return $this->handleFiles($apiName, $cmd);
+            case "pgp":
+                return $this->handlePgp($apiName, $cmd);
+            case "certs":
+                return $this->handleCerts($apiName, $cmd);
+            default:
+                return 3;
         }
     }
 
@@ -292,12 +352,12 @@ class WsCli
             return null;
         }
         $y = yaml_parse($yaml_string);
-        if ($y === FALSE) {
+        if ($y === false) {
             $this->log->error("Failed to parse passed YAML string: " . $y);
             return null;
         }
         $conf = yaml_parse(file_get_contents($this->config_filename));
-        if ($conf === FALSE) {
+        if ($conf === false) {
             $this->log->error("Failed to parse YAML configuration file " . $this->config_filename);
             return null;
         }
@@ -380,7 +440,7 @@ class WsCli
         if ($this->config_filename != '') {
             $this->log->debug("settings from: " . $this->config_filename);
             $config_args = yaml_parse(file_get_contents($this->config_filename));
-            if ($config_args === FALSE) {
+            if ($config_args === false) {
                 $this->log->error("Config file YAML parse error; " . $this->config_filename);
 
                 return -1;
