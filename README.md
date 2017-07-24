@@ -44,7 +44,7 @@ Optionally setup as `/usr/local/bin/wscli`:
 $ sudo cp wscli.phar /usr/local/bin/wscli
 $ sudo cp wscli.phar.pubkey /usr/local/bin/wscli.pubkey
 $ wscli --version
-$ wscli --update
+$ sudo wscli --update
 ```
 
 Note that `wscli` can be updated to the latest version with `wscli
