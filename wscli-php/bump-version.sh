@@ -42,3 +42,4 @@ fi
 )
 
 git checkout master
+git push --tags
