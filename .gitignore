@@ -1,7 +1,6 @@
 *~
 wscli-php-sdk/wsapi_v2.json
 wscli-php-sdk/vendor/
-wscli-php-sdk/swagger-php-sdk/
 wscli-php-sdk/.php_cs.cache
 wscli-php-sdk/composer.lock
 wscli-php-sdk/swagger-codegen-cli.jar
