@@ -23,10 +23,8 @@ make release
 cp wscli.phar /tmp/
 cp wscli.phar.pubkey /tmp/
 cd ..
-pwd
 
 git checkout gh-pages
-pwd
 cp /tmp/wscli.phar .
 cp /tmp/wscli.phar.pubkey .
 SHA1=$(openssl sha1 wscli.phar | cut -f 2 -d ' ')
