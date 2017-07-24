@@ -1,4 +1,8 @@
 *~
+wscli.phar
+wscli.phar.pubkey
+wscli.phar.version
+
 wscli-php-sdk/wsapi_v2.json
 wscli-php-sdk/vendor/
 wscli-php-sdk/.php_cs.cache
