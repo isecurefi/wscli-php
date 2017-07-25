@@ -25,13 +25,13 @@
         "type": "path",
         "url": "../wscli-php-sdk/",
         "options": {
-            "symlink": false
+            "symlink": true
         }
     }, {
         "type": "path",
         "url": "../wscli-php-sdk/swagger-php-sdk/SwaggerClient-php/",
         "options": {
-            "symlink": false
+            "symlink": true
         }
     }],
     "require": {
