@@ -13,7 +13,7 @@ TAG=$1
 # Tag & build master branch
 #
 git checkout master
-git tag -a -m "**Release v${TAG}**" ${TAG}
+git tag -a -m "Release v${TAG}" ${TAG}
 make release
 
 #
