@@ -31,28 +31,28 @@ Usage:
   wscli --rollback
   wscli account verifyEmail     [--email=<email>] [--mode=<mode>] [--code=<code>] [--config=<file>]
   wscli account verifyPhone     [--email=<email>] [--mode=<mode>] [--phone=<phone>] [--config=<file>]
-  wscli account passwordReset   [--email=<email>] [--mode=<mode>]
+  wscli account passwordReset   [--email=<email>] [--mode=<mode>] [--config=<file>]
   wscli account register        [--email=<email>] [--mode=<mode>] [--name=<name>] [--apikey=<apikey>]
                                 [--company=<company>] [--password=<password>] [--phone=<phone>] [--config=<file>]
-  wscli session logout          [--apikey=<apikey>] [--idtoken=<idtoken>]
+  wscli session logout          [--apikey=<apikey>] [--idtoken=<idtoken>] [--config=<file>]
   wscli session login           [--email=<email>] [--mode=<mode>] [--password=<password>]
                                 [--environment=<environment>] [--config=<file>]
-  wscli files listFiles         [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filestatus=<filestatus>]
-  wscli files downloadFiles     [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filestatus=<filestatus>]
-  wscli files downloadFile      [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--fileref=<fileref>]
-  wscli files deleteFile        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--fileref=<fileref>]
-  wscli files uploadFile        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>]
-                                [--filecontents=<filecontents>]
-  wscli certs enrollCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>]
-  wscli certs importCert        [--apikey=<apikey>] [--idtoken=<idtoken>]
-  wscli certs exportCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--pgpkeyid=<pgpkeyid>]
-  wscli certs shareCerts        [--apikey=<apikey>] [--idtoken=<idtoken>] [--extemail=<extemail>]
-  wscli certs unshareCerts      [--apikey=<apikey>] [--idtoken=<idtoken>] [--extemail=<extemail>]
-  wscli certs listCerts         [--apikey=<apikey>] [--idtoken=<idtoken>] [--pincode=<pincode>]
-                                [--company=<company>] [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>]
-  wscli pgp listKeys            [--apikey=<apikey>] [--idtoken=<idtoken>]
-  wscli pgp uploadKey           [--apikey=<apikey>] [--idtoken=<idtoken>] [--pgpkeycontents=<pgpkeycontents>]
-  wscli pgp deleteKey           [--apikey=<apikey>] [--idtoken=<idtoken>] [--pgpkeyid=<pgpkeyid>]
+  wscli files listFiles         [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filestatus=<filestatus>] [--config=<file>]
+  wscli files downloadFiles     [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filestatus=<filestatus>] [--config=<file>]
+  wscli files downloadFile      [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filereference=<fileref>] [--config=<file>]
+  wscli files deleteFile        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filereference=<fileref>] [--config=<file>]
+  wscli files uploadFile        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filename=<filename>]
+                                [--filecontents=<filecontents>] [--config=<file>]
+  wscli certs listCerts         [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--config=<file>]
+  wscli certs importCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--certificate=<pem>] [--privatekey=<pem>] [--enccertificate=<pem>] [--encprivatekey=<pem>] [--config=<file>]
+  wscli certs exportCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--pgpkeyid=<pgpkeyid>] [--outfilename=<outfilename>] [--config=<file>]
+  wscli certs shareCerts        [--apikey=<apikey>] [--idtoken=<idtoken>] [--extemail=<extemail>] [--config=<file>]
+  wscli certs unshareCerts      [--apikey=<apikey>] [--idtoken=<idtoken>] [--extemail=<extemail>] [--config=<file>]
+  wscli certs enrollCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--pincode=<pincode>] [--bank=<bank>]
+                                [--company=<company>] [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>] [--config=<file>]
+  wscli pgp listKeys            [--apikey=<apikey>] [--idtoken=<idtoken>] [--config=<file>]
+  wscli pgp uploadKey           [--apikey=<apikey>] [--idtoken=<idtoken>] [--pgpkeycontents=<pgpkeycontents>] [--config=<file>]
+  wscli pgp deleteKey           [--apikey=<apikey>] [--idtoken=<idtoken>] [--pgpkeyid=<pgpkeyid>] [--config=<file>]
 
 
 Options:
@@ -79,7 +79,13 @@ Options:
   --wstargetid=<wstargetid>              Use wstargetid in certificate enrollment
   --wsuserid=<wsuserid>                  Use wsuserid in certificate enrollment
   --pgpkeyid=<pgpkeyid>                  PGP/GPG Key Id
+  --outfilename=<outfilename>            Output filename for exported cert in PEM format
+  --certpemdata=<certpemdata>            Import cert data in PEM format
   --pgpkeycontents=<pgpkeycontents>      PGP key contents for PGP key upload
+  --certificate=<pem>                    Imported certificate in PEM format
+  --privatekey=<pem>                     Imported private key in PEM format, must match with certificate
+  --enccertificate=<pem>                 DanskeBank only, imported encryption certificate
+  --encprivatekey=<pem>                  DanskeBank only, imported private key for encryption, must match with enccertificate
   --config=<file>                        YAML configuration file containing all required parameters in 'settings' block
 
 DOC;
