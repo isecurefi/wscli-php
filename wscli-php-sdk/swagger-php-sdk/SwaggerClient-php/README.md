@@ -90,8 +90,8 @@ Class | Method | HTTP request | Description
 *CertsApi* | [**listCerts**](docs/Api/CertsApi.md#listcerts) | **GET** /certs/ | ListCerts
 *CertsApi* | [**shareCerts**](docs/Api/CertsApi.md#sharecerts) | **PUT** /certs/shared/{ExtEmail} | ShareCerts
 *CertsApi* | [**unshareCerts**](docs/Api/CertsApi.md#unsharecerts) | **DELETE** /certs/shared/{ExtEmail} | UnshareCerts
-*FilesApi* | [**deleteFile**](docs/Api/FilesApi.md#deletefile) | **DELETE** /files/{Bank}/{Id} | DeleteFile
-*FilesApi* | [**downloadFile**](docs/Api/FilesApi.md#downloadfile) | **GET** /files/{Bank}/{Id} | DownloadFile
+*FilesApi* | [**deleteFile**](docs/Api/FilesApi.md#deletefile) | **DELETE** /files/{Bank}/{FileType}/{FileReference} | DeleteFile
+*FilesApi* | [**downloadFile**](docs/Api/FilesApi.md#downloadfile) | **GET** /files/{Bank}/{FileType}/{FileReference} | DownloadFile
 *FilesApi* | [**listFiles**](docs/Api/FilesApi.md#listfiles) | **GET** /files/{Bank} | ListFiles
 *FilesApi* | [**uploadFile**](docs/Api/FilesApi.md#uploadfile) | **PUT** /files/{Bank} | UploadFile
 *PgpApi* | [**deleteKey**](docs/Api/PgpApi.md#deletekey) | **DELETE** /pgp | DeleteKey

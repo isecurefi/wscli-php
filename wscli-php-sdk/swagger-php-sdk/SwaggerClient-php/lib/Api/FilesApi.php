@@ -94,13 +94,14 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
-     * @param string $id File reference *id* from list files (required)
+     * @param string $file_type File reference *id* from list files (required)
+     * @param string $file_reference File reference *id* from list files (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return \Swagger\Client\Model\Response
      */
-    public function deleteFile($authorization, $bank, $id)
+    public function deleteFile($authorization, $bank, $file_type, $file_reference)
     {
-        list($response) = $this->deleteFileWithHttpInfo($authorization, $bank, $id);
+        list($response) = $this->deleteFileWithHttpInfo($authorization, $bank, $file_type, $file_reference);
         return $response;
     }
 
@@ -111,11 +112,12 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
-     * @param string $id File reference *id* from list files (required)
+     * @param string $file_type File reference *id* from list files (required)
+     * @param string $file_reference File reference *id* from list files (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return array of \Swagger\Client\Model\Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function deleteFileWithHttpInfo($authorization, $bank, $id)
+    public function deleteFileWithHttpInfo($authorization, $bank, $file_type, $file_reference)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null) {
@@ -125,12 +127,16 @@ class FilesApi
         if ($bank === null) {
             throw new \InvalidArgumentException('Missing the required parameter $bank when calling deleteFile');
         }
-        // verify the required parameter 'id' is set
-        if ($id === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling deleteFile');
+        // verify the required parameter 'file_type' is set
+        if ($file_type === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $file_type when calling deleteFile');
+        }
+        // verify the required parameter 'file_reference' is set
+        if ($file_reference === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $file_reference when calling deleteFile');
         }
         // parse inputs
-        $resourcePath = "/files/{Bank}/{Id}";
+        $resourcePath = "/files/{Bank}/{FileType}/{FileReference}";
         $httpBody = '';
         $queryParams = [];
         $headerParams = [];
@@ -154,10 +160,18 @@ class FilesApi
             );
         }
         // path params
-        if ($id !== null) {
+        if ($file_type !== null) {
             $resourcePath = str_replace(
-                "{" . "Id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($id),
+                "{" . "FileType" . "}",
+                $this->apiClient->getSerializer()->toPathValue($file_type),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($file_reference !== null) {
+            $resourcePath = str_replace(
+                "{" . "FileReference" . "}",
+                $this->apiClient->getSerializer()->toPathValue($file_reference),
                 $resourcePath
             );
         }
@@ -190,7 +204,7 @@ class FilesApi
                 $httpBody,
                 $headerParams,
                 '\Swagger\Client\Model\Response',
-                '/files/{Bank}/{Id}'
+                '/files/{Bank}/{FileType}/{FileReference}'
             );
 
             return [$this->apiClient->getSerializer()->deserialize($response, '\Swagger\Client\Model\Response', $httpHeader), $statusCode, $httpHeader];
@@ -229,13 +243,14 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
-     * @param string $id File reference *id* from list files (required)
+     * @param string $file_type File reference *id* from list files (required)
+     * @param string $file_reference File reference *id* from list files (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return \Swagger\Client\Model\DownloadFileResp
      */
-    public function downloadFile($authorization, $bank, $id)
+    public function downloadFile($authorization, $bank, $file_type, $file_reference)
     {
-        list($response) = $this->downloadFileWithHttpInfo($authorization, $bank, $id);
+        list($response) = $this->downloadFileWithHttpInfo($authorization, $bank, $file_type, $file_reference);
         return $response;
     }
 
@@ -246,11 +261,12 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
-     * @param string $id File reference *id* from list files (required)
+     * @param string $file_type File reference *id* from list files (required)
+     * @param string $file_reference File reference *id* from list files (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return array of \Swagger\Client\Model\DownloadFileResp, HTTP status code, HTTP response headers (array of strings)
      */
-    public function downloadFileWithHttpInfo($authorization, $bank, $id)
+    public function downloadFileWithHttpInfo($authorization, $bank, $file_type, $file_reference)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null) {
@@ -260,12 +276,16 @@ class FilesApi
         if ($bank === null) {
             throw new \InvalidArgumentException('Missing the required parameter $bank when calling downloadFile');
         }
-        // verify the required parameter 'id' is set
-        if ($id === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $id when calling downloadFile');
+        // verify the required parameter 'file_type' is set
+        if ($file_type === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $file_type when calling downloadFile');
+        }
+        // verify the required parameter 'file_reference' is set
+        if ($file_reference === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $file_reference when calling downloadFile');
         }
         // parse inputs
-        $resourcePath = "/files/{Bank}/{Id}";
+        $resourcePath = "/files/{Bank}/{FileType}/{FileReference}";
         $httpBody = '';
         $queryParams = [];
         $headerParams = [];
@@ -289,10 +309,18 @@ class FilesApi
             );
         }
         // path params
-        if ($id !== null) {
+        if ($file_type !== null) {
             $resourcePath = str_replace(
-                "{" . "Id" . "}",
-                $this->apiClient->getSerializer()->toPathValue($id),
+                "{" . "FileType" . "}",
+                $this->apiClient->getSerializer()->toPathValue($file_type),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($file_reference !== null) {
+            $resourcePath = str_replace(
+                "{" . "FileReference" . "}",
+                $this->apiClient->getSerializer()->toPathValue($file_reference),
                 $resourcePath
             );
         }
@@ -325,7 +353,7 @@ class FilesApi
                 $httpBody,
                 $headerParams,
                 '\Swagger\Client\Model\DownloadFileResp',
-                '/files/{Bank}/{Id}'
+                '/files/{Bank}/{FileType}/{FileReference}'
             );
 
             return [$this->apiClient->getSerializer()->deserialize($response, '\Swagger\Client\Model\DownloadFileResp', $httpHeader), $statusCode, $httpHeader];

@@ -4,14 +4,14 @@ All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**deleteFile**](FilesApi.md#deleteFile) | **DELETE** /files/{Bank}/{Id} | DeleteFile
-[**downloadFile**](FilesApi.md#downloadFile) | **GET** /files/{Bank}/{Id} | DownloadFile
+[**deleteFile**](FilesApi.md#deleteFile) | **DELETE** /files/{Bank}/{FileType}/{FileReference} | DeleteFile
+[**downloadFile**](FilesApi.md#downloadFile) | **GET** /files/{Bank}/{FileType}/{FileReference} | DownloadFile
 [**listFiles**](FilesApi.md#listFiles) | **GET** /files/{Bank} | ListFiles
 [**uploadFile**](FilesApi.md#uploadFile) | **PUT** /files/{Bank} | UploadFile
 
 
 # **deleteFile**
-> \Swagger\Client\Model\Response deleteFile($authorization, $bank, $id)
+> \Swagger\Client\Model\Response deleteFile($authorization, $bank, $file_type, $file_reference)
 
 DeleteFile
 
@@ -34,10 +34,11 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 $bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
-$id = "id_example"; // string | File reference *id* from list files
+$file_type = "file_type_example"; // string | File reference *id* from list files
+$file_reference = "file_reference_example"; // string | File reference *id* from list files
 
 try {
-    $result = $api_instance->deleteFile($authorization, $bank, $id);
+    $result = $api_instance->deleteFile($authorization, $bank, $file_type, $file_reference);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FilesApi->deleteFile: ', $e->getMessage(), PHP_EOL;
@@ -51,7 +52,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
  **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
- **id** | **string**| File reference *id* from list files |
+ **file_type** | **string**| File reference *id* from list files |
+ **file_reference** | **string**| File reference *id* from list files |
 
 ### Return type
 
@@ -69,7 +71,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **downloadFile**
-> \Swagger\Client\Model\DownloadFileResp downloadFile($authorization, $bank, $id)
+> \Swagger\Client\Model\DownloadFileResp downloadFile($authorization, $bank, $file_type, $file_reference)
 
 DownloadFile
 
@@ -92,10 +94,11 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 $bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
-$id = "id_example"; // string | File reference *id* from list files
+$file_type = "file_type_example"; // string | File reference *id* from list files
+$file_reference = "file_reference_example"; // string | File reference *id* from list files
 
 try {
-    $result = $api_instance->downloadFile($authorization, $bank, $id);
+    $result = $api_instance->downloadFile($authorization, $bank, $file_type, $file_reference);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FilesApi->downloadFile: ', $e->getMessage(), PHP_EOL;
@@ -109,7 +112,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
  **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
- **id** | **string**| File reference *id* from list files |
+ **file_type** | **string**| File reference *id* from list files |
+ **file_reference** | **string**| File reference *id* from list files |
 
 ### Return type
 
