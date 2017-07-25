@@ -50,17 +50,21 @@ class WsCli
         $this->certs = new \Swagger\Client\Api\CertsApi($apiClient);
     }
 
+    private function checkArgs($required = [])
+    {
+        $error = 0;
+        foreach ($required as $req) {
+            if (!array_key_exists($req, $this->opts)) {
+                $this->log->error("$req not specified!");
+                $error = 1;
+            }
+        }
+        return $error;
+    }
+
     private function handleAccount($apiName, $cmd)
     {
-        $error = false;
-        if (!array_key_exists('email', $this->opts)) {
-            $this->log->error("email not specified!");
-            $error = 1;
-        }
-        if (!array_key_exists('mode', $this->opts)) {
-            $this->log->error("mode not specified!");
-            $error = 1;
-        }
+        $error = $this->checkArgs(['email', 'mode']);
         if (!$this->getChallenge()) {
             $this->log->error("Could not get challenge.");
             $error = 1;
@@ -70,256 +74,256 @@ class WsCli
             $error = 1;
         }
         switch ($cmd) {
-            case "register":
-                if (!array_key_exists('password', $this->opts)) {
-                    $this->log->error("password not specified!");
-                    $error = 1;
-                }
-                if ($error) {
-                    return $error;
-                }
-                $resp = $this->${"apiName"}->${"cmd"}(
+        case "register":
+            if (!array_key_exists('password', $this->opts)) {
+                $this->log->error("password not specified!");
+                $error = 1;
+            }
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->${"cmd"}(
                 $this->getBodyParams(),
-                                                  $this->opts['email'],
-                                                  $this->opts['mode']
-                    );
-                    $this->log->debug(print_r($resp, true));
-                return $resp;
-            case "verifyemail":
-                while (strlen($this->opts['code']) != 6) {
-                    $this->opts['code'] = readline("Give EMail verification code: ");
-                }
-                if ($error) {
-                    return $error;
-                }
-                $resp = $this->${"apiName"}->${"cmd"}(
+                $this->opts['email'],
+                $this->opts['mode']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
+        case "verifyEmail":
+            while (strlen($this->opts['code']) != 6) {
+                $this->opts['code'] = readline("Give EMail verification code: ");
+            }
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->${"cmd"}(
                 $this->getBodyParams(),
-                                                  $this->opts['email'],
-                                                  $this->opts['mode']
-                    );
-                    $this->log->debug(print_r($resp, true));
-                if ($name != $this->opts['<cmd>']) {
-                    $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
-                    $this->opts['<cmd>'] = $name;
-                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
-                    ;
-                    return $this->__call($cmd, [$apiName]);
-                }
-                    // no break
-            case "verifyEmail":
-                while (strlen((string)$this->opts['code']) != 6) {
-                    $this->opts['code'] = readline("Give email verification code: ");
-                }
-                if ($error) {
-                    return $error;
-                }
-                $resp = $this->${"apiName"}->${"cmd"}(
-                    $this->getBodyParams(),
-                                              $this->opts['email'],
-                                              $this->opts['mode']
-                        );
-                        $this->log->debug(print_r($resp, true));
-                if ($name != $this->opts['<cmd>']) {
-                    $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
-                    $this->opts['<cmd>'] = $name;
-                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
-                    ;
-                    return $this->__call($cmd, [$apiName]);
-                }
-                return $resp;
+                $this->opts['email'],
+                $this->opts['mode']
+            );
+            $this->log->debug(print_r($resp, true));
+            if ($name != $this->opts['<cmd>']) {
+                $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
+                $this->opts['<cmd>'] = $name;
+                $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
+                return $this->__call($cmd, [$apiName]);
+            }
+            return $resp;
+        case "verifyPhone":
+            while (strlen((string)$this->opts['code']) != 6) {
+                $this->opts['code'] = readline("Give phone registration code: ");
+            }
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->${"cmd"}(
+                $this->getBodyParams(),
+                $this->opts['email'],
+                $this->opts['mode'],
+                $this->opts['phone']
+            );
+            $this->log->debug(print_r($resp, true));
+            if ($name != $this->opts['<cmd>']) {
+                $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
+                $this->opts['<cmd>'] = $name;
+                $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
+            }
+            return $resp;
+        case "passwordReset":
+            $this->log->error("Unimplemented API command");
+            return 3;
+        default:
+            $this->log->error("Unknown api command");
             break;
-            case "verifyPhone":
-                while (strlen((string)$this->opts['code']) != 6) {
-                    $this->opts['code'] = readline("Give phone registration code: ");
-                }
-                if ($error) {
-                    return $error;
-                }
-                $resp = $this->${"apiName"}->${"cmd"}(
-                $this->getBodyParams(),
-                                                  $this->opts['email'],
-                                                  $this->opts['mode'],
-                                                  $this->opts['phone']
-                    );
-                    $this->log->debug(print_r($resp, true));
-                if ($name != $this->opts['<cmd>']) {
-                    $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
-                    $this->opts['<cmd>'] = $name;
-                    $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
-                    ;
-                    return $this->__call($cmd, [$apiName]);
-                }
-                return $resp;
-            case "initpasswordreset":
-                if ($error) {
-                    return $error;
-                }
-                break;
-            case "passwordreset":
-                if ($error) {
-                    return $error;
-                }
-                break;
-            default:
-                $this->log->error("Unknown api command");
-                break;
         }
     }
 
     private function handleSession($apiName, $cmd)
     {
+        $error = $this->checkArgs(['email', 'mode']);
         switch ($cmd) {
-            case "loginmfa":
-            case "login":
-                $error = false;
-                if (!array_key_exists('email', $this->opts)) {
-                    $this->log->error("email not specified!");
-                    $error = 1;
+        case "loginmfa":
+        case "login":
+            if ($error) {
+                return $error;
+            }
+            if (!$this->getChallenge()) {
+                $this->log->error("Could not get challenge.");
+                $error = 1;
+            }
+            if (!array_key_exists('password', $this->opts)) {
+                $this->opts['password'] = '';
+                while (strlen((string)$this->opts['password']) < 20) {
+                    $this->opts['password'] = readline("Give password (at least 20 chars, upper/lower letters and special chars): ");
                 }
-                if (!array_key_exists('mode', $this->opts)) {
-                    $this->log->error("mode not specified!");
-                    $error = 1;
-                }
-                if ($error) {
-                    return $error;
-                }
-                if (!$this->getChallenge()) {
-                    $this->log->error("Could not get challenge.");
-                    $error = 1;
-                }
-                if (!array_key_exists('password', $this->opts)) {
-                    $this->opts['password'] = '';
-                    while (strlen((string)$this->opts['password']) < 20) {
-                        $this->opts['password'] = readline("Give password (at least 20 chars, upper/lower letters and special chars): ");
-                    }
-                }
-                if (!$this->getEncryptedPassword()) {
-                    $this->log->error("Could not get encrypted password.");
-                    $error = 1;
-                }
-                if ($error) {
-                    return $error;
-                }
-                $resp = $this->${"apiName"}->${"cmd"}(
+            }
+            if (!$this->getEncryptedPassword()) {
+                $this->log->error("Could not get encrypted password.");
+                $error = 1;
+            }
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->${"cmd"}(
                 $this->getBodyParams(),
-                                                  $this->opts['email'],
-                                                  $this->opts['mode']
-                    );
-                    $this->opts['code'] = ''; // Reset code if any
-                    $this->log->debug(print_r($resp, true));
-                if ($resp['response_code'] == "00") {
-                    if (strstr($resp['response_text'], "Verify phone number")) {
-                        $this->opts['<api>'] = "account";
-                        $this->opts['<cmd>'] = "verifyphone";
-                        return $this->__call("login", [$apiName]);
-                    }
-                    if (strstr($resp['response_text'], "Give SMS code")) {
-                        while (strlen((string)$this->opts['code']) != 6) {
-                            $this->opts['code'] = readline("Give SMS code: ");
-                        }
-                        $this->opts['session'] = $resp['session'];
-                        $this->opts['<cmd>'] = "loginmfa";
-                        return $this->__call("login", [$apiName]);
-                    }
-                    if (strstr($resp['response_text'], "Verify email address")) {
-                        $this->opts['accesstoken'] = $resp['access_token'];
-                        $this->opts['<api>'] = "account";
-                        $this->opts['<cmd>'] = "verifyemail";
-                        return $this->__call("login", [$apiName]);
-                    }
-                    if ($resp['response_text'] == "Login OK") {
-                        $this->updateConfig("idtoken: " . $resp['id_token']);
-                        # NOTE: See https://github.com/firebase/php-jwt
-                        #$this->updateConfig("idtokenexpiry: " . JWT::decode($resp['id_token], "", "")['']
-                        $exp = date("Y-m-d H:i:s", time()+$resp['expires_in']-10);
-                        $this->log->debug("idtokenexpiry: " . $exp);
-                        if ($exp === false) {
-                            $this->log->error("Could not form idtoken expiry date. Setting to +3300s");
-                            $exp = time() + 3300;
-                        }
-                        $this->updateConfig("idtokenexpiry: \"" . $exp . "\"");
-                    }
+                $this->opts['email'],
+                $this->opts['mode']
+            );
+            $this->opts['code'] = ''; // Reset code if any
+            $this->log->debug(print_r($resp, true));
+            if ($resp['response_code'] == "00") {
+                if (strstr($resp['response_text'], "Verify phone number")) {
+                    $this->opts['<api>'] = "account";
+                    $this->opts['<cmd>'] = "verifyphone";
+                    return $this->__call("login", [$apiName]);
                 }
-                return $resp;
-            default:
-                $this->log->error("Unknown api command");
-                break;
+                if (strstr($resp['response_text'], "Give SMS code")) {
+                    while (strlen((string)$this->opts['code']) != 6) {
+                        $this->opts['code'] = readline("Give SMS code: ");
+                    }
+                    $this->opts['session'] = $resp['session'];
+                    $this->opts['<cmd>'] = "loginmfa";
+                    return $this->__call("login", [$apiName]);
+                }
+                if (strstr($resp['response_text'], "Verify email address")) {
+                    $this->opts['accesstoken'] = $resp['access_token'];
+                    $this->opts['<api>'] = "account";
+                    $this->opts['<cmd>'] = "verifyemail";
+                    return $this->__call("login", [$apiName]);
+                }
+                if ($resp['response_text'] == "Login OK") {
+                    $this->updateConfig("idtoken: " . $resp['id_token']);
+                    $exp = date("Y-m-d H:i:s", time()+$resp['expires_in']-10);
+                    $this->log->debug("idtokenexpiry: " . $exp);
+                    if ($exp === false) {
+                        $this->log->error("Could not form idtoken expiry date. Setting to +3300s");
+                        $exp = time() + 3300;
+                    }
+                    $this->updateConfig("idtokenexpiry: \"" . $exp . "\"");
+                }
+            }
+            return $resp;
+        default:
+            $this->log->error("Unknown api command");
+            break;
         }
     }
 
     private function handleFiles($apiName, $cmd)
     {
         switch ($cmd) {
-            case "listFiles":
-                $error = 0;
-                if (!array_key_exists('idtoken', $this->opts)) {
-                    $this->log->error("no valid idtoken specified! please try re-login.");
-                    $error = 2;
-                }
-                if (!array_key_exists('bank', $this->opts)) {
-                    $this->log->error("bank not specified!");
-                    $error = 1;
-                }
-                if (!array_key_exists('status', $this->opts)) {
-                    $this->log->error("status not specified!");
-                    $error = 1;
-                }
-                if (!array_key_exists('filetype', $this->opts)) {
-                    $this->log->error("filetype not specified!");
-                    $error = 1;
-                }
-                if ($error) {
-                    return $error;
-                }
-                $resp = $this->${"apiName"}->listFiles(
-                    $this->opts['idtoken'],
-                    $this->opts['bank'],
-                    $this->opts['status'],
-                    $this->opts['filetype']
-                );
-                    $this->log->debug(print_r($resp, true));
-                return $resp;
-            case "downloadFile":
-                $this->log->error("Unimplemented API command");
-                return 3;
-            case "downloadFiles":
-                // TODO: Use downloadFile to download all files one-by-one
-                $this->log->error("Unimplemented API command");
-                return 3;
-            default:
-                $this->log->error("Unknown api command");
-                return 3;
+        case "listFiles":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'status', 'filetype']);
+            if (!array_key_exists('idtoken', $this->opts)) {
+                $this->log->error("no valid idtoken specified! please try re-login.");
+                $error = 2;
+            }
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->opts['bank'],
+                $this->opts['status'],
+                $this->opts['filetype']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
+        case "downloadFile":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'filereference']);
+            if (!array_key_exists('idtoken', $this->opts)) {
+                $this->log->error("no valid idtoken specified! please try re-login.");
+                $error = 2;
+            }
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->opts['bank'],
+                $this->opts['filetype'],
+                $this->opts['filereference']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
+        case "downloadFiles":
+            // TODO: Use downloadFile to download all files one-by-one
+            $this->log->error("Unimplemented API command");
+            return 3;
+        default:
+            $this->log->error("Unknown api command");
+            return 3;
         }
     }
 
     private function handlePgp($apiName, $cmd)
     {
         switch ($cmd) {
-            case "listKeys":
-            case "uploadKey":
-            case "deleteKey":
-                $this->log->error("Unimplemented API command");
-                return 3;
-            default:
-                $this->log->error("Unknown api command");
-                return 3;
+        case "listKeys":
+        case "uploadKey":
+        case "deleteKey":
+            $this->log->error("Unimplemented API command");
+            return 3;
+        default:
+            $this->log->error("Unknown api command");
+            return 3;
         }
     }
 
     private function handleCerts($apiName, $cmd)
     {
+        // TODO: Ensure "admin" mode
         switch ($cmd) {
-            case "enrollCert":
-            case "importCert":
-            case "exportCert":
-            case "shareCerts":
-            case "unshareCerts":
-            case "listCerts":
-                $this->log->error("Unimplemented API command");
-                return 3;
-            default:
-                $this->log->error("Unknown api command");
-                return 3;
+        case "enrollCert":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'pincode','company', 'wstargetid', 'wsuserid']);
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->getBodyParams(),
+                $this->opts['bank']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
+        case "importCert":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'certpemdata']);
+            if ($error) {
+                return $error;
+            }
+            $this->log->error("Unimplemented API command");
+            return 3;
+        case "exportCert":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeyid', 'outfilename']);
+            if ($error) {
+                return $error;
+            }
+            $this->log->error("Unimplemented API command");
+            return 3;
+        case "shareCerts":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'extemail']);
+            if ($error) {
+                return $error;
+            }
+            $this->log->error("Unimplemented API command");
+            return 3;
+        case "unshareCerts":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'extemail']);
+            if ($error) {
+                return $error;
+            }
+            $this->log->error("Unimplemented API command");
+            return 3;
+        case "listCerts":
+            $error = $this->checkArgs(['apikey', 'idtoken']);
+            if ($error) {
+                return $error;
+            }
+            $this->log->error("Unimplemented API command");
+            return 3;
+        default:
+            $this->log->error("Unknown api command");
+            return 3;
         }
     }
 
@@ -329,20 +333,20 @@ class WsCli
         $cmd = $this->opts['<cmd>'];
         $this->log->debug("callname: " . implode(',', $args) . "->" . $name);
         $this->log->debug("from api: " . $apiName . "->" . $cmd);
-
+        
         switch ($apiName) {
-            case "account":
-                return $this->handleAccount($apiName, $cmd);
-            case "session":
-                return $this->handleSession($apiName, $cmd);
-            case "files":
-                return $this->handleFiles($apiName, $cmd);
-            case "pgp":
-                return $this->handlePgp($apiName, $cmd);
-            case "certs":
-                return $this->handleCerts($apiName, $cmd);
-            default:
-                return 3;
+        case "account":
+            return $this->handleAccount($apiName, $cmd);
+        case "session":
+            return $this->handleSession($apiName, $cmd);
+        case "files":
+            return $this->handleFiles($apiName, $cmd);
+        case "pgp":
+            return $this->handlePgp($apiName, $cmd);
+        case "certs":
+            return $this->handleCerts($apiName, $cmd);
+        default:
+            return 3;
         }
     }
 
@@ -378,7 +382,19 @@ class WsCli
             'Company' => array_key_exists('company', $this->opts) ? $this->opts['company'] : '',
             'Encrypted' => array_key_exists('encrypted', $this->opts) ? $this->opts['encrypted'] : '',
             'Name' => array_key_exists('name', $this->opts) ? $this->opts['name'] : '',
-            'Phone' => array_key_exists('phone', $this->opts) ? $this->opts['phone'] : ''
+            'Phone' => array_key_exists('phone', $this->opts) ? $this->opts['phone'] : '',
+            'WsUserId' => array_key_exists('wsuserid', $this->opts) ? $this->opts['wsuserid'] : '',
+            'targetId' => array_key_exists('wstargetid', $this->opts) ? $this->opts['wstargetid'] : '',
+            'Certificate' => array_key_exists('certificate', $this->opts) ? $this->opts['certificate'] : '',
+            'PrivateKey' => array_key_exists('privatekey', $this->opts) ? $this->opts['privatekey'] : '',
+            'EncCertificate' => array_key_exists('enccertificate', $this->opts) ? $this->opts['enccertificate'] : '',
+            'EncPrivateKey' => array_key_exists('encprivatekey', $this->opts) ? $this->opts['encprivatekey'] : '',
+            'FileReference' => array_key_exists('filereference', $this->opts) ? $this->opts['filereference'] : '',
+            'FileContents' => array_key_exists('filecontents', $this->opts) ? $this->opts['filecontents'] : '',
+            'FileName' => array_key_exists('filename', $this->opts) ? $this->opts['filename'] : '',
+            'Status' => array_key_exists('filestatus', $this->opts) ? $this->opts['filestatus'] : '',
+            'startDate' => array_key_exists('startdate', $this->opts) ? $this->opts['startdate'] : '',
+            'endDate' => array_key_exists('enddate', $this->opts) ? $this->opts['enddate'] : '',
         ];
         if (array_key_exists('session', $this->opts) && $this->opts['session']) {
             $bodyParams['Session'] = $this->opts['session'];
@@ -386,6 +402,10 @@ class WsCli
         }
         if (array_key_exists('code', $this->opts) && $this->opts['code']) {
             $bodyParams['Code'] = $this->opts['code'];
+            unset($bodyParams['code']);
+        }
+        if (array_key_exists('pincode', $this->opts) && $this->opts['pincode']) {
+            $bodyParams['Code'] = $this->opts['pincode'];
             unset($bodyParams['code']);
         }
         if (array_key_exists('accesstoken', $this->opts) && $this->opts['accesstoken']) {
