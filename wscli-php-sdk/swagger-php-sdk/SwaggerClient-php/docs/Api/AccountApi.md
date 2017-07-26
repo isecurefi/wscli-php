@@ -107,7 +107,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **passwordReset**
-> \Swagger\Client\Model\Response passwordReset($password_reset_req)
+> \Swagger\Client\Model\Response passwordReset($password_reset_req, $email, $mode)
 
 PasswordReset
 
@@ -120,9 +120,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\Api\AccountApi();
 $password_reset_req = new \Swagger\Client\Model\PasswordResetReq(); // \Swagger\Client\Model\PasswordResetReq | Account parameters
+$email = "email_example"; // string | Email address as the account username, e.g. `dan.forsberg@isecure.fi`
+$mode = "mode_example"; // string | Administer account with `admin` mode, exchange files with `data` mode
 
 try {
-    $result = $api_instance->passwordReset($password_reset_req);
+    $result = $api_instance->passwordReset($password_reset_req, $email, $mode);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling AccountApi->passwordReset: ', $e->getMessage(), PHP_EOL;
@@ -135,6 +137,8 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **password_reset_req** | [**\Swagger\Client\Model\PasswordResetReq**](../Model/\Swagger\Client\Model\PasswordResetReq.md)| Account parameters |
+ **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
+ **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
 
 ### Return type
 

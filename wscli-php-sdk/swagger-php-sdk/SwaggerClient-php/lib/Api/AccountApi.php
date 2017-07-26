@@ -307,12 +307,14 @@ class AccountApi
      * PasswordReset
      *
      * @param \Swagger\Client\Model\PasswordResetReq $password_reset_req Account parameters (required)
+     * @param string $email Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; (required)
+     * @param string $mode Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return \Swagger\Client\Model\Response
      */
-    public function passwordReset($password_reset_req)
+    public function passwordReset($password_reset_req, $email, $mode)
     {
-        list($response) = $this->passwordResetWithHttpInfo($password_reset_req);
+        list($response) = $this->passwordResetWithHttpInfo($password_reset_req, $email, $mode);
         return $response;
     }
 
@@ -322,14 +324,24 @@ class AccountApi
      * PasswordReset
      *
      * @param \Swagger\Client\Model\PasswordResetReq $password_reset_req Account parameters (required)
+     * @param string $email Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; (required)
+     * @param string $mode Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return array of \Swagger\Client\Model\Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function passwordResetWithHttpInfo($password_reset_req)
+    public function passwordResetWithHttpInfo($password_reset_req, $email, $mode)
     {
         // verify the required parameter 'password_reset_req' is set
         if ($password_reset_req === null) {
             throw new \InvalidArgumentException('Missing the required parameter $password_reset_req when calling passwordReset');
+        }
+        // verify the required parameter 'email' is set
+        if ($email === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $email when calling passwordReset');
+        }
+        // verify the required parameter 'mode' is set
+        if ($mode === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $mode when calling passwordReset');
         }
         // parse inputs
         $resourcePath = "/account/{Email}/{Mode}/password";
@@ -343,6 +355,22 @@ class AccountApi
         }
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
+        // path params
+        if ($email !== null) {
+            $resourcePath = str_replace(
+                "{" . "Email" . "}",
+                $this->apiClient->getSerializer()->toPathValue($email),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($mode !== null) {
+            $resourcePath = str_replace(
+                "{" . "Mode" . "}",
+                $this->apiClient->getSerializer()->toPathValue($mode),
+                $resourcePath
+            );
+        }
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 

@@ -94,8 +94,8 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 $bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
-$file_type = "file_type_example"; // string | File reference *id* from list files
-$file_reference = "file_reference_example"; // string | File reference *id* from list files
+$file_type = "file_type_example"; // string | File type from list files
+$file_reference = "file_reference_example"; // string | File reference identifier from list files
 
 try {
     $result = $api_instance->downloadFile($authorization, $bank, $file_type, $file_reference);
@@ -112,8 +112,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
  **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
- **file_type** | **string**| File reference *id* from list files |
- **file_reference** | **string**| File reference *id* from list files |
+ **file_type** | **string**| File type from list files |
+ **file_reference** | **string**| File reference identifier from list files |
 
 ### Return type
 

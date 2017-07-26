@@ -243,8 +243,8 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
-     * @param string $file_type File reference *id* from list files (required)
-     * @param string $file_reference File reference *id* from list files (required)
+     * @param string $file_type File type from list files (required)
+     * @param string $file_reference File reference identifier from list files (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return \Swagger\Client\Model\DownloadFileResp
      */
@@ -261,8 +261,8 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
-     * @param string $file_type File reference *id* from list files (required)
-     * @param string $file_reference File reference *id* from list files (required)
+     * @param string $file_type File type from list files (required)
+     * @param string $file_reference File reference identifier from list files (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return array of \Swagger\Client\Model\DownloadFileResp, HTTP status code, HTTP response headers (array of strings)
      */
