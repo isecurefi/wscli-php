@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+ulimit -Sn 4096
 
 if [ $# -ne 1 ]; then
   echo "Usage: `basename $0` <tag>"
