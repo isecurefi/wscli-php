@@ -247,9 +247,32 @@ class WsCli
             $this->log->debug(print_r($resp, true));
             return $resp;
         case "downloadFiles":
-            // TODO: Use downloadFile to download all files one-by-one
-            $this->log->error("Unimplemented API command");
-            return 3;
+            $this->opts['<cmd>'] = "listFiles";
+            $this->opts['<api>'] = "files";
+            $resp = $this->__call($cmd, [$apiName]);
+            if ($resp['response_code'] == "00") {
+                foreach ($resp['file_descriptors'] as $desc) {
+                    echo "Downloading " . $desc['file_reference'] . "...";
+                    $this->opts['<cmd>'] = "downloadFile";
+                    $this->opts['<api>'] = "files";
+                    $this->opts['filereference'] = $desc['file_reference'];
+                    $download_resp = $this->__call($cmd, [$apiName]);
+                    if ($download_resp['response_code'] == "00") {
+                        if (file_put_contents($desc['file_reference'], base64_decode($download_resp['content'])) === FALSE) {
+                            $this->log->error("Failed to write file " . $desc['file_reference'] . " on current directory");
+                            echo " failed!" . PHP_EOL;
+                            $this->log->error("Failed to write downloaded file " . $desc['file_reference']);
+                            return 1;
+                        }
+                        echo " OK" . PHP_EOL;
+                        $this->log->debug("Downloaded and stored file " . $desc['file_reference']);
+                        continue;
+                    }
+                    $this->log->error("Failed to download file " . $desc['file_reference']);
+                    $this->log->error(print_r($download_resp, true));
+                }
+            }
+            return $resp;
         default:
             $this->log->error("Unknown api command");
             return 3;
