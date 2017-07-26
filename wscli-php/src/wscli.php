@@ -120,8 +120,25 @@ function getArgs()
     return $args;
 }
 
-function update($log)
+function update($log, $phar)
 {
+    if (!is_writable(realpath($phar))) {
+        $msg = "The PHAR is not writable by you and can not be updated."
+             . PHP_EOL . "You may need to use e.g. sudo (" . realpath($phar) . ").";
+        $log->error($msg);
+        echo $msg . PHP_EOL;
+        return 1;
+    }
+    if (!is_readable(realpath($phar) . ".pubkey")) {
+        $msg = "The PHAR corresponding public key is not available and thus update can "
+             . PHP_EOL . "not be verified. Did you install the public key too?"
+             . PHP_EOL . "Missing: "
+             . PHP_EOL . "   " . realpath($phar) . ".pubkey";
+        $log->error($msg);
+        echo $msg . PHP_EOL;
+        return 1;
+    }
+
     $updater = new Updater();
     /*
       $updater->setStrategy(Updater::STRATEGY_GITHUB);
@@ -179,7 +196,7 @@ function main()
 
     if ($args['update']) {
         $log->debug("Running update");
-        return update($log);
+        return update($log, $argv[0]);
     }
     if ($args['rollback']) {
         $log->debug("Running rollback");
