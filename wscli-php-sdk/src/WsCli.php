@@ -130,8 +130,48 @@ class WsCli
             }
             return $resp;
         case "passwordReset":
-            $this->log->error("Unimplemented API command");
-            return 3;
+            if ($error) {
+                return $error;
+            }
+            if (!$this->getChallenge()) {
+                $this->log->error("Could not get challenge.");
+                $error = 1;
+            }
+            if (!array_key_exists('password', $this->opts)) {
+                $this->opts['password'] = '';
+                while (strlen((string)$this->opts['password']) < 20) {
+                    $this->opts['password'] = readline("Give password (at least 20 chars, upper/lower letters and special chars): ");
+                }
+            }
+            if (!$this->getEncryptedPassword()) {
+                $this->log->error("Could not get encrypted password.");
+                $error = 1;
+            }
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"apiName"}->initPasswordReset(
+                $this->opts['email'],
+                $this->opts['mode']
+            );
+            if ($resp['response_code'] != "00") {
+                $this->log->error("Failed to init password reset");
+                $this->log->error(print_r($resp, true));
+                return $resp;
+            }
+            $this->opts['code'] = readline("Give password reset SMS code: ");
+            $resp = $this->${"apiName"}->passwordReset(
+                $this->getBodyParams(),
+                $this->opts['email'],
+                $this->opts['mode']
+            );
+            if ($resp['response_code'] != "00") {
+                $this->log->error("Failed to reset password!");
+                $this->log->error(print_r($resp, true));
+                return $resp;
+            }
+            $this->log->debug("Password has been reset.");
+            return $resp;
         default:
             $this->log->error("Unknown api command");
             break;
