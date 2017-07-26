@@ -29,30 +29,30 @@ Usage:
   wscli (-v | --version)
   wscli --update
   wscli --rollback
-  wscli account verifyEmail     [--email=<email>] [--mode=<mode>] [--code=<code>] [--config=<file>]
-  wscli account verifyPhone     [--email=<email>] [--mode=<mode>] [--phone=<phone>] [--config=<file>]
-  wscli account passwordReset   [--email=<email>] [--mode=<mode>] [--config=<file>]
-  wscli account register        [--email=<email>] [--mode=<mode>] [--name=<name>] [--apikey=<apikey>]
-                                [--company=<company>] [--password=<password>] [--phone=<phone>] [--config=<file>]
-  wscli session logout          [--apikey=<apikey>] [--idtoken=<idtoken>] [--config=<file>]
-  wscli session login           [--email=<email>] [--mode=<mode>] [--password=<password>]
-                                [--environment=<environment>] [--config=<file>]
-  wscli files listFiles         [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filestatus=<filestatus>] [--config=<file>]
-  wscli files downloadFiles     [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filestatus=<filestatus>] [--config=<file>]
-  wscli files downloadFile      [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filereference=<fileref>] [--config=<file>]
-  wscli files deleteFile        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filereference=<fileref>] [--config=<file>]
-  wscli files uploadFile        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--filetype=<filetype>] [--filename=<filename>]
-                                [--filecontents=<filecontents>] [--config=<file>]
-  wscli certs listCerts         [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--config=<file>]
-  wscli certs importCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--certificate=<pem>] [--privatekey=<pem>] [--enccertificate=<pem>] [--encprivatekey=<pem>] [--config=<file>]
-  wscli certs exportCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--bank=<bank>] [--pgpkeyid=<pgpkeyid>] [--outfilename=<outfilename>] [--config=<file>]
-  wscli certs shareCerts        [--apikey=<apikey>] [--idtoken=<idtoken>] [--extemail=<extemail>] [--config=<file>]
-  wscli certs unshareCerts      [--apikey=<apikey>] [--idtoken=<idtoken>] [--extemail=<extemail>] [--config=<file>]
-  wscli certs enrollCert        [--apikey=<apikey>] [--idtoken=<idtoken>] [--pincode=<pincode>] [--bank=<bank>]
-                                [--company=<company>] [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>] [--config=<file>]
-  wscli pgp listKeys            [--apikey=<apikey>] [--idtoken=<idtoken>] [--config=<file>]
-  wscli pgp uploadKey           [--apikey=<apikey>] [--idtoken=<idtoken>] [--pgpkeycontents=<pgpkeycontents>] [--config=<file>]
-  wscli pgp deleteKey           [--apikey=<apikey>] [--idtoken=<idtoken>] [--pgpkeyid=<pgpkeyid>] [--config=<file>]
+  wscli account verifyEmail     [-cem] [--code=<code>]
+  wscli account verifyPhone     [-cem] [--phone=<phone>]
+  wscli account passwordReset   [-cem]
+  wscli account register        [-caem] [--name=<name>] [--company=<company>]
+                                [--password=<password>] [--phone=<phone>]
+  wscli session logout          [-cai]
+  wscli session login           [-cem] [--password=<password>]
+                                [--environment=<environment>]
+  wscli files listFiles         [-caib] [--filetype=<filetype>] [--filestatus=<filestatus>]
+  wscli files downloadFiles     [-caib] [--filetype=<filetype>] [--filestatus=<filestatus>]
+  wscli files downloadFile      [-caib] [--filetype=<filetype>] [--filereference=<fileref>]
+  wscli files deleteFile        [-caib] [--filetype=<filetype>] [--filereference=<fileref>]
+  wscli files uploadFile        [-caib] [--filetype=<filetype>] [--filename=<filename>]
+                                [--filecontents=<filecontents>]
+  wscli certs listCerts         [-caib]
+  wscli certs importCert        [-cai] [--certificate=<pem>] [--privatekey=<pem>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
+  wscli certs exportCert        [-caib] [--pgpkeyid=<pgpkeyid>] [--outfilename=<outfilename>]
+  wscli certs shareCerts        [-cai] [--extemail=<extemail>]
+  wscli certs unshareCerts      [-cai] [--extemail=<extemail>]
+  wscli certs enrollCert        [-caib] [--pincode=<pincode>] [--company=<company>] [--wsuserid=<wsuserid>] 
+                                [--wstargetid=<wstargetid>]
+  wscli pgp listKeys            [-cai]
+  wscli pgp uploadKey           [-cai] [--pgpkeycontents=<pgpkeycontents>]
+  wscli pgp deleteKey           [-cai] [--pgpkeyid=<pgpkeyid>]
 
 
 Options:
@@ -60,16 +60,17 @@ Options:
   -v --version                           Show version
   --update                               Update wscli to latest version
   --rollback                             Rollback wscli to previous version, after an update
+  -c --config=<file>                     YAML configuration file containing all required parameters in 'settings' block
+  -a --apikey=<apikey>                   Integrator's API Key
+  -i --idtoken=<idtoken>                 Session authorization token received from successful login
+  -b --bank=<bank>                       Target bank, e.g. nordea
+  -e --email=<email>                     Account user's email
+  -m --mode=<mode>                       admin or data account
   --name=<name>                          Account users's name
-  --email=<email>                        Account user's email
   --phone=<phone>                        Account user's phone number with country code, e.g. +358401234567
   --company=<company>                    Account user's company
   --password=<password>                  Account user's password for <mode> account
-  --apikey=<apikey>                      Integrator's API Key
-  --idtoken=<idtoken>                    Session authorization token received from successful login
-  --mode=<mode>                          admin or data account
   --environment=<env>                    Environment, test or production
-  --bank=<bank>                          Target bank, e.g. nordea
   --filetype=<filetype>                  Bank's file type
   --filestatus=<filestatus>              Bank's file status, e.g. ALL
   --filecontents=<filecontents>          Upload file contents
@@ -86,7 +87,6 @@ Options:
   --privatekey=<pem>                     Imported private key in PEM format, must match with certificate
   --enccertificate=<pem>                 DanskeBank only, imported encryption certificate
   --encprivatekey=<pem>                  DanskeBank only, imported private key for encryption, must match with enccertificate
-  --config=<file>                        YAML configuration file containing all required parameters in 'settings' block
 
 DOC;
 
