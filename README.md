@@ -8,9 +8,9 @@ of Swagger generated client SDK. See details about the SDK below.
 
 ISECure WS-Channel runs on AWS API Gateway and follows somewhat
 RESTful API style. See
-[Swagger API specification](https://isecure.fi/wsapi_v2.json) and
-[online API documentation](https://isecure.fi/wsapi_v2/index.html) for
-more information.
+[Swagger API specification](https://github.com/isecurefi/wsapi-v2)
+and [online API documentation](https://isecure.fi/wsapi_v2/index.html)
+for more information.
 
 WS-Channel service supports banks in Finland and uses SEPA WebServices
 interface towards banks. It supports certificate enrollment and file
