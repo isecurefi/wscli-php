@@ -203,6 +203,8 @@ function main()
         return rollback($log);
     }
 
+    // API arguments are passed as an associative array when
+    // instantiating the class.
     $sdk = new \IsecureFi\WsCliPhpSdk\WsCli($args->args);
     $res = $sdk->${"cmd"}();
     $log->debug("response:\n" . $res);
