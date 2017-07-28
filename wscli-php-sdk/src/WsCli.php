@@ -348,8 +348,8 @@ class WsCli
 
     private function handleCerts($api, $cmd)
     {
-        if ($this->ensureAdminMode()) {
-            return 1;
+        if ($cmd != "listCerts" && $this->ensureAdminMode()) {
+            return 4;
         }
         switch ($cmd) {
         case "enrollCert":
@@ -397,8 +397,11 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $this->log->error("Unimplemented API command");
-            return 3;
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         default:
             $this->log->error("Unknown api command");
             return 3;
