@@ -29,43 +29,43 @@ Usage:
   wscli (-v | --version)
   wscli --update
   wscli --rollback
-  wscli account verifyEmail     [-cem] [--code=<code>]
-  wscli account verifyPhone     [-cem] [--phone=<phone>]
-  wscli account passwordReset   [-cem]
-  wscli account register        [-caem] [--name=<name>] [--company=<company>]
+  wscli account verifyEmail     [-c CONF] [-e EMAIL] [-m MODE] [--code=<code>]
+  wscli account verifyPhone     [-c CONF] [-e EMAIL] [-m MODE] [--phone=<phone>]
+  wscli account passwordReset   [-c CONF] [-e EMAIL] [-m MODE]
+  wscli account register        [-c CONF] [-e EMAIL] [-m MODE] [-a APIKEY] [--name=<name>] [--company=<company>]
                                 [--password=<password>] [--phone=<phone>]
-  wscli session logout          [-cai]
-  wscli session login           [-cem] [--password=<password>]
+  wscli session logout          [-c CONF] [-a APIKEY] [-i IDTOKEN]
+  wscli session login           [-c CONF] [-e EMAIL] [-m MODE] [--password=<password>]
                                 [--environment=<environment>]
-  wscli files listFiles         [-caib] [--filetype=<filetype>] [--filestatus=<filestatus>]
-  wscli files downloadFiles     [-caib] [--filetype=<filetype>] [--filestatus=<filestatus>]
-  wscli files downloadFile      [-caib] [--filetype=<filetype>] [--filereference=<fileref>]
-  wscli files deleteFile        [-caib] [--filetype=<filetype>] [--filereference=<fileref>]
-  wscli files uploadFile        [-caib] [--filetype=<filetype>] [--filename=<filename>]
+  wscli files listFiles         [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
+  wscli files downloadFiles     [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
+  wscli files downloadFile      [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
+  wscli files deleteFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
+  wscli files uploadFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filename=<filename>]
                                 [--filecontents=<filecontents>]
-  wscli certs listCerts         [-caib]
-  wscli certs importCert        [-cai] [--certificate=<pem>] [--privatekey=<pem>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
-  wscli certs exportCert        [-caib] [--pgpkeyid=<pgpkeyid>] [--outfilename=<outfilename>]
-  wscli certs shareCerts        [-cai] [--extemail=<extemail>]
-  wscli certs unshareCerts      [-cai] [--extemail=<extemail>]
-  wscli certs enrollCert        [-caib] [--pincode=<pincode>] [--company=<company>] [--wsuserid=<wsuserid>] 
-                                [--wstargetid=<wstargetid>]
-  wscli pgp listKeys            [-cai]
-  wscli pgp uploadKey           [-cai] [--pgpkeycontents=<pgpkeycontents>]
-  wscli pgp deleteKey           [-cai] [--pgpkeyid=<pgpkeyid>]
+  wscli certs listCerts         [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK]
+  wscli certs importCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [--certificate=<pem>] [--privatekey=<pem>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
+  wscli certs exportCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pgpkeyid=<pgpkeyid>] [--outfilename=<outfilename>]
+  wscli certs shareCerts        [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
+  wscli certs unshareCerts      [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
+  wscli certs enrollCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pincode=<pincode>] [--company=<company>] 
+                                [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>]
+  wscli pgp listKeys            [-c CONF] [-a APIKEY] [-i IDTOKEN]
+  wscli pgp uploadKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeycontents=<pgpkeycontents>]
+  wscli pgp deleteKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeyid=<pgpkeyid>]
 
 
 Options:
-  -h --help                              Show this screen
-  -v --version                           Show version
+  -h, --help                             Show this screen
+  -v, --version                          Show version
   --update                               Update wscli to latest version
   --rollback                             Rollback wscli to previous version, after an update
-  -c --config=<file>                     YAML configuration file containing all required parameters in 'settings' block
-  -a --apikey=<apikey>                   Integrator's API Key
-  -i --idtoken=<idtoken>                 Session authorization token received from successful login
-  -b --bank=<bank>                       Target bank, e.g. nordea
-  -e --email=<email>                     Account user's email
-  -m --mode=<mode>                       admin or data account
+  -c FILE, --config=FILE                 YAML configuration file containing all required parameters in 'settings' block
+  -a APIKEY, --apikey=APIKEY             Integrator's API Key
+  -i IDTOKEN, --idtoken=IDTOKEN          Session authorization token received from successful login
+  -b BANK, --bank=BANK                   Target bank, e.g. nordea
+  -e EMAIL, --email=EMAIL                Account user's email
+  -m MODE, --mode=MODE                   admin or data account
   --name=<name>                          Account users's name
   --phone=<phone>                        Account user's phone number with country code, e.g. +358401234567
   --company=<company>                    Account user's company
