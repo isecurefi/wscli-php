@@ -383,15 +383,23 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $this->log->error("Unimplemented API command");
-            return 3;
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->opts['extemail']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "unshareCerts":
             $error = $this->checkArgs(['apikey', 'idtoken', 'extemail']);
             if ($error) {
                 return $error;
             }
-            $this->log->error("Unimplemented API command");
-            return 3;
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->opts['extemail']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "listCerts":
             $error = $this->checkArgs(['apikey', 'idtoken']);
             if ($error) {
@@ -512,7 +520,7 @@ class WsCli
         $this->config_filename = '';
         if ($conf && file_exists($conf)) {
             if (substr(sprintf('%o', fileperms($conf)), -4) != "0600") {
-                $msg = "invalid $conf file permissions, please set to 600".
+                $msg = "invalid $conf file permissions, please set to 600";
                 $this->log->error($msg);
                 echo $msg . PHP_EOL;
                 exit(1);
