@@ -39,7 +39,10 @@ only one set of bank certificates.
 > login, and file transfers, and PGP based file upload
 > authorizations. Clients do not need to worry about
 > challenge-response fetching, RSA encryption or email/phone
-> verification - all this happens automatically with WSCLI PHP SDK.**
+> verification - all this happens automatically with WSCLI PHP SDK. In
+> addition, the login session is preserved and checked in the settings
+> file for expiration, which makes using the command line client
+> easier.**
 
 ### Install wscli tool
 
