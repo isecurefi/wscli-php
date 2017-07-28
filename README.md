@@ -22,8 +22,12 @@ interface towards banks. It supports certificate enrollment and file
 transfers. Additionally, the services provides account management with
 `admin` account and file transfers with `data` account (both use the
 same email registration address and phone number). `admin` account
-always requires SMS one-time password per login session (2FA/MFA). PGP
-keys can be used to sign file uploads (with `data` account) for
+always requires SMS one-time password per login session
+(2FA/MFA). This way `data` account credentials can be stored on
+e.g. filesystem (with proper permissions) for automation and managemnt
+credentials used separately (`admin` account password and phone).
+
+PGP keys can be used to sign file uploads (with `data` account) for
 authorization decisions, `n` of `m` signatures required scheme, if
 needed. Certificates can be imported and exported for the registered
 PGP keys.
