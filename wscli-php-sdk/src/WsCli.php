@@ -50,6 +50,19 @@ class WsCli
         $this->certs = new \Swagger\Client\Api\CertsApi($apiClient);
     }
 
+    private function ensureAdminMode()
+    {
+        if (!array_key_exists('mode', $this->opts)) {
+            $this->log->error("Missing mode parameter");
+            return 1;
+        }
+        if (strtolower($this->opts['mode']) !== "admin") {
+            $this->log->error("Must use admin mode (current mode: " . $this->opts['mode'] . ")!");
+            return 1;
+        }
+        return 0;
+    }
+
     private function checkArgs($required = [])
     {
         $error = 0;
@@ -62,7 +75,7 @@ class WsCli
         return $error;
     }
 
-    private function handleAccount($apiName, $cmd)
+    private function handleAccount($api, $cmd, $fromApi, $fromCmd)
     {
         $error = $this->checkArgs(['email', 'mode']);
         if (!$this->getChallenge()) {
@@ -82,7 +95,7 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->${"cmd"}(
+            $resp = $this->${"api"}->${"cmd"}(
                 $this->getBodyParams(),
                 $this->opts['email'],
                 $this->opts['mode']
@@ -96,17 +109,17 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->${"cmd"}(
+            $resp = $this->${"api"}->${"cmd"}(
                 $this->getBodyParams(),
                 $this->opts['email'],
                 $this->opts['mode']
             );
             $this->log->debug(print_r($resp, true));
-            if ($name != $this->opts['<cmd>']) {
-                $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
-                $this->opts['<cmd>'] = $name;
-                $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
-                return $this->__call($cmd, [$apiName]);
+            if ($fromApi && $fromCmd && $fromCmd != $this->opts['<cmd>']) {
+                $this->log->debug("Callbacking to " . $fromApi . "->" . $fromCmd);
+                $this->opts['<cmd>'] = $fromCmd;
+                $this->opts['<api>'] = $fromApi;
+                return $this->__call($cmd, [$api]);
             }
             return $resp;
         case "verifyPhone":
@@ -116,17 +129,17 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->${"cmd"}(
+            $resp = $this->${"api"}->${"cmd"}(
                 $this->getBodyParams(),
                 $this->opts['email'],
                 $this->opts['mode'],
                 $this->opts['phone']
             );
             $this->log->debug(print_r($resp, true));
-            if ($name != $this->opts['<cmd>']) {
-                $this->log->debug("Callbacking to " . implode(',', $args) . "->" . $name);
-                $this->opts['<cmd>'] = $name;
-                $this->opts['<api>'] = $args[0] ? $args[0] : "n/a";
+            if ($fromApi && $fromCmd && $fromCmd != $this->opts['<cmd>']) {
+                $this->log->debug("Callbacking to " . $fromApi . "->" . $fromCmd);
+                $this->opts['<cmd>'] = $fromCmd;
+                $this->opts['<api>'] = $fromApi;
             }
             return $resp;
         case "passwordReset":
@@ -150,7 +163,7 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->initPasswordReset(
+            $resp = $this->${"api"}->initPasswordReset(
                 $this->opts['email'],
                 $this->opts['mode']
             );
@@ -160,7 +173,7 @@ class WsCli
                 return $resp;
             }
             $this->opts['code'] = readline("Give password reset SMS code: ");
-            $resp = $this->${"apiName"}->passwordReset(
+            $resp = $this->${"api"}->passwordReset(
                 $this->getBodyParams(),
                 $this->opts['email'],
                 $this->opts['mode']
@@ -178,11 +191,11 @@ class WsCli
         }
     }
 
-    private function handleSession($apiName, $cmd)
+    private function handleSession($api, $cmd)
     {
         $error = $this->checkArgs(['email', 'mode']);
         switch ($cmd) {
-        case "loginmfa":
+        case "loginMFA":
         case "login":
             if ($error) {
                 return $error;
@@ -204,7 +217,7 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->${"cmd"}(
+            $resp = $this->${"api"}->${"cmd"}(
                 $this->getBodyParams(),
                 $this->opts['email'],
                 $this->opts['mode']
@@ -214,22 +227,22 @@ class WsCli
             if ($resp['response_code'] == "00") {
                 if (strstr($resp['response_text'], "Verify phone number")) {
                     $this->opts['<api>'] = "account";
-                    $this->opts['<cmd>'] = "verifyphone";
-                    return $this->__call("login", [$apiName]);
+                    $this->opts['<cmd>'] = "verifyPhone";
+                    return $this->__call("login", [$api]);
                 }
                 if (strstr($resp['response_text'], "Give SMS code")) {
                     while (strlen((string)$this->opts['code']) != 6) {
                         $this->opts['code'] = readline("Give SMS code: ");
                     }
                     $this->opts['session'] = $resp['session'];
-                    $this->opts['<cmd>'] = "loginmfa";
-                    return $this->__call("login", [$apiName]);
+                    $this->opts['<cmd>'] = "loginMFA";
+                    return $this->__call("login", [$api]);
                 }
                 if (strstr($resp['response_text'], "Verify email address")) {
                     $this->opts['accesstoken'] = $resp['access_token'];
                     $this->opts['<api>'] = "account";
-                    $this->opts['<cmd>'] = "verifyemail";
-                    return $this->__call("login", [$apiName]);
+                    $this->opts['<cmd>'] = "verifyEmail";
+                    return $this->__call("login", [$api]);
                 }
                 if ($resp['response_text'] == "Login OK") {
                     $this->updateConfig("idtoken: " . $resp['id_token']);
@@ -249,7 +262,7 @@ class WsCli
         }
     }
 
-    private function handleFiles($apiName, $cmd)
+    private function handleFiles($api, $cmd)
     {
         switch ($cmd) {
         case "listFiles":
@@ -261,7 +274,7 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->${"cmd"}(
+            $resp = $this->${"api"}->${"cmd"}(
                 $this->opts['idtoken'],
                 $this->opts['bank'],
                 $this->opts['status'],
@@ -278,7 +291,7 @@ class WsCli
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->${"cmd"}(
+            $resp = $this->${"api"}->${"cmd"}(
                 $this->opts['idtoken'],
                 $this->opts['bank'],
                 $this->opts['filetype'],
@@ -289,14 +302,14 @@ class WsCli
         case "downloadFiles":
             $this->opts['<cmd>'] = "listFiles";
             $this->opts['<api>'] = "files";
-            $resp = $this->__call($cmd, [$apiName]);
+            $resp = $this->__call($cmd, [$api]);
             if ($resp['response_code'] == "00") {
                 foreach ($resp['file_descriptors'] as $desc) {
                     echo "Downloading " . $desc['file_reference'] . "...";
                     $this->opts['<cmd>'] = "downloadFile";
                     $this->opts['<api>'] = "files";
                     $this->opts['filereference'] = $desc['file_reference'];
-                    $download_resp = $this->__call($cmd, [$apiName]);
+                    $download_resp = $this->__call($cmd, [$api]);
                     if ($download_resp['response_code'] == "00") {
                         if (file_put_contents($desc['file_reference'], base64_decode($download_resp['content'])) === FALSE) {
                             $this->log->error("Failed to write file " . $desc['file_reference'] . " on current directory");
@@ -319,7 +332,7 @@ class WsCli
         }
     }
 
-    private function handlePgp($apiName, $cmd)
+    private function handlePgp($api, $cmd)
     {
         switch ($cmd) {
         case "listKeys":
@@ -333,16 +346,18 @@ class WsCli
         }
     }
 
-    private function handleCerts($apiName, $cmd)
+    private function handleCerts($api, $cmd)
     {
-        // TODO: Ensure "admin" mode
+        if ($this->ensureAdminMode()) {
+            return 1;
+        }
         switch ($cmd) {
         case "enrollCert":
             $error = $this->checkArgs(['apikey', 'idtoken', 'pincode','company', 'wstargetid', 'wsuserid']);
             if ($error) {
                 return $error;
             }
-            $resp = $this->${"apiName"}->${"cmd"}(
+            $resp = $this->${"api"}->${"cmd"}(
                 $this->opts['idtoken'],
                 $this->getBodyParams(),
                 $this->opts['bank']
@@ -390,24 +405,28 @@ class WsCli
         }
     }
 
-    public function __call($name, $args)
+    public function __call($methodCmd, $methodApi)
     {
-        $apiName = strtolower($this->opts['<api>']);
+        // $methodApi array is populated on our internal calls to
+        // __call().
+        $api = strtolower($this->opts['<api>']);
         $cmd = $this->opts['<cmd>'];
-        $this->log->debug("callname: " . implode(',', $args) . "->" . $name);
-        $this->log->debug("from api: " . $apiName . "->" . $cmd);
+        $this->log->debug("__call method: " . $cmd);
+        $this->log->debug("__call   args: " . implode(',', $methodApi));
+        $this->log->debug("opts api->cmd: " . $api . "->" . $cmd);
+        $methodApi = is_array($methodApi) && array_key_exists(0, $methodApi) ? $methodApi[0] : "";
         
-        switch ($apiName) {
+        switch ($api) {
         case "account":
-            return $this->handleAccount($apiName, $cmd);
+            return $this->handleAccount($api, $cmd, $methodApi, $methodCmd);
         case "session":
-            return $this->handleSession($apiName, $cmd);
+            return $this->handleSession($api, $cmd, $methodApi, $methodCmd);
         case "files":
-            return $this->handleFiles($apiName, $cmd);
+            return $this->handleFiles($api, $cmd, $methodApi, $methodCmd);
         case "pgp":
-            return $this->handlePgp($apiName, $cmd);
+            return $this->handlePgp($api, $cmd, $methodApi, $methodCmd);
         case "certs":
-            return $this->handleCerts($apiName, $cmd);
+            return $this->handleCerts($api, $cmd, $methodApi, $methodCmd);
         default:
             return 3;
         }
