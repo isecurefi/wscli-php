@@ -220,6 +220,10 @@ function main()
         echo "API feature not yet implemented." . PHP_EOL;
         return $res;
     }
+    if ($res == 4) {
+        echo "Admin mode session required for this command, currently using data mode" . PHP_EOL;
+        return $res;
+    }
 
     echo $res . PHP_EOL;
     return 0;
