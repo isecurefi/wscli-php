@@ -34,13 +34,12 @@ Key - the account owner shares its certificates to other
 accounts. This can be helpful if multiple accounts are required, but
 only one set of bank certificates.
 
-> **For clients WSCLI PHP SDK provides beefed up interface with
-> WS-Channel service account registration, session login, certificate
-> enrollment, file transfers and PGP based file upload
-> authorizations. It also supports sharing WS-Channel certificates
-> between multiple accounts under the same (integrator) API Key. See
-> the
-> [online API documentation](https://isecure.fi/wsapi_v2/index.html).**
+> **For clients WSCLI PHP SDK provides beefed up swagger generated SDK
+> interface with WS-Channel service account registration, session
+> login, and file transfers, and PGP based file upload
+> authorizations. Clients do not need to worry about
+> challenge-response fetching, RSA encryption or email/phone
+> verification - all this happens automatically with WSCLI PHP SDK.**
 
 ### Install wscli tool
 
