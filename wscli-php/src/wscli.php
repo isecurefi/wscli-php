@@ -43,13 +43,13 @@ Usage:
   wscli files deleteFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
   wscli files uploadFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filename=<filename>]
                                 [--filecontents=<filecontents>]
-  wscli certs listCerts         [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK]
-  wscli certs importCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [--certificate=<pem>] [--privatekey=<pem>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
+  wscli certs listCerts         [-c CONF] [-a APIKEY] [-i IDTOKEN]
   wscli certs exportCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pgpkeyid=<pgpkeyid>] [--outfilename=<outfilename>]
   wscli certs shareCerts        [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
   wscli certs unshareCerts      [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
-  wscli certs enrollCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pincode=<pincode>] [--company=<company>] 
-                                [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>]
+  wscli certs enrollCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pincode=<pincode>] [--company=<company>] [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>]
+  wscli certs importCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--certificate=<pem>] [--privatekey=<pem>]
+                                [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
   wscli pgp listKeys            [-c CONF] [-a APIKEY] [-i IDTOKEN]
   wscli pgp uploadKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeycontents=<pgpkeycontents>]
   wscli pgp deleteKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeyid=<pgpkeyid>]
@@ -81,7 +81,6 @@ Options:
   --wsuserid=<wsuserid>                  Use wsuserid in certificate enrollment
   --pgpkeyid=<pgpkeyid>                  PGP/GPG Key Id
   --outfilename=<outfilename>            Output filename for exported cert in PEM format
-  --certpemdata=<certpemdata>            Import cert data in PEM format
   --pgpkeycontents=<pgpkeycontents>      PGP key contents for PGP key upload
   --certificate=<pem>                    Imported certificate in PEM format
   --privatekey=<pem>                     Imported private key in PEM format, must match with certificate

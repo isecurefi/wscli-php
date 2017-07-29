@@ -365,12 +365,20 @@ class WsCli
             $this->log->debug(print_r($resp, true));
             return $resp;
         case "importCert":
-            $error = $this->checkArgs(['apikey', 'idtoken', 'certpemdata']);
+            $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'certificate', 'privatekey']);
+            if ($this->opts['bank'] === "danskebank") {
+                $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'certificate', 'privatekey', 'enccertificate', 'encprivatekey']);
+            }
             if ($error) {
                 return $error;
             }
-            $this->log->error("Unimplemented API command");
-            return 3;
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->getBodyParams(),
+                $this->opts['bank']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "exportCert":
             $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeyid', 'outfilename']);
             if ($error) {
@@ -555,7 +563,6 @@ class WsCli
             $config_args = yaml_parse(file_get_contents($this->config_filename));
             if ($config_args === false) {
                 $this->log->error("Config file YAML parse error; " . $this->config_filename);
-
                 return -1;
             }
             if ($config_args['settings']) {
@@ -568,6 +575,8 @@ class WsCli
                         $this->log->info("Removing old token from config");
                         $this->updateConfig("idtoken: \"\"");
                         $this->updateConfig("idtokenexpiry: \"\"");
+                        $config_args['settings']['idtoken'] = "";
+                        $config_args['settings']['idtokenexpiry'] = "";
                     }
                     if (strlen($config_args['settings']['idtoken']) <= 0) {
                         $this->log->debug("Removing idtoken from settings; " . $config_args['settings']['idtoken']);
