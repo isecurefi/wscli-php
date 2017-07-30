@@ -104,6 +104,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [CertDescription](docs/Model/CertDescription.md)
  - [CertsAndKeys](docs/Model/CertsAndKeys.md)
  - [DeleteKeyReq](docs/Model/DeleteKeyReq.md)
  - [DeleteKeyResp](docs/Model/DeleteKeyResp.md)

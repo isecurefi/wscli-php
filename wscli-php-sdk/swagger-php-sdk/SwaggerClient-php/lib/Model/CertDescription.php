@@ -1,6 +1,6 @@
 <?php
 /**
- * ListCertsResp
+ * CertDescription
  *
  * PHP version 5
  *
@@ -32,14 +32,14 @@ namespace Swagger\Client\Model;
 use \ArrayAccess;
 
 /**
- * ListCertsResp Class Doc Comment
+ * CertDescription Class Doc Comment
  *
  * @category    Class
  * @package     Swagger\Client
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class ListCertsResp implements ArrayAccess
+class CertDescription implements ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -47,16 +47,19 @@ class ListCertsResp implements ArrayAccess
       * The original name of the model.
       * @var string
       */
-    protected static $swaggerModelName = 'ListCertsResp';
+    protected static $swaggerModelName = 'CertDescription';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'certs' => '\Swagger\Client\Model\CertDescription[]',
-        'response_code' => 'string',
-        'response_text' => 'string'
+        'cert_name' => 'string',
+        'expires' => 'string',
+        'issuer' => 'string',
+        'pem' => 'string',
+        'serial' => 'string',
+        'subject' => 'string'
     ];
 
     public static function swaggerTypes()
@@ -69,9 +72,12 @@ class ListCertsResp implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'certs' => 'Certs',
-        'response_code' => 'ResponseCode',
-        'response_text' => 'ResponseText'
+        'cert_name' => 'CertName',
+        'expires' => 'Expires',
+        'issuer' => 'Issuer',
+        'pem' => 'PEM',
+        'serial' => 'Serial',
+        'subject' => 'Subject'
     ];
 
 
@@ -80,9 +86,12 @@ class ListCertsResp implements ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'certs' => 'setCerts',
-        'response_code' => 'setResponseCode',
-        'response_text' => 'setResponseText'
+        'cert_name' => 'setCertName',
+        'expires' => 'setExpires',
+        'issuer' => 'setIssuer',
+        'pem' => 'setPem',
+        'serial' => 'setSerial',
+        'subject' => 'setSubject'
     ];
 
 
@@ -91,9 +100,12 @@ class ListCertsResp implements ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'certs' => 'getCerts',
-        'response_code' => 'getResponseCode',
-        'response_text' => 'getResponseText'
+        'cert_name' => 'getCertName',
+        'expires' => 'getExpires',
+        'issuer' => 'getIssuer',
+        'pem' => 'getPem',
+        'serial' => 'getSerial',
+        'subject' => 'getSubject'
     ];
 
     public static function attributeMap()
@@ -127,9 +139,12 @@ class ListCertsResp implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['certs'] = isset($data['certs']) ? $data['certs'] : null;
-        $this->container['response_code'] = isset($data['response_code']) ? $data['response_code'] : null;
-        $this->container['response_text'] = isset($data['response_text']) ? $data['response_text'] : null;
+        $this->container['cert_name'] = isset($data['cert_name']) ? $data['cert_name'] : null;
+        $this->container['expires'] = isset($data['expires']) ? $data['expires'] : null;
+        $this->container['issuer'] = isset($data['issuer']) ? $data['issuer'] : null;
+        $this->container['pem'] = isset($data['pem']) ? $data['pem'] : null;
+        $this->container['serial'] = isset($data['serial']) ? $data['serial'] : null;
+        $this->container['subject'] = isset($data['subject']) ? $data['subject'] : null;
     }
 
     /**
@@ -141,14 +156,23 @@ class ListCertsResp implements ArrayAccess
     {
         $invalid_properties = [];
 
-        if ($this->container['certs'] === null) {
-            $invalid_properties[] = "'certs' can't be null";
+        if ($this->container['cert_name'] === null) {
+            $invalid_properties[] = "'cert_name' can't be null";
         }
-        if ($this->container['response_code'] === null) {
-            $invalid_properties[] = "'response_code' can't be null";
+        if ($this->container['expires'] === null) {
+            $invalid_properties[] = "'expires' can't be null";
         }
-        if ($this->container['response_text'] === null) {
-            $invalid_properties[] = "'response_text' can't be null";
+        if ($this->container['issuer'] === null) {
+            $invalid_properties[] = "'issuer' can't be null";
+        }
+        if ($this->container['pem'] === null) {
+            $invalid_properties[] = "'pem' can't be null";
+        }
+        if ($this->container['serial'] === null) {
+            $invalid_properties[] = "'serial' can't be null";
+        }
+        if ($this->container['subject'] === null) {
+            $invalid_properties[] = "'subject' can't be null";
         }
         return $invalid_properties;
     }
@@ -162,13 +186,22 @@ class ListCertsResp implements ArrayAccess
     public function valid()
     {
 
-        if ($this->container['certs'] === null) {
+        if ($this->container['cert_name'] === null) {
             return false;
         }
-        if ($this->container['response_code'] === null) {
+        if ($this->container['expires'] === null) {
             return false;
         }
-        if ($this->container['response_text'] === null) {
+        if ($this->container['issuer'] === null) {
+            return false;
+        }
+        if ($this->container['pem'] === null) {
+            return false;
+        }
+        if ($this->container['serial'] === null) {
+            return false;
+        }
+        if ($this->container['subject'] === null) {
             return false;
         }
         return true;
@@ -176,64 +209,127 @@ class ListCertsResp implements ArrayAccess
 
 
     /**
-     * Gets certs
-     * @return \Swagger\Client\Model\CertDescription[]
+     * Gets cert_name
+     * @return string
      */
-    public function getCerts()
+    public function getCertName()
     {
-        return $this->container['certs'];
+        return $this->container['cert_name'];
     }
 
     /**
-     * Sets certs
-     * @param \Swagger\Client\Model\CertDescription[] $certs
+     * Sets cert_name
+     * @param string $cert_name
      * @return $this
      */
-    public function setCerts($certs)
+    public function setCertName($cert_name)
     {
-        $this->container['certs'] = $certs;
+        $this->container['cert_name'] = $cert_name;
 
         return $this;
     }
 
     /**
-     * Gets response_code
+     * Gets expires
      * @return string
      */
-    public function getResponseCode()
+    public function getExpires()
     {
-        return $this->container['response_code'];
+        return $this->container['expires'];
     }
 
     /**
-     * Sets response_code
-     * @param string $response_code
+     * Sets expires
+     * @param string $expires
      * @return $this
      */
-    public function setResponseCode($response_code)
+    public function setExpires($expires)
     {
-        $this->container['response_code'] = $response_code;
+        $this->container['expires'] = $expires;
 
         return $this;
     }
 
     /**
-     * Gets response_text
+     * Gets issuer
      * @return string
      */
-    public function getResponseText()
+    public function getIssuer()
     {
-        return $this->container['response_text'];
+        return $this->container['issuer'];
     }
 
     /**
-     * Sets response_text
-     * @param string $response_text
+     * Sets issuer
+     * @param string $issuer
      * @return $this
      */
-    public function setResponseText($response_text)
+    public function setIssuer($issuer)
     {
-        $this->container['response_text'] = $response_text;
+        $this->container['issuer'] = $issuer;
+
+        return $this;
+    }
+
+    /**
+     * Gets pem
+     * @return string
+     */
+    public function getPem()
+    {
+        return $this->container['pem'];
+    }
+
+    /**
+     * Sets pem
+     * @param string $pem
+     * @return $this
+     */
+    public function setPem($pem)
+    {
+        $this->container['pem'] = $pem;
+
+        return $this;
+    }
+
+    /**
+     * Gets serial
+     * @return string
+     */
+    public function getSerial()
+    {
+        return $this->container['serial'];
+    }
+
+    /**
+     * Sets serial
+     * @param string $serial
+     * @return $this
+     */
+    public function setSerial($serial)
+    {
+        $this->container['serial'] = $serial;
+
+        return $this;
+    }
+
+    /**
+     * Gets subject
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->container['subject'];
+    }
+
+    /**
+     * Sets subject
+     * @param string $subject
+     * @return $this
+     */
+    public function setSubject($subject)
+    {
+        $this->container['subject'] = $subject;
 
         return $this;
     }

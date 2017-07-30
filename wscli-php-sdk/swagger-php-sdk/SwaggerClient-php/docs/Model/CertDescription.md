@@ -1,11 +1,14 @@
-# ListCertsResp
+# CertDescription
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**certs** | [**\Swagger\Client\Model\CertDescription[]**](CertDescription.md) |  | 
-**response_code** | **string** |  | 
-**response_text** | **string** |  | 
+**cert_name** | **string** |  | 
+**expires** | **string** |  | 
+**issuer** | **string** |  | 
+**pem** | **string** |  | 
+**serial** | **string** |  | 
+**subject** | **string** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
