@@ -194,15 +194,15 @@ class WsCli
     private function handleSession($api, $cmd)
     {
         $error = $this->checkArgs(['email', 'mode']);
+        if (!$this->getChallenge()) {
+            $this->log->error("Could not get challenge.");
+            $error = 1;
+        }
         switch ($cmd) {
         case "loginMFA":
         case "login":
             if ($error) {
                 return $error;
-            }
-            if (!$this->getChallenge()) {
-                $this->log->error("Could not get challenge.");
-                $error = 1;
             }
             if (!array_key_exists('password', $this->opts)) {
                 $this->opts['password'] = '';
@@ -264,13 +264,13 @@ class WsCli
 
     private function handleFiles($api, $cmd)
     {
+        if (!array_key_exists('idtoken', $this->opts)) {
+            $this->log->error("no valid idtoken specified! please try re-login.");
+            return 2;
+        }
         switch ($cmd) {
         case "listFiles":
             $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'status', 'filetype']);
-            if (!array_key_exists('idtoken', $this->opts)) {
-                $this->log->error("no valid idtoken specified! please try re-login.");
-                $error = 2;
-            }
             if ($error) {
                 return $error;
             }
@@ -284,10 +284,6 @@ class WsCli
             return $resp;
         case "downloadFile":
             $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'filereference']);
-            if (!array_key_exists('idtoken', $this->opts)) {
-                $this->log->error("no valid idtoken specified! please try re-login.");
-                $error = 2;
-            }
             if ($error) {
                 return $error;
             }
@@ -334,6 +330,13 @@ class WsCli
 
     private function handlePgp($api, $cmd)
     {
+        if (!array_key_exists('idtoken', $this->opts) || !$this->opts['idtoken']) {
+            $this->log->error("no valid idtoken specified! please try re-login.");
+            return 2;
+        }
+        if ($cmd != "listKeys" && $this->ensureAdminMode()) {
+            return 4;
+        }
         switch ($cmd) {
         case "listKeys":
         case "uploadKey":
@@ -348,6 +351,10 @@ class WsCli
 
     private function handleCerts($api, $cmd)
     {
+        if (!array_key_exists('idtoken', $this->opts) || !$this->opts['idtoken']) {
+            $this->log->error("no valid idtoken specified! please try re-login.");
+            return 2;
+        }
         if ($cmd != "listCerts" && $this->ensureAdminMode()) {
             return 4;
         }
