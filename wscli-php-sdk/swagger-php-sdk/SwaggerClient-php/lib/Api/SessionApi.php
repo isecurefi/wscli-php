@@ -429,4 +429,139 @@ class SessionApi
             throw $e;
         }
     }
+
+    /**
+     * Operation logout
+     *
+     * Logout
+     *
+     * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
+     * @param string $email Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; (required)
+     * @param string $mode Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode (required)
+     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return \Swagger\Client\Model\Response
+     */
+    public function logout($authorization, $email, $mode)
+    {
+        list($response) = $this->logoutWithHttpInfo($authorization, $email, $mode);
+        return $response;
+    }
+
+    /**
+     * Operation logoutWithHttpInfo
+     *
+     * Logout
+     *
+     * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
+     * @param string $email Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; (required)
+     * @param string $mode Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode (required)
+     * @throws \Swagger\Client\ApiException on non-2xx response
+     * @return array of \Swagger\Client\Model\Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function logoutWithHttpInfo($authorization, $email, $mode)
+    {
+        // verify the required parameter 'authorization' is set
+        if ($authorization === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $authorization when calling logout');
+        }
+        // verify the required parameter 'email' is set
+        if ($email === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $email when calling logout');
+        }
+        // verify the required parameter 'mode' is set
+        if ($mode === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $mode when calling logout');
+        }
+        // parse inputs
+        $resourcePath = "/session/{Email}/{Mode}";
+        $httpBody = '';
+        $queryParams = [];
+        $headerParams = [];
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
+
+        // header params
+        if ($authorization !== null) {
+            $headerParams['Authorization'] = $this->apiClient->getSerializer()->toHeaderValue($authorization);
+        }
+        // path params
+        if ($email !== null) {
+            $resourcePath = str_replace(
+                "{" . "Email" . "}",
+                $this->apiClient->getSerializer()->toPathValue($email),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($mode !== null) {
+            $resourcePath = str_replace(
+                "{" . "Mode" . "}",
+                $this->apiClient->getSerializer()->toPathValue($mode),
+                $resourcePath
+            );
+        }
+        // default format to json
+        $resourcePath = str_replace("{format}", "json", $resourcePath);
+
+        
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            $httpBody = $_tempBody; // $_tempBody is the method argument, if present
+        } elseif (count($formParams) > 0) {
+            $httpBody = $formParams; // for HTTP post (form)
+        }
+        // this endpoint requires API key authentication
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('Authorization');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['Authorization'] = $apiKey;
+        }
+        // this endpoint requires API key authentication
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('x-api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['x-api-key'] = $apiKey;
+        }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'DELETE',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\Swagger\Client\Model\Response',
+                '/session/{Email}/{Mode}'
+            );
+
+            return [$this->apiClient->getSerializer()->deserialize($response, '\Swagger\Client\Model\Response', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Swagger\Client\Model\Response', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 400:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Swagger\Client\Model\Error', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 401:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Swagger\Client\Model\Error', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Swagger\Client\Model\Error', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 500:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Swagger\Client\Model\Error', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
+
+            throw $e;
+        }
+    }
 }

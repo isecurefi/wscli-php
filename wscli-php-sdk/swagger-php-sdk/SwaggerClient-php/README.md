@@ -100,6 +100,7 @@ Class | Method | HTTP request | Description
 *SessionApi* | [**initLogin**](docs/Api/SessionApi.md#initlogin) | **GET** /session/{Email}/{Mode} | InitLogin
 *SessionApi* | [**login**](docs/Api/SessionApi.md#login) | **POST** /session/{Email}/{Mode} | Login
 *SessionApi* | [**loginMFA**](docs/Api/SessionApi.md#loginmfa) | **PUT** /session/{Email}/{Mode}/mfacode | LoginMFA
+*SessionApi* | [**logout**](docs/Api/SessionApi.md#logout) | **DELETE** /session/{Email}/{Mode} | Logout
 
 
 ## Documentation For Models

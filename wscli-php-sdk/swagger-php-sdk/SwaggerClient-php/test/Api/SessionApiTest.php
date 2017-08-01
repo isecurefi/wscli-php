@@ -109,4 +109,15 @@ class SessionApiTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * Test case for logout
+     *
+     * Logout.
+     *
+     */
+    public function testLogout()
+    {
+
+    }
+
 }

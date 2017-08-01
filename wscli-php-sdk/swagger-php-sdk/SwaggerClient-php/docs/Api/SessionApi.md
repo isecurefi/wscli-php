@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**initLogin**](SessionApi.md#initLogin) | **GET** /session/{Email}/{Mode} | InitLogin
 [**login**](SessionApi.md#login) | **POST** /session/{Email}/{Mode} | Login
 [**loginMFA**](SessionApi.md#loginMFA) | **PUT** /session/{Email}/{Mode}/mfacode | LoginMFA
+[**logout**](SessionApi.md#logout) | **DELETE** /session/{Email}/{Mode} | Logout
 
 
 # **initLogin**
@@ -146,6 +147,64 @@ Name | Type | Description  | Notes
 ### Authorization
 
 No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+# **logout**
+> \Swagger\Client\Model\Response logout($authorization, $email, $mode)
+
+Logout
+
+Logout invalidates _IdToken_.
+
+### Example
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: Authorizer
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+// Configure API key authorization: X-Api-Key
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('x-api-key', 'Bearer');
+
+$api_instance = new Swagger\Client\Api\SessionApi();
+$authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
+$email = "email_example"; // string | Email address as the account username, e.g. `dan.forsberg@isecure.fi`
+$mode = "mode_example"; // string | Administer account with `admin` mode, exchange files with `data` mode
+
+try {
+    $result = $api_instance->logout($authorization, $email, $mode);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SessionApi->logout: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
+ **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
+ **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
+
+### Return type
+
+[**\Swagger\Client\Model\Response**](../Model/Response.md)
+
+### Authorization
+
+[Authorizer](../../README.md#Authorizer), [X-Api-Key](../../README.md#X-Api-Key)
 
 ### HTTP request headers
 
