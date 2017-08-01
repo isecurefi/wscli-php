@@ -193,14 +193,26 @@ class WsCli
 
     private function handleSession($api, $cmd)
     {
-        $error = $this->checkArgs(['email', 'mode']);
-        if (!$this->getChallenge()) {
-            $this->log->error("Could not get challenge.");
-            $error = 1;
-        }
         switch ($cmd) {
+        case "logout":
+            $error = $this->checkArgs(['email', 'mode', 'idtoken']);
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->opts['email'],
+                $this->opts['mode']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "loginMFA":
         case "login":
+            $error = $this->checkArgs(['email', 'mode']);
+            if (!$this->getChallenge()) {
+                $this->log->error("Could not get challenge.");
+                $error = 1;
+            }
             if ($error) {
                 return $error;
             }
