@@ -97,7 +97,7 @@ credentials fetched during login. By default the file is
 form without too many arguments:
 
 ```
-$ wscli login
+$ wscli session login
 $ wscli files listFiles --bank=nordea --status=ALL --filetype=KTL
 ```
 
