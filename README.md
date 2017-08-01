@@ -4,7 +4,7 @@
 
 The `wscli` is [ISECure](https://www.isecure.fi) WS-Channel SaaS
 command line client. It uses WSCLI SDK for PHP that is boosted version
-of Swagger generated client SDK. See details about the SDK below.
+of OpenAPI 2.0 generated client SDK. See details about the SDK below.
 
 ```shell
 $ curl -LSs https://isecurefi.github.io/wscli-php/installer.php | php
@@ -13,7 +13,7 @@ $ ./wscli.phar --version
 
 ISECure WS-Channel runs on AWS API Gateway and follows somewhat
 RESTful API style. See
-[Swagger API specification](https://github.com/isecurefi/wsapi-v2)
+[OpenAPI 2.0 API specification](https://github.com/isecurefi/wsapi-v2)
 and [online API documentation](https://isecure.fi/wsapi_v2/index.html)
 for more information.
 
@@ -38,8 +38,8 @@ Key - the account owner shares its certificates to other
 accounts. This can be helpful if multiple accounts are required, but
 only one set of bank certificates.
 
-> **For clients WSCLI PHP SDK provides beefed up swagger generated SDK
-> interface with WS-Channel service account registration, session
+> **For clients WSCLI PHP SDK provides beefed up OpenAPI 2.0 generated
+> SDK interface with WS-Channel service account registration, session
 > login, and file transfers, and PGP based file upload
 > authorizations. Clients do not need to worry about
 > challenge-response fetching, RSA encryption or email/phone
@@ -82,7 +82,7 @@ $ sudo wscli --rollback
 
 ## WSCLI SDK for PHP
 
-`wscli` uses WSCLI SDK for PHP that is based on Swagger generated
+`wscli` uses WSCLI SDK for PHP that is based on OpenAPI 2.0 generated
 client side SDK. It uses API to automatically fetch challenge,
 utilizes required password RSA encryption and phone/email verification
 logic during registration.
@@ -102,7 +102,7 @@ $ wscli files listFiles --bank=nordea --status=ALL --filetype=KTL
 ```
 
 NOTE: *On the other parts than `account` and `session` the SDK is basically
-on the same level Swagger generated SDK. However, on the `files` API,
+on the same level OpenAPI 2.0 generated SDK. However, on the `files` API,
 the SDK adds support for downloading set of files similar to the
 listing files API. It just downloads file one by one using the
 corresponding `downloadFile` API and by first calling `listFiles`.*
@@ -112,12 +112,12 @@ corresponding `downloadFile` API and by first calling `listFiles`.*
 See WSCLI SDK and WSCLI client releases on GitHub
 [isecurefi/wscli-php](https://github.com/isecurefi/wscli-php) project.
 The [API documentation](https://isecure.fi/wsapi_v2/index.html) and
-Swagger JSON API in
+OpenAPI 2.0 JSON API in
 [isecurefi/wsapi-v2](https://github.com/isecurefi/wsapi-v2)
 description are available online. See also
 [wscli-php pages](https://isecurefi.github.io/wscli-php/).
 
-- `wscli-php-sdk` includes beefed up Swagger generated ISECure
+- `wscli-php-sdk` includes beefed up OpenAPI 2.0 generated ISECure
 WS-Channel API client SDK to ease integration with PHP
 
 - Command line tool `wscli` uses `wscli-php-sdk` and is distributed as
