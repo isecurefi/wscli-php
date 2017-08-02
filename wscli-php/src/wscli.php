@@ -1,10 +1,5 @@
 #!/usr/bin/env php
 <?php
-/**
- * This file is part of the IsecureFi.WsCliPhp
- */
-namespace IsecureFi\WsCliPhp;
-
 require __DIR__ . '/../vendor/autoload.php';
 
 use Humbug\SelfUpdate\Updater;
@@ -13,6 +8,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Docopt\Docopt;
 use IsecureFi\WsCli;
+use Swagger\Client\ApiException;
 
 $doc = <<<DOC
 
@@ -205,7 +201,12 @@ function main()
     // API arguments are passed as an associative array when
     // instantiating the class.
     $sdk = new \IsecureFi\WsCliPhpSdk\WsCli($args->args);
-    $res = $sdk->${"cmd"}();
+    try {
+        $res = $sdk->${"cmd"}();
+    } catch (ApiException $e) {
+        echo json_encode($e->getResponseBody(), JSON_PRETTY_PRINT) . PHP_EOL;
+        return 1;
+    }
     $log->debug("response:\n" . $res);
     if ($res === 1) {
         echo "Error, see log" . PHP_EOL;
