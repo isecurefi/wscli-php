@@ -24,8 +24,10 @@ make release
 cp wscli.phar /tmp/
 cp wscli.phar.pubkey /tmp/
 cd ..
+git push --tags
 
 git checkout gh-pages
+git pull
 cp /tmp/wscli.phar .
 cp /tmp/wscli.phar.pubkey .
 SHA1=$(openssl sha1 wscli.phar | cut -f 2 -d ' ')
@@ -37,4 +39,3 @@ git commit -m "Version $TAG with sha1 $SHA1" wscli.phar.version wscli.phar wscli
 git push
 
 git checkout master
-git push --tags
