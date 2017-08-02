@@ -7,7 +7,6 @@ namespace IsecureFi\WsCliPhpSdk;
 use \Monolog\Formatter\LineFormatter;
 use \Monolog\Handler\StreamHandler;
 use \Monolog\Logger;
-#use \Firebase\JWT\JWT;
 use \Swagger\Client\ApiClient;
 use \Swagger\Client\Api\AccountApi;
 use \Swagger\Client\Api\SessionApi;
