@@ -45,7 +45,7 @@ class WsCli
         $this->account = new \Swagger\Client\Api\AccountApi($apiClient);
         $this->session = new \Swagger\Client\Api\SessionApi($apiClient);
         $this->files = new \Swagger\Client\Api\FilesApi($apiClient);
-        $this->gpg = new \Swagger\Client\Api\PgpApi($apiClient);
+        $this->pgp = new \Swagger\Client\Api\PgpApi($apiClient);
         $this->certs = new \Swagger\Client\Api\CertsApi($apiClient);
     }
 
@@ -350,10 +350,37 @@ class WsCli
         }
         switch ($cmd) {
         case "listKeys":
+            $error = $this->checkArgs(['apikey', 'idtoken']);
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "uploadKey":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeycontents']);
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->getBodyParams() // PgpKey
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "deleteKey":
-            $this->log->error("Unimplemented API command");
-            return 3;
+            $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeyid']);
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->getBodyParams() // PgpKeyId
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         default:
             $this->log->error("Unknown api command");
             return 3;
@@ -514,6 +541,8 @@ class WsCli
             'Status' => array_key_exists('filestatus', $this->opts) ? $this->opts['filestatus'] : '',
             'startDate' => array_key_exists('startdate', $this->opts) ? $this->opts['startdate'] : '',
             'endDate' => array_key_exists('enddate', $this->opts) ? $this->opts['enddate'] : '',
+            'PgpKey' => array_key_exists('pgpkeycontents', $this->opts) ? $this->opts['pgpkeycontents'] : '',
+            'PgpKeyId' => array_key_exists('pgpkeyid', $this->opts) ? $this->opts['pgpkeyid'] : '',
         ];
         if (array_key_exists('session', $this->opts) && $this->opts['session']) {
             $bodyParams['Session'] = $this->opts['session'];
