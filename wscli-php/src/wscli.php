@@ -34,7 +34,7 @@ Usage:
   wscli session login           [-c CONF] [-e EMAIL] [-m MODE] [--password=<password>]
                                 [--environment=<environment>]
   wscli files listFiles         [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
-  wscli files downloadFiles     [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
+  wscli files downloadFiles     [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>] [--filereference=<fileref>]
   wscli files downloadFile      [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
   wscli files deleteFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
   wscli files uploadFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filename=<filename>]
