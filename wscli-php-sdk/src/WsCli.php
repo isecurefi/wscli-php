@@ -13,6 +13,7 @@ use \Swagger\Client\Api\SessionApi;
 use \Swagger\Client\Api\PgpApi;
 use \Swagger\Client\Api\FilesApi;
 use \Swagger\Client\Api\CertsApi;
+use Symfony\Component\Yaml\Parser;
 
 // Extends swagger generated SDK
 class WsCli
@@ -540,12 +541,14 @@ class WsCli
             $this->log->error("Configuration file does not exist " . $this->config_filename);
             return null;
         }
-        $y = yaml_parse($yaml_string);
+        $yaml = new Parser();
+        $y = $yaml->Parse($yaml_string);
         if ($y === false) {
             $this->log->error("Failed to parse passed YAML string: " . $y);
             return null;
         }
-        $conf = yaml_parse(file_get_contents($this->config_filename));
+        $yaml = new Parser();
+        $conf = $yaml->Parse(file_get_contents($this->config_filename));
         if ($conf === false) {
             $this->log->error("Failed to parse YAML configuration file " . $this->config_filename);
             return null;
@@ -646,7 +649,8 @@ class WsCli
         }
         if ($this->config_filename != '') {
             $this->log->debug("settings from: " . $this->config_filename);
-            $config_args = yaml_parse(file_get_contents($this->config_filename));
+            $yaml = new Parser();
+            $config_args = $yaml->Parse(file_get_contents($this->config_filename));
             if ($config_args === false) {
                 $this->log->error("Config file YAML parse error; " . $this->config_filename);
                 return -1;
