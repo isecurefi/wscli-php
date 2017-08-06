@@ -14,6 +14,7 @@ use \Swagger\Client\Api\PgpApi;
 use \Swagger\Client\Api\FilesApi;
 use \Swagger\Client\Api\CertsApi;
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 // Extends swagger generated SDK
 class WsCli
@@ -555,7 +556,8 @@ class WsCli
         }
         // NOTE: overwrite settings e.g. 'idtoken' if any.
         $conf['settings'] = array_replace($conf['settings'], $y);
-        if (!yaml_emit_file($this->config_filename, $conf, YAML_UTF8_ENCODING)) {
+        $contents = Yaml::dump($conf);
+        if (!file_put_contents($this->config_filename, $contents)) {
             $this->log->error("Failed to update YAML configuration file with: " . print_r($conf, true));
             return null;
         }
