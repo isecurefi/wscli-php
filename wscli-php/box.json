@@ -12,7 +12,8 @@
         "vendor/monolog",
         "vendor/phpseclib",
         "vendor/psr",
-        "vendor/padraic"
+        "vendor/padraic",
+        "vendor/symfony"
     ],
     "git-version": "package_version",
     "compression": "GZ",
