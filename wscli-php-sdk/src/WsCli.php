@@ -18,6 +18,7 @@ use \Swagger\Client\Api\CertsApi;
 class WsCli
 {
     private $config_filename = '';
+    private $retries = 3;
 
     // APIs
     private $account = '';
@@ -34,6 +35,7 @@ class WsCli
         $this->log->pushHandler($stream);
 
         $this->opts = $args;
+        $this->retries = 3;
         $this->log->debug("opts before merge: " . print_r($this->opts, true));
         $this->getOpts();
 
@@ -317,11 +319,14 @@ class WsCli
         case "downloadFiles":
             $this->opts['<cmd>'] = "listFiles";
             $this->opts['<api>'] = "files";
+            $fileref = "";
+            if (array_key_exists('filereference', $this->opts)) {
+                $fileref = $this->opts['filereference'];
+            }
             $resp = $this->__call($cmd, [$api]);
             if ($resp['response_code'] == "00") {
                 foreach ($resp['file_descriptors'] as $desc) {
-                    if (array_key_exists('filereference', $this->opts) &&
-                        $this->opts['filereference'] != $desc['file_reference']) {
+                    if ($fileref != "" && $fileref != $desc['file_reference']) {
                         $this->log->debug("Skipping " . $desc['file_reference']);
                         continue;
                     }
@@ -329,28 +334,40 @@ class WsCli
                     $this->opts['<cmd>'] = "downloadFile";
                     $this->opts['<api>'] = "files";
                     $this->opts['filereference'] = $desc['file_reference'];
-                    $download_resp = $this->__call($cmd, [$api]);
-                    if ($download_resp['response_code'] == "00") {
-                        if (file_put_contents(str_replace("-", "", substr($desc['file_timestamp'], 0, 10))
-                                              . "__" . $desc['file_type']
-                                              . "_" . $desc['file_reference']
-                                              . ".dat",
-                                              base64_decode($download_resp['content'])) === FALSE) {
-                            $this->log->error("Failed to write file " . $desc['file_reference'] . " on current directory");
-                            echo " failed!" . PHP_EOL;
-                            $this->log->error("Failed to write downloaded file " . $desc['file_reference']);
-                            return 1;
+                    $retry_count = $this->retries;
+                    do {
+                        if ($retry_count < $this->retries) {
+                            $this->log->debug("retry " . $retry_count . "...");
+                            echo "Trying again: ";
                         }
-                        echo " OK" . PHP_EOL;
-                        $this->log->debug("Downloaded and stored file " . $desc['file_reference']);
-                        if (array_key_exists('filereference', $this->opts) &&
-                            $this->opts['filereference'] === $desc['file_reference']) {
-                            return $download_resp;
+                        $download_resp = $this->__call($cmd, [$api]);
+                        if ($download_resp['response_code'] == "00") {
+                            if (file_put_contents(str_replace("-", "", substr($desc['file_timestamp'], 0, 10))
+                                                  . "__" . $desc['file_type']
+                                                  . "_" . $desc['file_reference']
+                                                  . ".dat",
+                                                  base64_decode($download_resp['content'])) === FALSE) {
+                                $this->log->error("Failed to write file " . $desc['file_reference'] . " on current directory");
+                                echo " failed!" . PHP_EOL;
+                                $this->log->error("Failed to write downloaded file " . $desc['file_reference']);
+                                return 1;
+                            }
+                            echo " OK" . PHP_EOL;
+                            $this->log->debug("Downloaded and stored file " . $desc['file_reference']);
+                            if ($fileref && $fileref === $desc['file_reference']) {
+                                return $download_resp;
+                            }
+                            break; // while loop
                         }
-                        continue;
+                        if ($download_resp['response_code'] != "00") {
+                            echo " FAILED" . PHP_EOL;
+                            $retry_count--;
+                        }
+                    } while ($download_resp['response_code'] != "00" && $retry_count > 0);
+                    if ($download_resp['response_code'] != "00" && $retry_count <= 0) {
+                        $this->log->error("Failed to download file " . $desc['file_reference'] . ", you may want to retry");
+                        $this->log->error(print_r($download_resp, true));
                     }
-                    $this->log->error("Failed to download file " . $desc['file_reference']);
-                    $this->log->error(print_r($download_resp, true));
                 }
             }
             return $resp;
