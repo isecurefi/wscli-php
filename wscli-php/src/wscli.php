@@ -208,25 +208,23 @@ function main()
         return 1;
     }
     $log->debug("response:\n" . $res);
-    if ($res === 1) {
+    switch ($res) {
+    case 1:
         echo "Error, see log" . PHP_EOL;
         return $res;
-    }
-    if ($res === 2) {
+    case 2:
         echo "Session expired. Please re-login" . PHP_EOL;
         return $res;
-    }
-    if ($res === 3) {
+    case 3:
         echo "API feature not yet implemented." . PHP_EOL;
         return $res;
-    }
-    if ($res === 4) {
+    case 4:
         echo "Admin mode session required for this command, currently using data mode" . PHP_EOL;
         return $res;
+    default:
+        echo $res . PHP_EOL;
+        return 0;
     }
-
-    echo $res . PHP_EOL;
-    return 0;
 }
 
 return main();
