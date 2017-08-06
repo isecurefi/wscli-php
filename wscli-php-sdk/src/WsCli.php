@@ -40,6 +40,14 @@ class WsCli
         $config = new \Swagger\Client\Configuration();
         $this->log->debug("x-api-key: " . $this->opts['apikey']);
         $config->setApiKey("x-api-key", $this->opts['apikey']);
+        // Assumes that production URL is testing URL when ".test" is
+        // removed from it.
+        if (array_key_exists('environment', $this->opts) &&
+            $this->opts['environment'] === 'production') {
+            $host = str_replace(".test", "", $config->getHost());
+            $this->log->info("setting production host: " . $host);
+            $config->setHost($host);
+        }
         $apiClient = new \Swagger\Client\ApiClient($config);
 
         $this->account = new \Swagger\Client\Api\AccountApi($apiClient);
@@ -281,14 +289,14 @@ class WsCli
         }
         switch ($cmd) {
         case "listFiles":
-            $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'status', 'filetype']);
+            $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'filestatus', 'filetype']);
             if ($error) {
                 return $error;
             }
             $resp = $this->${"api"}->${"cmd"}(
                 $this->opts['idtoken'],
                 $this->opts['bank'],
-                $this->opts['status'],
+                $this->opts['filestatus'],
                 $this->opts['filetype']
             );
             $this->log->debug(print_r($resp, true));
@@ -318,7 +326,11 @@ class WsCli
                     $this->opts['filereference'] = $desc['file_reference'];
                     $download_resp = $this->__call($cmd, [$api]);
                     if ($download_resp['response_code'] == "00") {
-                        if (file_put_contents($desc['file_reference'], base64_decode($download_resp['content'])) === FALSE) {
+                        if (file_put_contents(str_replace("-", "", substr($desc['file_timestamp'], 0, 10))
+                                              . "__" . $desc['file_type']
+                                              . "_" . $desc['file_reference']
+                                              . ".dat",
+                                              base64_decode($download_resp['content'])) === FALSE) {
                             $this->log->error("Failed to write file " . $desc['file_reference'] . " on current directory");
                             echo " failed!" . PHP_EOL;
                             $this->log->error("Failed to write downloaded file " . $desc['file_reference']);
@@ -499,6 +511,7 @@ class WsCli
     private function updateConfig($yaml_string)
     {
         if (!file_exists($this->config_filename)) {
+            $this->log->error("Configuration file does not exist " . $this->config_filename);
             return null;
         }
         $y = yaml_parse($yaml_string);
