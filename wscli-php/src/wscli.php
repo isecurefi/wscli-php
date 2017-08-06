@@ -208,7 +208,8 @@ function main()
         return 1;
     }
     $log->debug("response:\n" . $res);
-    switch ($res) {
+    if (is_int($res)) {
+        switch ($res) {
         case 1:
             echo "Error, see log" . PHP_EOL;
             return $res;
@@ -221,10 +222,11 @@ function main()
         case 4:
             echo "Admin mode session required for this command, currently using data mode" . PHP_EOL;
             return $res;
-        default:
-            echo $res . PHP_EOL;
-            return 0;
+        }
     }
+
+    echo $res . PHP_EOL;
+    return 0;
 }
 
 return main();
