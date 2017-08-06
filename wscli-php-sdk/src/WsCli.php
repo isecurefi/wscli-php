@@ -320,6 +320,11 @@ class WsCli
             $resp = $this->__call($cmd, [$api]);
             if ($resp['response_code'] == "00") {
                 foreach ($resp['file_descriptors'] as $desc) {
+                    if (array_key_exists('filereference', $this->opts) &&
+                        $this->opts['filereference'] != $desc['file_reference']) {
+                        $this->log->debug("Skipping " . $desc['file_reference']);
+                        continue;
+                    }
                     echo "Downloading " . $desc['file_reference'] . "...";
                     $this->opts['<cmd>'] = "downloadFile";
                     $this->opts['<api>'] = "files";
@@ -338,6 +343,10 @@ class WsCli
                         }
                         echo " OK" . PHP_EOL;
                         $this->log->debug("Downloaded and stored file " . $desc['file_reference']);
+                        if (array_key_exists('filereference', $this->opts) &&
+                            $this->opts['filereference'] === $desc['file_reference']) {
+                            return $download_resp;
+                        }
                         continue;
                     }
                     $this->log->error("Failed to download file " . $desc['file_reference']);
