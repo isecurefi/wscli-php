@@ -210,17 +210,20 @@ function main()
     $log->debug("response:\n" . $res);
     if (is_int($res)) {
         switch ($res) {
+            case 0:
+                echo "Session already exists, no need to login." . PHP_EOL;
+                return $res;
             case 1:
-                echo "Error, see log" . PHP_EOL;
+                echo "Error, see log (wscli_sdk.log, wscli.log)" . PHP_EOL;
                 return $res;
             case 2:
-                echo "Session expired. Please re-login" . PHP_EOL;
+                echo "Session expired. Please re-login." . PHP_EOL;
                 return $res;
             case 3:
                 echo "API feature not yet implemented." . PHP_EOL;
                 return $res;
             case 4:
-                echo "Admin mode session required for this command, currently using data mode" . PHP_EOL;
+                echo "Admin mode session required for this command, currently using data mode." . PHP_EOL;
                 return $res;
         }
     }
