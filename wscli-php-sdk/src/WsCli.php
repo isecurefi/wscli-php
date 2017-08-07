@@ -220,7 +220,12 @@ class WsCli
         case "loginMFA":
         case "login":
             if (array_key_exists('idtoken', $this->opts) &&
-                strlen($this->opts['idtoken']) > 0) {
+                strlen($this->opts['idtoken']) > 0 &&
+                array_key_exists('mode', $this->opts) &&
+                strlen($this->opts['mode']) > 0 &&
+                array_key_exists('idtokenmode', $this->opts) &&
+                strlen($this->opts['idtokenmode']) > 0 &&
+                $this->opts['mode'] === $this->opts['idtokenmode']) {
                 $this->log->info("No need to do login, valid idtoken exists.");
                 return 0;
             }
@@ -281,6 +286,7 @@ class WsCli
                         $exp = time() + 3300;
                     }
                     $this->updateConfig("idtokenexpiry: \"" . $exp . "\"");
+                    $this->updateConfig("idtokenmode: \"" . $this->opts['mode'] . "\"");
                 }
             }
             return $resp;
@@ -699,16 +705,21 @@ class WsCli
     {
         if (array_key_exists('idtoken', $config_args['settings']) &&
             array_key_exists('idtokenexpiry', $config_args['settings']) &&
+            array_key_exists('idtokenmode', $config_args['settings']) &&
             strlen($config_args['settings']['idtoken']) > 1 &&
-            strlen($config_args['settings']['idtokenexpiry'] > 1)) {
-            if (strtotime($config_args['settings']['idtokenexpiry']) < (time()+10)) {
+            strlen($config_args['settings']['idtokenexpiry']) > 1 &&
+            strlen($config_args['settings']['idtokenmode']) > 1) {
+            if (strtotime($config_args['settings']['idtokenexpiry']) < (time()+10) ||
+                (array_key_exists('mode', $this->opts) &&
+                 strlen($this->opts['mode']) > 1 &&
+                 $config_args['settings']['idtokenmode'] !== $this->opts['mode'])) {
                 $this->log->info("Removing old token from config");
                 $this->updateConfig("idtoken: \"\"");
                 $this->updateConfig("idtokenexpiry: \"\"");
-                $this->log->debug("Removing idtoken from settings; " . $config_args['settings']['idtoken']);
+                $this->updateConfig("idtokenmode: \"\"");
                 unset($config_args['settings']['idtoken']);
-                $this->log->debug("Removing idtokenexpiry from settings; " . $config_args['settings']['idtokenexpiry']);
                 unset($config_args['settings']['idtokenexpiry']);
+                unset($config_args['settings']['idtokenmode']);
             }
         }
         return $config_args;
