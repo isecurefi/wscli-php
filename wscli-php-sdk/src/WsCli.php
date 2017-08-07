@@ -322,17 +322,42 @@ class WsCli
             $this->opts['<cmd>'] = "listFiles";
             $this->opts['<api>'] = "files";
             $fileref = "";
+            $local_dir = ".";
             if (array_key_exists('filereference', $this->opts)) {
                 $fileref = $this->opts['filereference'];
             }
+            if (array_key_exists('syncdir', $this->opts) &&
+                $this->opts['syncdir'] != "" &&
+                is_dir($this->opts['syncdir'])) {
+                if (is_writable($this->opts['syncdir'])) {
+                    $local_dir = $this->opts['syncdir'];
+                }
+                if (!is_writable($this->opts['syncdir'])) {
+                    $this->log->error("Syncdir is not writable: " . $this->opts['syncdir']);
+                    return 1;
+                }
+            }
+            $local_dir = str_replace("//", "/", $local_dir . "/");
+            $this->log->debug("Local (sync) dir: " . $local_dir);
             $resp = $this->__call($cmd, [$api]);
             if ($resp['response_code'] == "00") {
                 foreach ($resp['file_descriptors'] as $desc) {
                     if ($fileref != "" && $fileref != $desc['file_reference']) {
-                        $this->log->debug("Skipping " . $desc['file_reference']);
+                        $this->log->debug("Skipping " . $desc['file_reference'] . " while searching for " . $fileref);
                         continue;
                     }
-                    echo "Downloading " . $desc['file_reference'] . "...";
+                    $local_filename = $local_dir
+                                    . str_replace("-", "", substr($desc['file_timestamp'], 0, 10))
+                                    . "__" . $desc['file_type']
+                                    . "_" . $desc['file_reference']
+                                    . ".dat";
+                    echo "Checking " . $local_filename . "...";
+                    if (file_exists($local_filename)) {
+                        $this->log->debug("Not downloading " . $local_filename. ", as it already exists");
+                        echo " already exists, skipping" . PHP_EOL;
+                        continue;
+                    }
+                    echo " downloading...";
                     $this->opts['<cmd>'] = "downloadFile";
                     $this->opts['<api>'] = "files";
                     $this->opts['filereference'] = $desc['file_reference'];
@@ -344,18 +369,18 @@ class WsCli
                         }
                         $download_resp = $this->__call($cmd, [$api]);
                         if ($download_resp['response_code'] == "00") {
-                            if (file_put_contents(str_replace("-", "", substr($desc['file_timestamp'], 0, 10))
-                                                  . "__" . $desc['file_type']
-                                                  . "_" . $desc['file_reference']
-                                                  . ".dat",
-                                                  base64_decode($download_resp['content'])) === FALSE) {
-                                $this->log->error("Failed to write file " . $desc['file_reference'] . " on current directory");
+                            if (strlen($download_resp['content']) <= 0) {
+                                $this->log->error("No file content for file " . $local_filename . "(" . $desc['file_reference'] . ")");
+                                echo " no file content!";
+                            }
+                            if (strlen($download_resp['content']) > 0 &&
+                                file_put_contents($local_filename, base64_decode($download_resp['content'])) === FALSE) {
+                                $this->log->error("Failed to write file " . $local_filename);
                                 echo " failed!" . PHP_EOL;
-                                $this->log->error("Failed to write downloaded file " . $desc['file_reference']);
                                 return 1;
                             }
                             echo " OK" . PHP_EOL;
-                            $this->log->debug("Downloaded and stored file " . $desc['file_reference']);
+                            $this->log->debug("Downloaded and stored file " . $local_filename);
                             if ($fileref && $fileref === $desc['file_reference']) {
                                 return $download_resp;
                             }
@@ -367,7 +392,7 @@ class WsCli
                         }
                     } while ($download_resp['response_code'] != "00" && $retry_count > 0);
                     if ($download_resp['response_code'] != "00" && $retry_count <= 0) {
-                        $this->log->error("Failed to download file " . $desc['file_reference'] . ", you may want to retry");
+                        $this->log->error("Failed to download file " . $local_filename);
                         $this->log->error(print_r($download_resp, true));
                     }
                 }
