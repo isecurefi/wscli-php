@@ -357,11 +357,11 @@ class WsCli
                     echo "Trying again: ";
                 }
                 $resp = $this->__call($cmd, [$api]);
-                if (!array_key_exists('response_code', $resp) || $resp['response_code'] != "00") {
+                if ($resp['response_code'] != "00") {
                     echo " FAILED" . PHP_EOL;
                     $retry_count--;
                 }
-            } while ((!array_key_exists('response_code', $resp) || $resp['response_code'] != "00") && $retry_count > 0);
+            } while ($resp['response_code'] != "00" && $retry_count > 0);
             if ($resp['response_code'] == "00") {
                 foreach ($resp['file_descriptors'] as $desc) {
                     if ($fileref != "" && $fileref != $desc['file_reference']) {
@@ -412,7 +412,7 @@ class WsCli
                             echo " FAILED" . PHP_EOL;
                             $retry_count--;
                         }
-                    } while ((!array_key_exists('response_code', $download_resp) || $download_resp['response_code'] != "00") && $retry_count > 0);
+                    } while ($download_resp['response_code'] != "00" && $retry_count > 0);
                     if ($download_resp['response_code'] != "00" && $retry_count <= 0) {
                         $this->log->error("Failed to download file " . $local_filename);
                         $this->log->error(print_r($download_resp, true));
