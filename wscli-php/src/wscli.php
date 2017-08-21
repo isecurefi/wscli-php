@@ -197,6 +197,7 @@ function main()
         $log->debug("Running rollback");
         return rollback($log);
     }
+    $args['version'] = '@package_version@';
 
     // API arguments are passed as an associative array when
     // instantiating the class.
