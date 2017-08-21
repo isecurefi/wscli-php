@@ -44,6 +44,11 @@ class WsCli
         $config = new \Swagger\Client\Configuration();
         $this->log->debug("x-api-key: " . $this->opts['apikey']);
         $config->setApiKey("x-api-key", $this->opts['apikey']);
+        $config->setSSLVerification(true);
+        $config->setUserAgent("wscli " . $this->opts['version']);
+        // curl debug by default to the same log file
+        $config->setDebug(true);
+        $config->setDebugFile("wscli_sdk.log");
         // Assumes that production URL is testing URL when ".test" is
         // removed from it.
         if (array_key_exists('environment', $this->opts) &&
