@@ -4,7 +4,9 @@ run: comp cs-fix build coverage
 	php src/wscli.php --version
 
 release: build comp-release
+	( cd ../wscli-php-sdk; rm -rf vendor )
 	( cd vendor/isecurefi/wscli-php-sdk; rm -f *.jar *.xml *.dist )
+	( find . -name "invalid_link" -exec rm {} ";" )
 	box build -v -c box.json
 	rm -rf vendor; mv vendor.dev vendor
 	./wscli.phar --version
@@ -12,6 +14,7 @@ release: build comp-release
 
 comp-release:
 	mkdir -p vendor
+	rm -rf vendor.dev
 	mv vendor vendor.dev
 	composer install --prefer-source --no-dev
 	composer dump-autoload --optimize
