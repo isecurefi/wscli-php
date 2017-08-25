@@ -160,7 +160,7 @@ No authorization required
 
 Logout
 
-Logout invalidates _IdToken_.
+Logout user.  - **NOTE**: AWS Cognito allows user logout, but the received authorization _IdToken_ **is still valid**. AWS hopefully fixes this soon.
 
 ### Example
 ```php

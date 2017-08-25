@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**certs** | [**\Swagger\Client\Model\CertsAndKeys[]**](CertsAndKeys.md) |  | 
+**certificates_and_keys** | [**\Swagger\Client\Model\CertsAndKeys[]**](CertsAndKeys.md) |  | 
 **response_code** | **string** |  | 
 **response_text** | **string** |  | 
 
