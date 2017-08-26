@@ -4,6 +4,7 @@ All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**configCerts**](CertsApi.md#configCerts) | **POST** /certs/ | ConfigCerts
 [**enrollCert**](CertsApi.md#enrollCert) | **POST** /certs/{Bank} | EnrollCert
 [**exportCert**](CertsApi.md#exportCert) | **GET** /certs/{Bank} | ExportCert
 [**importCert**](CertsApi.md#importCert) | **PUT** /certs/{Bank} | ImportCert
@@ -11,6 +12,62 @@ Method | HTTP request | Description
 [**shareCerts**](CertsApi.md#shareCerts) | **PUT** /certs/shared/{ExtEmail} | ShareCerts
 [**unshareCerts**](CertsApi.md#unshareCerts) | **DELETE** /certs/shared/{ExtEmail} | UnshareCerts
 
+
+# **configCerts**
+> \Swagger\Client\Model\Response configCerts($authorization, $config_certs_req)
+
+ConfigCerts
+
+Configure certificate usage parameters. Currently, only settable (permanent) parameter is `export`. Set it to `disable` for disallowing private key export.  **NOTE**: When export is disabled it is permanent, it can not be re-enabled through the API (safety feature).
+
+### Example
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: Authorizer
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+// Configure API key authorization: X-Api-Key
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('x-api-key', 'Bearer');
+
+$api_instance = new Swagger\Client\Api\CertsApi();
+$authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
+$config_certs_req = new \Swagger\Client\Model\ConfigCertsReq(); // \Swagger\Client\Model\ConfigCertsReq | Certs handling settings
+
+try {
+    $result = $api_instance->configCerts($authorization, $config_certs_req);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling CertsApi->configCerts: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
+ **config_certs_req** | [**\Swagger\Client\Model\ConfigCertsReq**](../Model/\Swagger\Client\Model\ConfigCertsReq.md)| Certs handling settings |
+
+### Return type
+
+[**\Swagger\Client\Model\Response**](../Model/Response.md)
+
+### Authorization
+
+[Authorizer](../../README.md#Authorizer), [X-Api-Key](../../README.md#X-Api-Key)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **enrollCert**
 > \Swagger\Client\Model\Response enrollCert($authorization, $enroll_cert_req, $bank)
@@ -75,7 +132,7 @@ Name | Type | Description  | Notes
 
 ExportCert
 
-Download bank certificate and private key encrypted with stored PGP key
+Download bank certificate and private key encrypted with stored PGP key.  **NOTE**: The previously uploaded `PgpKeyId` must have purpose type `Export`. I.e. purpose type `Authorize` PGP keys can not be used for exporting.  **NOTE**: If `export` has been set to `disabled` (see ConfigCerts), then exporting private keys is not possible through API.
 
 ### Example
 ```php
@@ -190,6 +247,8 @@ Name | Type | Description  | Notes
 > \Swagger\Client\Model\ListCertsResp listCerts($authorization)
 
 ListCerts
+
+List certs from all banks
 
 ### Example
 ```php

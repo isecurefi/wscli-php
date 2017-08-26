@@ -1,12 +1,12 @@
-# Swagger\Client\PgpApi
+# Swagger\Client\PgpTBDApi
 
 All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**deleteKey**](PgpApi.md#deleteKey) | **DELETE** /pgp | DeleteKey
-[**listKeys**](PgpApi.md#listKeys) | **GET** /pgp | ListKeys
-[**uploadKey**](PgpApi.md#uploadKey) | **PUT** /pgp | UploadKey
+[**deleteKey**](PgpTBDApi.md#deleteKey) | **DELETE** /pgp | DeleteKey
+[**listKeys**](PgpTBDApi.md#listKeys) | **GET** /pgp | ListKeys
+[**uploadKey**](PgpTBDApi.md#uploadKey) | **PUT** /pgp | UploadKey
 
 
 # **deleteKey**
@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 DeleteKey
 
-Delete PGP key
+Delete PGP key. API implementation is to-be-done (TBD).
 
 ### Example
 ```php
@@ -30,15 +30,15 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('x-api-key', 'Bearer');
 
-$api_instance = new Swagger\Client\Api\PgpApi();
+$api_instance = new Swagger\Client\Api\PgpTBDApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
-$delete_key_req = new \Swagger\Client\Model\DeleteKeyReq(); // \Swagger\Client\Model\DeleteKeyReq | Pgp parameters
+$delete_key_req = new \Swagger\Client\Model\DeleteKeyReq(); // \Swagger\Client\Model\DeleteKeyReq | Pgp (TBD) parameters
 
 try {
     $result = $api_instance->deleteKey($authorization, $delete_key_req);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling PgpApi->deleteKey: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling PgpTBDApi->deleteKey: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -48,7 +48,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **delete_key_req** | [**\Swagger\Client\Model\DeleteKeyReq**](../Model/\Swagger\Client\Model\DeleteKeyReq.md)| Pgp parameters |
+ **delete_key_req** | [**\Swagger\Client\Model\DeleteKeyReq**](../Model/\Swagger\Client\Model\DeleteKeyReq.md)| Pgp (TBD) parameters |
 
 ### Return type
 
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
 
 ListKeys
 
-List PGP keys
+List PGP keys. API implementation is to-be-done (TBD).
 
 ### Example
 ```php
@@ -86,14 +86,14 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('x-api-key', 'Bearer');
 
-$api_instance = new Swagger\Client\Api\PgpApi();
+$api_instance = new Swagger\Client\Api\PgpTBDApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 
 try {
     $result = $api_instance->listKeys($authorization);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling PgpApi->listKeys: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling PgpTBDApi->listKeys: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -124,7 +124,7 @@ Name | Type | Description  | Notes
 
 UploadKey
 
-Upload PGP key
+Upload PGP key. API implementation is to-be-done (TBD).
 
 ### Example
 ```php
@@ -140,15 +140,15 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('x-api-key', 'Bearer');
 
-$api_instance = new Swagger\Client\Api\PgpApi();
+$api_instance = new Swagger\Client\Api\PgpTBDApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
-$upload_key_req = new \Swagger\Client\Model\UploadKeyReq(); // \Swagger\Client\Model\UploadKeyReq | Pgp parameters
+$upload_key_req = new \Swagger\Client\Model\UploadKeyReq(); // \Swagger\Client\Model\UploadKeyReq | ASCII armored PGP Key in `PgpKey` and key purpose, i.e. `Export` (exporting cert private key) or `Authorize` (upload content authorization verification) in `PgpKeyPurpose`.
 
 try {
     $result = $api_instance->uploadKey($authorization, $upload_key_req);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling PgpApi->uploadKey: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling PgpTBDApi->uploadKey: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -158,7 +158,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **upload_key_req** | [**\Swagger\Client\Model\UploadKeyReq**](../Model/\Swagger\Client\Model\UploadKeyReq.md)| Pgp parameters |
+ **upload_key_req** | [**\Swagger\Client\Model\UploadKeyReq**](../Model/\Swagger\Client\Model\UploadKeyReq.md)| ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;Export&#x60; (exporting cert private key) or &#x60;Authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;. |
 
 ### Return type
 
