@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **admin_mode** | **string** | &#x60;admin&#x60; mode status | [optional] 
+**certs** | [**\Swagger\Client\Model\CertDescriptor[]**](CertDescriptor.md) |  | 
 **data_mode** | **string** | &#x60;data&#x60; mode status | [optional] 
 **email** | **string** | Email address as the account username | 
 **export** | **string** | Status for certificate and private key export allowance. See ConfigCerts. | 

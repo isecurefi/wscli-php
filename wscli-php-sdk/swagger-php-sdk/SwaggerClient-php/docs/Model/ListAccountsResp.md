@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**account_descriptors** | [**\Swagger\Client\Model\AccountDescriptor[]**](AccountDescriptor.md) | List of accounts under the API key | 
+**accounts** | [**\Swagger\Client\Model\AccountDescriptor[]**](AccountDescriptor.md) | List of accounts under the API key | 
 **response_code** | **string** | Two digit response code in string format | 
 **response_text** | **string** | Human readable response text | 
 
