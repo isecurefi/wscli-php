@@ -47,8 +47,10 @@ Usage:
   wscli certs importCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--certificate=<pem>] [--privatekey=<pem>]
                                 [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
   wscli pgp listKeys            [-c CONF] [-a APIKEY] [-i IDTOKEN]
-  wscli pgp uploadKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeycontents=<pgpkeycontents>]
   wscli pgp deleteKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeyid=<pgpkeyid>]
+  wscli pgp uploadKey           [-c CONF] [-a APIKEY] [-i IDTOKEN]
+                                [--pgpkeycontents=<pgpkeycontents>]
+  wscli integrator listAccounts [-c CONF] [-a APIKEY] [-i IDTOKEN]
 
 
 Options:

@@ -563,6 +563,29 @@ class WsCli
         }
     }
 
+    private function handleIntegrator($api, $cmd)
+    {
+        if (!array_key_exists('idtoken', $this->opts) || !$this->opts['idtoken']) {
+            $this->log->error("no valid idtoken specified! please try re-login.");
+            return 2;
+        }
+        switch ($cmd) {
+        case "listAccounts":
+            $error = $this->checkArgs(['apikey', 'idtoken']);
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
+        default:
+            $this->log->error("Unknown api command");
+            return 3;
+        }
+    }
+
     public function __call($methodCmd, $methodApi)
     {
         // $methodApi array is populated on our internal calls to
@@ -585,6 +608,8 @@ class WsCli
             return $this->handlePgp($api, $cmd, $methodApi, $methodCmd);
         case "certs":
             return $this->handleCerts($api, $cmd, $methodApi, $methodCmd);
+        case "integrator":
+            return $this->handleIntegrator($api, $cmd, $methodApi, $methodCmd);
         default:
             return 3;
         }
