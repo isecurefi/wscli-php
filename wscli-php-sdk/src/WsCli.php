@@ -11,7 +11,7 @@ use \Swagger\Client\ApiClient;
 use \Swagger\Client\Api\AccountApi;
 use \Swagger\Client\Api\SessionApi;
 use \Swagger\Client\Api\PgpTBDApi;
-use \Swagger\Client\Api\IntegratorTBDApi;
+use \Swagger\Client\Api\IntegratorApi;
 use \Swagger\Client\Api\FilesApi;
 use \Swagger\Client\Api\CertsApi;
 use Symfony\Component\Yaml\Parser;
@@ -64,7 +64,7 @@ class WsCli
         $this->session = new \Swagger\Client\Api\SessionApi($apiClient);
         $this->files = new \Swagger\Client\Api\FilesApi($apiClient);
         $this->pgp = new \Swagger\Client\Api\PgpTBDApi($apiClient);
-        $this->integrator = new \Swagger\Client\Api\IntegratorTBDApi($apiClient);
+        $this->integrator = new \Swagger\Client\Api\IntegratorApi($apiClient);
         $this->certs = new \Swagger\Client\Api\CertsApi($apiClient);
     }
 
