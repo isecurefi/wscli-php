@@ -1,6 +1,6 @@
 <?php
 /**
- * IntegratorTBDApiTest
+ * IntegratorApiTest
  * PHP version 5
  *
  * @category Class
@@ -34,14 +34,14 @@ use \Swagger\Client\ApiException;
 use \Swagger\Client\ObjectSerializer;
 
 /**
- * IntegratorTBDApiTest Class Doc Comment
+ * IntegratorApiTest Class Doc Comment
  *
  * @category Class
  * @package  Swagger\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class IntegratorTBDApiTest extends \PHPUnit_Framework_TestCase
+class IntegratorApiTest extends \PHPUnit_Framework_TestCase
 {
 
     /**

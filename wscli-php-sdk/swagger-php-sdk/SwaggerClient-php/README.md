@@ -95,7 +95,7 @@ Class | Method | HTTP request | Description
 *FilesApi* | [**downloadFile**](docs/Api/FilesApi.md#downloadfile) | **GET** /files/{Bank}/{FileType}/{FileReference} | DownloadFile
 *FilesApi* | [**listFiles**](docs/Api/FilesApi.md#listfiles) | **GET** /files/{Bank} | ListFiles
 *FilesApi* | [**uploadFile**](docs/Api/FilesApi.md#uploadfile) | **PUT** /files/{Bank} | UploadFile
-*IntegratorTBDApi* | [**listAccounts**](docs/Api/IntegratorTBDApi.md#listaccounts) | **GET** /integrator/accounts | ListAccounts
+*IntegratorApi* | [**listAccounts**](docs/Api/IntegratorApi.md#listaccounts) | **GET** /integrator/accounts | ListAccounts
 *PgpTBDApi* | [**deleteKey**](docs/Api/PgpTBDApi.md#deletekey) | **DELETE** /pgp | DeleteKey
 *PgpTBDApi* | [**listKeys**](docs/Api/PgpTBDApi.md#listkeys) | **GET** /pgp | ListKeys
 *PgpTBDApi* | [**uploadKey**](docs/Api/PgpTBDApi.md#uploadkey) | **PUT** /pgp | UploadKey

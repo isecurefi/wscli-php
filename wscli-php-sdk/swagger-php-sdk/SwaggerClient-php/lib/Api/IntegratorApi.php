@@ -1,6 +1,6 @@
 <?php
 /**
- * IntegratorTBDApi
+ * IntegratorApi
  * PHP version 5
  *
  * @category Class
@@ -34,14 +34,14 @@ use \Swagger\Client\Configuration;
 use \Swagger\Client\ObjectSerializer;
 
 /**
- * IntegratorTBDApi Class Doc Comment
+ * IntegratorApi Class Doc Comment
  *
  * @category Class
  * @package  Swagger\Client
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
  */
-class IntegratorTBDApi
+class IntegratorApi
 {
     /**
      * API Client
@@ -79,7 +79,7 @@ class IntegratorTBDApi
      *
      * @param \Swagger\Client\ApiClient $apiClient set the API client
      *
-     * @return IntegratorTBDApi
+     * @return IntegratorApi
      */
     public function setApiClient(\Swagger\Client\ApiClient $apiClient)
     {

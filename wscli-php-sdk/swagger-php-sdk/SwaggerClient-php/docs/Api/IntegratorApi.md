@@ -1,10 +1,10 @@
-# Swagger\Client\IntegratorTBDApi
+# Swagger\Client\IntegratorApi
 
 All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**listAccounts**](IntegratorTBDApi.md#listAccounts) | **GET** /integrator/accounts | ListAccounts
+[**listAccounts**](IntegratorApi.md#listAccounts) | **GET** /integrator/accounts | ListAccounts
 
 
 # **listAccounts**
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ListAccounts
 
-List accounts registered under the integrator's API key. Account that created the API key is authorized to call this. API implementation is to-be-done (TBD).
+List accounts registered under the integrator's API key. Account that created the API key is authorized to call this.
 
 ### Example
 ```php
@@ -28,14 +28,14 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('x-api-key', 'Bearer');
 
-$api_instance = new Swagger\Client\Api\IntegratorTBDApi();
+$api_instance = new Swagger\Client\Api\IntegratorApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 
 try {
     $result = $api_instance->listAccounts($authorization);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling IntegratorTBDApi->listAccounts: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling IntegratorApi->listAccounts: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```

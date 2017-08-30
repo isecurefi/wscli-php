@@ -67,7 +67,7 @@ class ConfigCertsReq implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'export' => 'export'
+        'export' => 'Export'
     ];
 
 

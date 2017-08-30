@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 ConfigCerts
 
-Configure certificate usage parameters. Currently, only settable (permanent) parameter is `export`. Set it to `disable` for disallowing private key export.  **NOTE**: When export is disabled it is permanent, it can not be re-enabled through the API (safety feature).
+Configure certificate usage parameters. Currently, only settable (permanent) parameter is `export`. Set it to `disabled` for disallowing private key export.  **NOTE**: When export is disabled it is permanent, it can not be re-enabled through the API (safety feature).
 
 ### Example
 ```php
