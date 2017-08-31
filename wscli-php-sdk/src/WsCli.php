@@ -93,6 +93,33 @@ class WsCli
         return $error;
     }
 
+    private function getPassword()
+    {
+        if (array_key_exists('password', $this->opts) &&
+            strlen((string)$this->opts['password']) < 20) {
+            $this->log->error("Password length shorter than 20");
+            if (array_key_exists('noninteractive', $this->opts) &&
+                $this->opts['noninteractive']) {
+                return 1;
+            }
+        }
+        if (!array_key_exists('password', $this->opts)) {
+            $this->log->error("Password not specified!");
+            if (array_key_exists('noninteractive', $this->opts) &&
+                $this->opts['noninteractive']) {
+                return 1;
+            }
+            $this->opts['password'] = '';
+            while (strlen((string)$this->opts['password']) < 20) {
+                $this->opts['password'] = readline("Give password (at least 20 chars, upper/lower letters and special chars): ");
+            }
+        }
+        if (!$this->getEncryptedPassword()) {
+            $this->log->error("Could not get encrypted password.");
+            $error = 1;
+        }
+    }
+
     private function handleAccount($api, $cmd, $fromApi, $fromCmd)
     {
         $error = $this->checkArgs(['email', 'mode']);
@@ -121,7 +148,12 @@ class WsCli
             $this->log->debug(print_r($resp, true));
             return $resp;
         case "verifyEmail":
-            while (strlen($this->opts['code']) != 6) {
+            while (strlen((string)$this->opts['code']) != 6) {
+                $this->log->error("Code not long enough: " . $this->opts['code'] . ".");
+                if (array_key_exists('noninteractive', $this->opts) &&
+                    $this->opts['noninteractive']) {
+                    return 1;
+                }
                 $this->opts['code'] = readline("Give EMail verification code: ");
             }
             if ($error) {
@@ -137,11 +169,17 @@ class WsCli
                 $this->log->debug("Callbacking to " . $fromApi . "->" . $fromCmd);
                 $this->opts['<cmd>'] = $fromCmd;
                 $this->opts['<api>'] = $fromApi;
+                $this->opts['code'] = '';
                 return $this->__call($cmd, [$api]);
             }
             return $resp;
         case "verifyPhone":
             while (strlen((string)$this->opts['code']) != 6) {
+                $this->log->error("Code not long enough: " . $this->opts['code'] . ".");
+                if (array_key_exists('noninteractive', $this->opts) &&
+                    $this->opts['noninteractive']) {
+                    return 1;
+                }
                 $this->opts['code'] = readline("Give phone registration code: ");
             }
             if ($error) {
@@ -166,31 +204,34 @@ class WsCli
             }
             if (!$this->getChallenge()) {
                 $this->log->error("Could not get challenge.");
-                $error = 1;
+                return 1;
             }
-            if (!array_key_exists('password', $this->opts)) {
-                $this->opts['password'] = '';
-                while (strlen((string)$this->opts['password']) < 20) {
-                    $this->opts['password'] = readline("Give password (at least 20 chars, upper/lower letters and special chars): ");
+            if (!array_key_exists('code', $this->opts)) {
+                $resp = $this->${"api"}->initPasswordReset(
+                    $this->opts['email'],
+                    $this->opts['mode']
+                );
+                if ($resp['response_code'] != "00") {
+                    $this->log->error("Failed to init password reset");
+                    $this->log->error(print_r($resp, true));
+                    return $resp;
+                }
+                if (array_key_exists('noninteractive', $this->opts) &&
+                    $this->opts['noninteractive']) {
+                    return $resp;
                 }
             }
-            if (!$this->getEncryptedPassword()) {
-                $this->log->error("Could not get encrypted password.");
-                $error = 1;
+            if ($this->getPassword()) {
+                return 1;
             }
-            if ($error) {
-                return $error;
+            if (!array_key_exists('code', $this->opts)) {
+                $this->log->error("Code not specified");
+                if (array_key_exists('noninteractive', $this->opts) &&
+                    $this->opts['noninteractive']) {
+                    return 1;
+                }
+                $this->opts['code'] = readline("Give password reset SMS code: ");
             }
-            $resp = $this->${"api"}->initPasswordReset(
-                $this->opts['email'],
-                $this->opts['mode']
-            );
-            if ($resp['response_code'] != "00") {
-                $this->log->error("Failed to init password reset");
-                $this->log->error(print_r($resp, true));
-                return $resp;
-            }
-            $this->opts['code'] = readline("Give password reset SMS code: ");
             $resp = $this->${"api"}->passwordReset(
                 $this->getBodyParams(),
                 $this->opts['email'],
@@ -226,6 +267,15 @@ class WsCli
             return $resp;
         case "loginMFA":
         case "login":
+            if (array_key_exists('code', $this->opts)) {
+                if (strlen((string)$this->opts['code']) == 6) {
+                    $cmd = "loginMFA";
+                }
+                if (strlen((string)$this->opts['code']) != 6) {
+                    $this->log->error("Provided code is not long enough: " . $this->opts['code'] . ".");
+                    return 1;
+                }
+            }
             if (array_key_exists('idtoken', $this->opts) &&
                 strlen($this->opts['idtoken']) > 0 &&
                 array_key_exists('mode', $this->opts) &&
@@ -241,17 +291,7 @@ class WsCli
                 $this->log->error("Could not get challenge.");
                 $error = 1;
             }
-            if ($error) {
-                return $error;
-            }
-            if (!array_key_exists('password', $this->opts)) {
-                $this->opts['password'] = '';
-                while (strlen((string)$this->opts['password']) < 20) {
-                    $this->opts['password'] = readline("Give password (at least 20 chars, upper/lower letters and special chars): ");
-                }
-            }
-            if (!$this->getEncryptedPassword()) {
-                $this->log->error("Could not get encrypted password.");
+            if ($this->getPassword()) {
                 $error = 1;
             }
             if ($error) {
@@ -264,7 +304,9 @@ class WsCli
             );
             $this->opts['code'] = ''; // Reset code if any
             $this->log->debug(print_r($resp, true));
-            if ($resp['response_code'] == "00") {
+            if ($resp['response_code'] == "00" &&
+                (!array_key_exists('noninteractive', $this->opts) ||
+                 !$this->opts['noninteractive'])) {
                 if (strstr($resp['response_text'], "Verify phone number")) {
                     $this->opts['<api>'] = "account";
                     $this->opts['<cmd>'] = "verifyPhone";
@@ -284,17 +326,18 @@ class WsCli
                     $this->opts['<cmd>'] = "verifyEmail";
                     return $this->__call("login", [$api]);
                 }
-                if ($resp['response_text'] == "Login OK") {
-                    $this->updateConfig("idtoken: " . $resp['id_token']);
-                    $exp = date("Y-m-d H:i:s", time()+$resp['expires_in']-10);
-                    $this->log->debug("idtokenexpiry: " . $exp);
-                    if ($exp === false) {
-                        $this->log->error("Could not form idtoken expiry date. Setting to +3300s");
-                        $exp = time() + 3300;
-                    }
-                    $this->updateConfig("idtokenexpiry: \"" . $exp . "\"");
-                    $this->updateConfig("idtokenmode: \"" . $this->opts['mode'] . "\"");
+            }
+            if ($resp['response_code'] == "00" &&
+                $resp['response_text'] == "Login OK") {
+                $this->updateConfig("idtoken: " . $resp['id_token']);
+                $exp = date("Y-m-d H:i:s", time()+$resp['expires_in']-10);
+                $this->log->debug("idtokenexpiry: " . $exp);
+                if ($exp === false) {
+                    $this->log->error("Could not form idtoken expiry date. Setting to +3300s");
+                    $exp = time() + 3300;
                 }
+                $this->updateConfig("idtokenexpiry: \"" . $exp . "\"");
+                $this->updateConfig("idtokenmode: \"" . $this->opts['mode'] . "\"");
             }
             return $resp;
         default:
@@ -682,6 +725,12 @@ class WsCli
         if (array_key_exists('accesstoken', $this->opts) && $this->opts['accesstoken']) {
             $bodyParams['AccessToken'] = $this->opts['accesstoken'];
             unset($bodyParams['accesstoken']);
+        }
+        $apiKey = $bodyParams['ApiKey'];
+        $bodyParams = array_filter($bodyParams);
+        if ($apiKey == "0") {
+            // array_filter() filters out keys with value "0"
+            $bodyParams['ApiKey'] = "0";
         }
         $bodyParams = json_encode($bodyParams);
         $this->log->debug("body params: " . print_r($bodyParams, true));

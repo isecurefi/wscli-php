@@ -25,14 +25,14 @@ Usage:
   wscli (-v | --version)
   wscli --update
   wscli --rollback
-  wscli account verifyEmail     [-c CONF] [-e EMAIL] [-m MODE] [--code=<code>]
-  wscli account verifyPhone     [-c CONF] [-e EMAIL] [-m MODE] [--phone=<phone>]
-  wscli account passwordReset   [-c CONF] [-e EMAIL] [-m MODE]
+  wscli account verifyEmail     [-c CONF] [-e EMAIL] [-m MODE] [--code=<code>] [--noninteractive] [--accesstoken=<token>]
+  wscli account verifyPhone     [-c CONF] [-e EMAIL] [-m MODE] [--phone=<phone>] [--code=<code>] [--noninteractive]
+  wscli account passwordReset   [-c CONF] [-e EMAIL] [-m MODE] [--noninteractive]
   wscli account register        [-c CONF] [-e EMAIL] [-m MODE] [-a APIKEY] [--name=<name>] [--company=<company>]
-                                [--password=<password>] [--phone=<phone>]
+                                [--password=<password>] [--phone=<phone>] [--noninteractive]
   wscli session logout          [-c CONF] [-a APIKEY] [-i IDTOKEN]
   wscli session login           [-c CONF] [-e EMAIL] [-m MODE] [--password=<password>]
-                                [--environment=<environment>]
+                                [--environment=<environment>] [--code=<mfacode>] [--session=<session>] [--noninteractive]
   wscli files listFiles         [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
   wscli files downloadFile      [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
   wscli files deleteFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
@@ -58,9 +58,10 @@ Options:
   -v, --version                          Show version
   --update                               Update wscli to latest version
   --rollback                             Rollback wscli to previous version, after an update
+  --noninteractive                       SDK will NOT interactively ask, e.g for password and MFA
   -c FILE, --config=FILE                 YAML configuration file containing all required parameters in 'settings' block
   -a APIKEY, --apikey=APIKEY             Integrator's API Key
-  -i IDTOKEN, --idtoken=IDTOKEN          Session authorization token received from successful login
+  -i IDTOKEN, --idtoken=IDTOKEN          Identity carrying authorization token received from successful login
   -b BANK, --bank=BANK                   Target bank, e.g. nordea
   -e EMAIL, --email=EMAIL                Account user's email
   -m MODE, --mode=MODE                   admin or data account
@@ -68,12 +69,15 @@ Options:
   --phone=<phone>                        Account user's phone number with country code, e.g. +358401234567
   --company=<company>                    Account user's company
   --password=<password>                  Account user's password for <mode> account
+  --accesstoken=<token>                  When email is not verified, login returns access token that must be passed to emailVerify
+  --session=<session>                    Session token, when e.g. SMS MFA is requested during login
   --environment=<env>                    Environment, test or production
   --filetype=<filetype>                  Bank's file type
   --filestatus=<filestatus>              Bank's file status, e.g. ALL
   --filecontents=<filecontents>          Upload file contents
   --filereference=<filereference>        Bank's file reference from listFiles entry
   --extemail=<extemail>                  Link extemail to this account for certificates sharing
+  --code=<code>                          SMS MFA code or email verification code
   --pincode=<pincode>                    PIN code for WS certificate enrollment
   --wstargetid=<wstargetid>              Use wstargetid in certificate enrollment
   --wsuserid=<wsuserid>                  Use wsuserid in certificate enrollment
