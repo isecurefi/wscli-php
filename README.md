@@ -27,9 +27,11 @@ always requires SMS one-time password per login session
 e.g. filesystem (with proper permissions) for automation and managemnt
 credentials used separately (`admin` account password and phone).
 
-PGP keys can be used to sign file uploads (with `data` account) for
-authorization decisions, `n` of `m` signatures required scheme, if
-needed. Certificates can be imported and exported for the registered
+*To-Be-Done*: PGP keys can be used to sign file uploads (with `data`
+account) for authorization decisions, `n` of `m` signatures required
+scheme, if needed. These PGP keys are imported as `authorization`
+keys. Certificates and more precisely, their private keys, can be
+imported and exported for the registered PGP keys imported as `export`
 PGP keys.
 
 Every account must have an API Key, e.g. integrator's API
