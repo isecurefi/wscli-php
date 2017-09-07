@@ -40,7 +40,7 @@ Usage:
   wscli files downloadFiles     [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
                                 [--filereference=<fileref>] [--syncdir=<dir>]
   wscli certs listCerts         [-c CONF] [-a APIKEY] [-i IDTOKEN]
-  wscli certs exportCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pgpkeyid=<pgpkeyid>] [--outfilename=<outfilename>]
+  wscli certs exportCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pgpkeyid=<pgpkeyid>]
   wscli certs shareCerts        [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
   wscli certs unshareCerts      [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
   wscli certs enrollCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pincode=<pincode>] [--company=<company>] [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>]
