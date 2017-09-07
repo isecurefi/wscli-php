@@ -10,7 +10,7 @@ use \Monolog\Logger;
 use \Swagger\Client\ApiClient;
 use \Swagger\Client\Api\AccountApi;
 use \Swagger\Client\Api\SessionApi;
-use \Swagger\Client\Api\PgpTBDApi;
+use \Swagger\Client\Api\PgpApi;
 use \Swagger\Client\Api\IntegratorApi;
 use \Swagger\Client\Api\FilesApi;
 use \Swagger\Client\Api\CertsApi;
