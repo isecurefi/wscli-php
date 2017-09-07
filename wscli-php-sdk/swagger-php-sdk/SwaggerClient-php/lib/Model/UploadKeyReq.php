@@ -196,7 +196,7 @@ class UploadKeyReq implements ArrayAccess
 
     /**
      * Sets pgp_key_purpose
-     * @param string $pgp_key_purpose PGP key purpose, i.e. `Export` (exporting cert private key) or `Authorize` (upload content authorization verification).
+     * @param string $pgp_key_purpose PGP key purpose, i.e. `export` (exporting cert private key) or `authorize` (upload content authorization verification).
      * @return $this
      */
     public function setPgpKeyPurpose($pgp_key_purpose)

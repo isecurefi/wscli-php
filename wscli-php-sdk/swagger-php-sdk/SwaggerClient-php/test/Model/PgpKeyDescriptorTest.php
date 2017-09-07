@@ -90,4 +90,12 @@ class PgpKeyDescriptorTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * Test attribute "pgp_key_purpose"
+     */
+    public function testPropertyPgpKeyPurpose()
+    {
+
+    }
+
 }

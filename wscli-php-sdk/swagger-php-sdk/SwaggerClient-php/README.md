@@ -74,7 +74,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
+All URIs are relative to *https://ws-api.test.isecure.fi/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

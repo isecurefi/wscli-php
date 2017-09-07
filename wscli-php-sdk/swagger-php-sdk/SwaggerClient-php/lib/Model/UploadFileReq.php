@@ -54,9 +54,10 @@ class UploadFileReq implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'bank' => 'string',
         'file_contents' => 'string',
-        'file_type' => 'string'
+        'file_name' => 'string',
+        'file_type' => 'string',
+        'signature' => 'string'
     ];
 
     public static function swaggerTypes()
@@ -69,9 +70,10 @@ class UploadFileReq implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'bank' => 'Bank',
         'file_contents' => 'FileContents',
-        'file_type' => 'FileType'
+        'file_name' => 'FileName',
+        'file_type' => 'FileType',
+        'signature' => 'Signature'
     ];
 
 
@@ -80,9 +82,10 @@ class UploadFileReq implements ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'bank' => 'setBank',
         'file_contents' => 'setFileContents',
-        'file_type' => 'setFileType'
+        'file_name' => 'setFileName',
+        'file_type' => 'setFileType',
+        'signature' => 'setSignature'
     ];
 
 
@@ -91,9 +94,10 @@ class UploadFileReq implements ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'bank' => 'getBank',
         'file_contents' => 'getFileContents',
-        'file_type' => 'getFileType'
+        'file_name' => 'getFileName',
+        'file_type' => 'getFileType',
+        'signature' => 'getSignature'
     ];
 
     public static function attributeMap()
@@ -127,9 +131,10 @@ class UploadFileReq implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['bank'] = isset($data['bank']) ? $data['bank'] : null;
         $this->container['file_contents'] = isset($data['file_contents']) ? $data['file_contents'] : null;
+        $this->container['file_name'] = isset($data['file_name']) ? $data['file_name'] : null;
         $this->container['file_type'] = isset($data['file_type']) ? $data['file_type'] : null;
+        $this->container['signature'] = isset($data['signature']) ? $data['signature'] : null;
     }
 
     /**
@@ -141,14 +146,17 @@ class UploadFileReq implements ArrayAccess
     {
         $invalid_properties = [];
 
-        if ($this->container['bank'] === null) {
-            $invalid_properties[] = "'bank' can't be null";
-        }
         if ($this->container['file_contents'] === null) {
             $invalid_properties[] = "'file_contents' can't be null";
         }
+        if ($this->container['file_name'] === null) {
+            $invalid_properties[] = "'file_name' can't be null";
+        }
         if ($this->container['file_type'] === null) {
             $invalid_properties[] = "'file_type' can't be null";
+        }
+        if ($this->container['signature'] === null) {
+            $invalid_properties[] = "'signature' can't be null";
         }
         return $invalid_properties;
     }
@@ -162,39 +170,21 @@ class UploadFileReq implements ArrayAccess
     public function valid()
     {
 
-        if ($this->container['bank'] === null) {
+        if ($this->container['file_contents'] === null) {
             return false;
         }
-        if ($this->container['file_contents'] === null) {
+        if ($this->container['file_name'] === null) {
             return false;
         }
         if ($this->container['file_type'] === null) {
             return false;
         }
+        if ($this->container['signature'] === null) {
+            return false;
+        }
         return true;
     }
 
-
-    /**
-     * Gets bank
-     * @return string
-     */
-    public function getBank()
-    {
-        return $this->container['bank'];
-    }
-
-    /**
-     * Sets bank
-     * @param string $bank Name of the bank
-     * @return $this
-     */
-    public function setBank($bank)
-    {
-        $this->container['bank'] = $bank;
-
-        return $this;
-    }
 
     /**
      * Gets file_contents
@@ -218,6 +208,27 @@ class UploadFileReq implements ArrayAccess
     }
 
     /**
+     * Gets file_name
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->container['file_name'];
+    }
+
+    /**
+     * Sets file_name
+     * @param string $file_name Upload file name
+     * @return $this
+     */
+    public function setFileName($file_name)
+    {
+        $this->container['file_name'] = $file_name;
+
+        return $this;
+    }
+
+    /**
      * Gets file_type
      * @return string
      */
@@ -234,6 +245,27 @@ class UploadFileReq implements ArrayAccess
     public function setFileType($file_type)
     {
         $this->container['file_type'] = $file_type;
+
+        return $this;
+    }
+
+    /**
+     * Gets signature
+     * @return string
+     */
+    public function getSignature()
+    {
+        return $this->container['signature'];
+    }
+
+    /**
+     * Sets signature
+     * @param string $signature Detached PGP signature(s) made with registered PGP key(s)
+     * @return $this
+     */
+    public function setSignature($signature)
+    {
+        $this->container['signature'] = $signature;
 
         return $this;
     }

@@ -54,7 +54,8 @@ class PgpKeyDescriptor implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'pgp_key_id' => 'string'
+        'pgp_key_id' => 'string',
+        'pgp_key_purpose' => 'string'
     ];
 
     public static function swaggerTypes()
@@ -67,7 +68,8 @@ class PgpKeyDescriptor implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'pgp_key_id' => 'PgpKeyId'
+        'pgp_key_id' => 'PgpKeyId',
+        'pgp_key_purpose' => 'PgpKeyPurpose'
     ];
 
 
@@ -76,7 +78,8 @@ class PgpKeyDescriptor implements ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'pgp_key_id' => 'setPgpKeyId'
+        'pgp_key_id' => 'setPgpKeyId',
+        'pgp_key_purpose' => 'setPgpKeyPurpose'
     ];
 
 
@@ -85,7 +88,8 @@ class PgpKeyDescriptor implements ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'pgp_key_id' => 'getPgpKeyId'
+        'pgp_key_id' => 'getPgpKeyId',
+        'pgp_key_purpose' => 'getPgpKeyPurpose'
     ];
 
     public static function attributeMap()
@@ -103,8 +107,22 @@ class PgpKeyDescriptor implements ArrayAccess
         return self::$getters;
     }
 
+    const PGP_KEY_PURPOSE_EXPORT = 'export';
+    const PGP_KEY_PURPOSE_AUTHORIZE = 'authorize';
     
 
+    
+    /**
+     * Gets allowable values of the enum
+     * @return string[]
+     */
+    public function getPgpKeyPurposeAllowableValues()
+    {
+        return [
+            self::PGP_KEY_PURPOSE_EXPORT,
+            self::PGP_KEY_PURPOSE_AUTHORIZE,
+        ];
+    }
     
 
     /**
@@ -120,6 +138,7 @@ class PgpKeyDescriptor implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['pgp_key_id'] = isset($data['pgp_key_id']) ? $data['pgp_key_id'] : null;
+        $this->container['pgp_key_purpose'] = isset($data['pgp_key_purpose']) ? $data['pgp_key_purpose'] : null;
     }
 
     /**
@@ -134,6 +153,11 @@ class PgpKeyDescriptor implements ArrayAccess
         if ($this->container['pgp_key_id'] === null) {
             $invalid_properties[] = "'pgp_key_id' can't be null";
         }
+        $allowed_values = ["export", "authorize"];
+        if (!in_array($this->container['pgp_key_purpose'], $allowed_values)) {
+            $invalid_properties[] = "invalid value for 'pgp_key_purpose', must be one of 'export', 'authorize'.";
+        }
+
         return $invalid_properties;
     }
 
@@ -147,6 +171,10 @@ class PgpKeyDescriptor implements ArrayAccess
     {
 
         if ($this->container['pgp_key_id'] === null) {
+            return false;
+        }
+        $allowed_values = ["export", "authorize"];
+        if (!in_array($this->container['pgp_key_purpose'], $allowed_values)) {
             return false;
         }
         return true;
@@ -170,6 +198,31 @@ class PgpKeyDescriptor implements ArrayAccess
     public function setPgpKeyId($pgp_key_id)
     {
         $this->container['pgp_key_id'] = $pgp_key_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets pgp_key_purpose
+     * @return string
+     */
+    public function getPgpKeyPurpose()
+    {
+        return $this->container['pgp_key_purpose'];
+    }
+
+    /**
+     * Sets pgp_key_purpose
+     * @param string $pgp_key_purpose PGP Key purpose
+     * @return $this
+     */
+    public function setPgpKeyPurpose($pgp_key_purpose)
+    {
+        $allowed_values = array('export', 'authorize');
+        if (!is_null($pgp_key_purpose) && (!in_array($pgp_key_purpose, $allowed_values))) {
+            throw new \InvalidArgumentException("Invalid value for 'pgp_key_purpose', must be one of 'export', 'authorize'");
+        }
+        $this->container['pgp_key_purpose'] = $pgp_key_purpose;
 
         return $this;
     }

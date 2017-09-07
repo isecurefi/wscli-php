@@ -83,14 +83,6 @@ class UploadFileReqTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test attribute "bank"
-     */
-    public function testPropertyBank()
-    {
-
-    }
-
-    /**
      * Test attribute "file_contents"
      */
     public function testPropertyFileContents()
@@ -99,9 +91,25 @@ class UploadFileReqTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test attribute "file_name"
+     */
+    public function testPropertyFileName()
+    {
+
+    }
+
+    /**
      * Test attribute "file_type"
      */
     public function testPropertyFileType()
+    {
+
+    }
+
+    /**
+     * Test attribute "signature"
+     */
+    public function testPropertySignature()
     {
 
     }

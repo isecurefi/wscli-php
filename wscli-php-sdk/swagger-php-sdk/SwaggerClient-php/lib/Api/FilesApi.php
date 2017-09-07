@@ -525,12 +525,13 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param \Swagger\Client\Model\UploadFileReq $upload_file_req Files parameters (required)
+     * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return \Swagger\Client\Model\Response
      */
-    public function uploadFile($authorization, $upload_file_req)
+    public function uploadFile($authorization, $upload_file_req, $bank)
     {
-        list($response) = $this->uploadFileWithHttpInfo($authorization, $upload_file_req);
+        list($response) = $this->uploadFileWithHttpInfo($authorization, $upload_file_req, $bank);
         return $response;
     }
 
@@ -541,10 +542,11 @@ class FilesApi
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
      * @param \Swagger\Client\Model\UploadFileReq $upload_file_req Files parameters (required)
+     * @param string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return array of \Swagger\Client\Model\Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function uploadFileWithHttpInfo($authorization, $upload_file_req)
+    public function uploadFileWithHttpInfo($authorization, $upload_file_req, $bank)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null) {
@@ -553,6 +555,10 @@ class FilesApi
         // verify the required parameter 'upload_file_req' is set
         if ($upload_file_req === null) {
             throw new \InvalidArgumentException('Missing the required parameter $upload_file_req when calling uploadFile');
+        }
+        // verify the required parameter 'bank' is set
+        if ($bank === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $bank when calling uploadFile');
         }
         // parse inputs
         $resourcePath = "/files/{Bank}";
@@ -569,6 +575,14 @@ class FilesApi
         // header params
         if ($authorization !== null) {
             $headerParams['Authorization'] = $this->apiClient->getSerializer()->toHeaderValue($authorization);
+        }
+        // path params
+        if ($bank !== null) {
+            $resourcePath = str_replace(
+                "{" . "Bank" . "}",
+                $this->apiClient->getSerializer()->toPathValue($bank),
+                $resourcePath
+            );
         }
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);

@@ -1,6 +1,6 @@
 # Swagger\Client\FilesApi
 
-All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
+All URIs are relative to *https://ws-api.test.isecure.fi/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -191,11 +191,11 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **uploadFile**
-> \Swagger\Client\Model\Response uploadFile($authorization, $upload_file_req)
+> \Swagger\Client\Model\Response uploadFile($authorization, $upload_file_req, $bank)
 
 UploadFile
 
-Uploads file to bank. _Filecontents_ is a _Base64_ encoded string parameter. _Filetype_ is bank specific.
+Uploads file to bank if PGP signature(s) are valid. _FileContents_ is a _Base64_ encoded string parameter. _FileType_ is bank specific. _Signature_ is detached PGP signature or concatenation of PGP detached signatures in ASCII armor format. PGP signatures are used for authorizing file uploads. Currently one valid PGP authorize registered key signature is enough. _FileName_ is upload filename.
 
 ### Example
 ```php
@@ -214,9 +214,10 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 $upload_file_req = new \Swagger\Client\Model\UploadFileReq(); // \Swagger\Client\Model\UploadFileReq | Files parameters
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
 
 try {
-    $result = $api_instance->uploadFile($authorization, $upload_file_req);
+    $result = $api_instance->uploadFile($authorization, $upload_file_req, $bank);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FilesApi->uploadFile: ', $e->getMessage(), PHP_EOL;
@@ -230,6 +231,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
  **upload_file_req** | [**\Swagger\Client\Model\UploadFileReq**](../Model/\Swagger\Client\Model\UploadFileReq.md)| Files parameters |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
 
 ### Return type
 

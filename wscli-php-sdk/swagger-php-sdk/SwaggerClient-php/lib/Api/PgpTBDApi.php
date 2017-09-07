@@ -318,7 +318,7 @@ class PgpTBDApi
      * UploadKey
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
-     * @param \Swagger\Client\Model\UploadKeyReq $upload_key_req ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;Export&#x60; (exporting cert private key) or &#x60;Authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;. (required)
+     * @param \Swagger\Client\Model\UploadKeyReq $upload_key_req ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;export&#x60; (exporting cert private key) or &#x60;authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;.  **NOTE**: The same PGP key can not be used for both &#x60;export&#x60; and &#x60;authorize&#x60; purpose at the same time. (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return \Swagger\Client\Model\Response
      */
@@ -334,7 +334,7 @@ class PgpTBDApi
      * UploadKey
      *
      * @param string $authorization Use _IdToken_ from the Login response as the Authorization header (required)
-     * @param \Swagger\Client\Model\UploadKeyReq $upload_key_req ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;Export&#x60; (exporting cert private key) or &#x60;Authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;. (required)
+     * @param \Swagger\Client\Model\UploadKeyReq $upload_key_req ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;export&#x60; (exporting cert private key) or &#x60;authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;.  **NOTE**: The same PGP key can not be used for both &#x60;export&#x60; and &#x60;authorize&#x60; purpose at the same time. (required)
      * @throws \Swagger\Client\ApiException on non-2xx response
      * @return array of \Swagger\Client\Model\Response, HTTP status code, HTTP response headers (array of strings)
      */

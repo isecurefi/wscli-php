@@ -1,6 +1,6 @@
 # Swagger\Client\PgpTBDApi
 
-All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
+All URIs are relative to *https://ws-api.test.isecure.fi/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -142,7 +142,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 
 $api_instance = new Swagger\Client\Api\PgpTBDApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
-$upload_key_req = new \Swagger\Client\Model\UploadKeyReq(); // \Swagger\Client\Model\UploadKeyReq | ASCII armored PGP Key in `PgpKey` and key purpose, i.e. `Export` (exporting cert private key) or `Authorize` (upload content authorization verification) in `PgpKeyPurpose`.
+$upload_key_req = new \Swagger\Client\Model\UploadKeyReq(); // \Swagger\Client\Model\UploadKeyReq | ASCII armored PGP Key in `PgpKey` and key purpose, i.e. `export` (exporting cert private key) or `authorize` (upload content authorization verification) in `PgpKeyPurpose`.  **NOTE**: The same PGP key can not be used for both `export` and `authorize` purpose at the same time.
 
 try {
     $result = $api_instance->uploadKey($authorization, $upload_key_req);
@@ -158,7 +158,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **upload_key_req** | [**\Swagger\Client\Model\UploadKeyReq**](../Model/\Swagger\Client\Model\UploadKeyReq.md)| ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;Export&#x60; (exporting cert private key) or &#x60;Authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;. |
+ **upload_key_req** | [**\Swagger\Client\Model\UploadKeyReq**](../Model/\Swagger\Client\Model\UploadKeyReq.md)| ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;export&#x60; (exporting cert private key) or &#x60;authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;.  **NOTE**: The same PGP key can not be used for both &#x60;export&#x60; and &#x60;authorize&#x60; purpose at the same time. |
 
 ### Return type
 

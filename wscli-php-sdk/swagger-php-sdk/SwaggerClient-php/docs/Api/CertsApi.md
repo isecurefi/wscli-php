@@ -1,6 +1,6 @@
 # Swagger\Client\CertsApi
 
-All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
+All URIs are relative to *https://ws-api.test.isecure.fi/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -132,7 +132,7 @@ Name | Type | Description  | Notes
 
 ExportCert
 
-Download bank certificate and private key encrypted with stored PGP key.  **NOTE**: The previously uploaded `PgpKeyId` must have purpose type `Export`. I.e. purpose type `Authorize` PGP keys can not be used for exporting.  **NOTE**: If `export` has been set to `disabled` (see ConfigCerts), then exporting private keys is not possible through API.
+Download bank certificate and private key encrypted with stored PGP key.  **NOTE**: The previously uploaded `PgpKeyId` must have purpose type `export`. I.e. purpose type `authorize` PGP keys can not be used for exporting.  **NOTE**: If `export` has been set to `disabled` (see ConfigCerts), then exporting private keys is not possible through API.
 
 ### Example
 ```php

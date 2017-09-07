@@ -1,6 +1,6 @@
 # Swagger\Client\SessionApi
 
-All URIs are relative to *https://ws-api.test.isecure.fi/v2/*
+All URIs are relative to *https://ws-api.test.isecure.fi/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
