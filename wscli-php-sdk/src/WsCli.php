@@ -574,12 +574,17 @@ class WsCli
             $this->log->debug(print_r($resp, true));
             return $resp;
         case "exportCert":
-            $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeyid', 'outfilename']);
+            $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeyid']);
             if ($error) {
                 return $error;
             }
-            $this->log->error("Unimplemented API command");
-            return 3;
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->opts['bank'],
+                $this->opts['pgpkeyid']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "shareCerts":
             $error = $this->checkArgs(['apikey', 'idtoken', 'extemail']);
             if ($error) {
