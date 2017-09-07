@@ -547,7 +547,7 @@ class WsCli
         }
         switch ($cmd) {
         case "enrollCert":
-            $error = $this->checkArgs(['apikey', 'idtoken', 'pincode','company', 'wstargetid', 'wsuserid']);
+            $error = $this->checkArgs(['apikey', 'idtoken', 'pincode','company', 'wsuserid']);
             if ($error) {
                 return $error;
             }
