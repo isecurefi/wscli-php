@@ -25,8 +25,8 @@ Usage:
   wscli (-v | --version)
   wscli --update
   wscli --rollback
-  wscli account verifyEmail     [-c CONF] [-e EMAIL] [-m MODE] [--code=<code>] [--noninteractive] [--accesstoken=<token>]
-  wscli account verifyPhone     [-c CONF] [-e EMAIL] [-m MODE] [--phone=<phone>] [--code=<code>] [--noninteractive]
+  wscli account verifyEmail     [-c CONF] [-e EMAIL] [-m MODE] --code=<code> [--noninteractive] [--accesstoken=<token>]
+  wscli account verifyPhone     [-c CONF] [-e EMAIL] [-m MODE] [--phone=<phone>] --code=<code> [--noninteractive]
   wscli account passwordReset   [-c CONF] [-e EMAIL] [-m MODE] [--noninteractive]
   wscli account register        [-c CONF] [-e EMAIL] [-m MODE] [-a APIKEY] [--name=<name>] [--company=<company>]
                                 [--password=<password>] [--phone=<phone>] [--noninteractive]
@@ -34,9 +34,9 @@ Usage:
   wscli session login           [-c CONF] [-e EMAIL] [-m MODE] [--password=<password>]
                                 [--environment=<environment>] [--code=<mfacode>] [--session=<session>] [--noninteractive]
   wscli files listFiles         [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
-  wscli files downloadFile      [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
-  wscli files deleteFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filereference=<fileref>]
-  wscli files uploadFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filename=<filename>] [--filecontents=<filecontents>]
+  wscli files downloadFile      [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] --filereference=<fileref>
+  wscli files deleteFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] --filereference=<fileref>
+  wscli files uploadFile        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] --filename=<filename> --filecontents=<filecontents> --signatures=<signatures>
   wscli files downloadFiles     [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--filetype=<filetype>] [--filestatus=<filestatus>]
                                 [--filereference=<fileref>] [--syncdir=<dir>]
   wscli certs listCerts         [-c CONF] [-a APIKEY] [-i IDTOKEN]
@@ -49,7 +49,7 @@ Usage:
   wscli pgp listKeys            [-c CONF] [-a APIKEY] [-i IDTOKEN]
   wscli pgp deleteKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeyid=<pgpkeyid>]
   wscli pgp uploadKey           [-c CONF] [-a APIKEY] [-i IDTOKEN]
-                                [--pgpkeycontents=<pgpkeycontents>]
+                                [--pgpkeycontents=<pgpkeycontents>] [--pgpkeypurpose=<purpose>]
   wscli integrator listAccounts [-c CONF] [-a APIKEY] [-i IDTOKEN]
 
 
