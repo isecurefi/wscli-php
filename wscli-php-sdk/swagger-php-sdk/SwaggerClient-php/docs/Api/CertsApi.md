@@ -74,7 +74,7 @@ Name | Type | Description  | Notes
 
 EnrollCert
 
-Provide WS-Channel user id, _wsuserid_, _wstargetid_, _company_, and PIN _code_ for _bank_ certificate enrollment. _Company_ must match with the contract with the bank and is part of enrollment process. Note that certificate private key is securely generated and stored encrypted on service side and never leaves from there. Certificates are automatically renewed when needed.
+Provide WS-Channel user id, _WsUserId_, _WsTargetId_, _Company_, and PIN _Code_ for _Bank_ certificate enrollment. _Company_ must match with the contract with the bank and is part of enrollment process. Note that certificate private key is securely generated and stored encrypted on service side and never leaves from there. Certificates are automatically renewed when needed.
 
 ### Example
 ```php
@@ -190,7 +190,7 @@ Name | Type | Description  | Notes
 
 ImportCert
 
-Provide _wsuserid_, _wstargetid_, _company_, _privatekey_, and _certificate_ for importing existing WS Channel certificate and private key. _Company_ must match with the contract with the bank. Certificate(s) and private key(s) must be PEM formatted.  - **NOTE:** _enccertificate_ and _encprivatekey_ are for DanskeBank only.
+Provide _WsUserId_, _WsTargetId_, _Company_, _PrivateKey_, and _Certificate_ for importing existing WS Channel certificate and private key. _Company_ must match with the contract with the bank. Certificate(s) and private key(s) must be PEM formatted.  - **NOTE:** _EncCcertificate_ and _EncPrivatekey_ are for DanskeBank only.
 
 ### Example
 ```php

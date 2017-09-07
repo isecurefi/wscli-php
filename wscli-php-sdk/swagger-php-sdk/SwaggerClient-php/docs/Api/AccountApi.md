@@ -111,7 +111,7 @@ No authorization required
 
 PasswordReset
 
-Set new _password_ for user with _email_. Provide received SMS _code_.  **NOTE:** the password must be encrypted, see Register for more details.
+Set new _password_ for user with _Email_. Provide received SMS _Code_.  **NOTE:** the password must be encrypted, see Register for more details.
 
 ### Example
 ```php
@@ -209,7 +209,7 @@ No authorization required
 
 VerifyEmail
 
-Provide _code_ received to _email_ address for email address verification. Provide also _accesstoken_ received during login.
+Provide _Code_ received to _Email_ address for email address verification. Provide also _AccessToken_ received during login.
 
 ### Example
 ```php
@@ -258,7 +258,7 @@ No authorization required
 
 VerifyPhone
 
-Confirm phone number for _email_ _mode_ user, with _code_ received via SMS.
+Confirm phone number for _Email_ _Mode_ user, with _Code_ received via SMS.
 
 ### Example
 ```php

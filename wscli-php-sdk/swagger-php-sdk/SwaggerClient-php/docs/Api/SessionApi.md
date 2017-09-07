@@ -62,7 +62,7 @@ No authorization required
 
 Login
 
-After `getchallenge`, call `login` with _email_, _mode_, and RSA encrypted _admin_ or _data_ account _password_ and _challenge timestamp_. For further API calls (requiring authroization), include the received _idtoken_ into the Authorization header of the request (pass idtoken as required parameter with the client SDK API calls). The _IdToken_ expires in _ExpiresIn_ seconds, after which new login must be performed.  - **NOTE:** In case SMS _code_ is required, the call returns _session_. - **NOTE:** If _email_ has not been yet verified, successful login provides only _accesstoken_ that must be used to verify email address.
+After `getchallenge`, call `login` with _Email_, _Mode_, and RSA encrypted _admin_ or _data_ account _password_ and _challenge timestamp_. For further API calls (requiring authroization), include the received _IdToken_ into the Authorization header of the request (pass idtoken as required parameter with the client SDK API calls). The _IdToken_ expires in _ExpiresIn_ seconds, after which new login must be performed.  - **NOTE:** In case SMS _Code_ is required, the call returns _Session_. - **NOTE:** If _Email_ has not been yet verified, successful login provides only _AccessToken_ that must be used to verify email address.
 
 ### Example
 ```php
@@ -111,7 +111,7 @@ No authorization required
 
 LoginMFA
 
-Send SMS _code_ along with previously received _session_ token. If _email_ has not been yet verified, successful login provides only _accesstoken_ that must be used to verify email address. If email is already verified and the login succeeds, add the _idtoken_ from the login response as Authorization header in API requests requiring authorization (i.e. pass as parameter to client SDK API calls). _IdToken_ expires in _ExpiresIn_ seconds.
+Send SMS _Code_ along with previously received _Session_ token. If _Email_ has not been yet verified, successful login provides only _AccessToken_ that must be used to verify email address. If email is already verified and the login succeeds, add the _IdToken_ from the login response as Authorization header in API requests requiring authorization (i.e. pass as parameter to client SDK API calls). _IdToken_ expires in _ExpiresIn_ seconds.
 
 ### Example
 ```php
