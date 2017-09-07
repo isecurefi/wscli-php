@@ -63,7 +63,7 @@ class WsCli
         $this->account = new \Swagger\Client\Api\AccountApi($apiClient);
         $this->session = new \Swagger\Client\Api\SessionApi($apiClient);
         $this->files = new \Swagger\Client\Api\FilesApi($apiClient);
-        $this->pgp = new \Swagger\Client\Api\PgpTBDApi($apiClient);
+        $this->pgp = new \Swagger\Client\Api\PgpApi($apiClient);
         $this->integrator = new \Swagger\Client\Api\IntegratorApi($apiClient);
         $this->certs = new \Swagger\Client\Api\CertsApi($apiClient);
     }
