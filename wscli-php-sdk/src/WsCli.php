@@ -379,6 +379,18 @@ class WsCli
             );
             $this->log->debug(print_r($resp, true));
             return $resp;
+        case "uploadFile":
+            $error = $this->checkArgs(['apikey', 'idtoken', 'bank', 'filetype', 'filecontents', 'signatures']);
+            if ($error) {
+                return $error;
+            }
+            $resp = $this->${"api"}->${"cmd"}(
+                $this->opts['idtoken'],
+                $this->getBodyParams(),
+                $this->opts['bank']
+            );
+            $this->log->debug(print_r($resp, true));
+            return $resp;
         case "downloadFiles":
             $this->opts['<cmd>'] = "listFiles";
             $this->opts['<api>'] = "files";
@@ -497,7 +509,7 @@ class WsCli
             $this->log->debug(print_r($resp, true));
             return $resp;
         case "uploadKey":
-            $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeycontents']);
+            $error = $this->checkArgs(['apikey', 'idtoken', 'pgpkeycontents', 'pgpkeypurpose']);
             if ($error) {
                 return $error;
             }
@@ -709,6 +721,10 @@ class WsCli
             'endDate' => array_key_exists('enddate', $this->opts) ? $this->opts['enddate'] : '',
             'PgpKey' => array_key_exists('pgpkeycontents', $this->opts) ? $this->opts['pgpkeycontents'] : '',
             'PgpKeyId' => array_key_exists('pgpkeyid', $this->opts) ? $this->opts['pgpkeyid'] : '',
+            'PgpKeyPurpose' => array_key_exists('pgpkeypurpose', $this->opts) ? $this->opts['pgpkeypurpose'] : '',
+            'FileContents' => array_key_exists('filecontents', $this->opts) ? $this->opts['filecontents'] : '',
+            'Signatures' => array_key_exists('signatures', $this->opts) ? $this->opts['signatures'] : '',
+            'FileType' => array_key_exists('filetype', $this->opts) ? $this->opts['filetype'] : ''
         ];
         if (array_key_exists('session', $this->opts) && $this->opts['session']) {
             $bodyParams['Session'] = $this->opts['session'];
