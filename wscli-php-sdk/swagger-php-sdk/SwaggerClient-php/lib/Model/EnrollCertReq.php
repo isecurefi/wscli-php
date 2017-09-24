@@ -239,7 +239,7 @@ class EnrollCertReq implements ArrayAccess
 
     /**
      * Sets ws_target_id
-     * @param string $ws_target_id WebServices channel target id as in contract with bank
+     * @param string $ws_target_id WebServices channel target id as in contract with bank. Mandatory for `nordea`, set it to `11111111A1`. For `osuuspankki` API side will set it to `MLP`. For Samlink banks (`shb`, `sp`, `aktia`, `pop`) and `spankki`, not used. For `danskebank` set it to `1`.
      * @return $this
      */
     public function setWsTargetId($ws_target_id)
