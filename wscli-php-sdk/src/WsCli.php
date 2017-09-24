@@ -269,11 +269,12 @@ class WsCli
         case "login":
             if (array_key_exists('code', $this->opts)) {
                 if (strlen((string)$this->opts['code']) == 6) {
+                    $this->log->debug("Setting to LoginMFA as we have 6 digit code.");
                     $cmd = "loginMFA";
                 }
-                if (strlen((string)$this->opts['code']) != 6) {
-                    $this->log->error("Provided code is not long enough: " . $this->opts['code'] . ".");
-                    return 1;
+                if (strlen((string)$this->opts['code']) == 0) {
+                    $this->log->debug("Removing code parameter as it is empty.");
+                    unset($this->opts['code']);
                 }
             }
             if (array_key_exists('idtoken', $this->opts) &&
