@@ -20,7 +20,7 @@ comp-release:
 	composer dump-autoload --optimize
 
 comp:
-	composer self-update
+#	composer self-update
 	composer install --prefer-source
 	./vendor/bin/phpcs --config-set ignore_warnings_on_exit 1
 	./vendor/bin/phpcs --config-set colors 1
