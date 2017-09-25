@@ -20,7 +20,6 @@ git checkout master
 echo -n $TAG > $VF
 cat $CF | jq '.version ="'$TAG'"' > ${CF}"2"
 mv ${CF}"2" ${CF}
-cd ../wscli-php-sdk/; composer update; cd -
 git add $VF $CF $LF composer.lock
 git commit -m 'Bump VERSION' $VF $CF $LF || true
 git push
