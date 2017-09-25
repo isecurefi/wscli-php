@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "efcd713d0d4f51f8df76035e4ed474da",
+    "content-hash": "10c3a054bb60b090eb24e5de2d9735e6",
     "packages": [
         {
             "name": "isecurefi/swagger-wscli-php-sdk",
