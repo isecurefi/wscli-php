@@ -22,7 +22,6 @@ comp-release:
 comp:
 	composer self-update
 	composer install --prefer-source
-	composer update
 	./vendor/bin/phpcs --config-set ignore_warnings_on_exit 1
 	./vendor/bin/phpcs --config-set colors 1
 

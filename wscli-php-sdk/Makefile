@@ -16,7 +16,6 @@ swagger-php-sdk: swagger-codegen-cli.jar wsapi_v2.json
 comp:
 	composer self-update
 	composer install --prefer-source
-	composer update
 
 build: swagger-php-sdk comp
 	php -l src/*.php
