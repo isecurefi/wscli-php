@@ -5,8 +5,9 @@ wscli.phar.version
 
 wscli-php-sdk/wsapi_v2.json
 wscli-php-sdk/vendor/
+wscli-php-sdk/build/
+wscli-php-sdk/wscli_sdk.log
 wscli-php-sdk/.php_cs.cache
-wscli-php-sdk/composer.lock
 wscli-php-sdk/swagger-codegen-cli.jar
 
 wscli-php/wscli.phar
@@ -15,7 +16,6 @@ wscli-php/build
 wscli-php/.php_cs.cache
 wscli-php/.settings.yaml
 wscli-php/swagger-php-sdk
-wscli-php/composer.lock
 wscli-php/wscli.log
 wscli-php/wscli_sdk.log
 wscli-php/wscli-signing.key

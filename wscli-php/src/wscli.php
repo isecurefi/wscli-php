@@ -7,7 +7,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Docopt\Docopt;
-use IsecureFi\WsCli;
+use IsecureFi\WsCliPhpSdk\WsCli;
 use Swagger\Client\ApiException;
 
 $doc = <<<DOC
@@ -207,7 +207,7 @@ function main()
 
     // API arguments are passed as an associative array when
     // instantiating the class.
-    $sdk = new \IsecureFi\WsCliPhpSdk\WsCli($args->args);
+    $sdk = new WsCli($args->args);
     try {
         $res = $sdk->${"cmd"}();
     } catch (ApiException $e) {

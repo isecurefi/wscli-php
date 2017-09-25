@@ -8,12 +8,17 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
+VF="../wscli-php-sdk/src/VERSION"
 TAG=$1
 
 #
 # Tag & build master branch
 #
 git checkout master
+echo -n $1 > $VF
+git add $VF
+git commit -m 'Bump VERSION' $VF
+git push
 git tag -a -m "Release v${TAG}" ${TAG}
 make release
 

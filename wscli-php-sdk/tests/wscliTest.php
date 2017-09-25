@@ -1,6 +1,6 @@
 <?php
 
-use IsecureFi\WsCliPhpSdk\WsCliAccount;
+use IsecureFi\WsCliPhpSdk\WsCli;
 use PHPUnit\Framework\TestCase;
 
 class WsCliPhpSdkTest extends TestCase
@@ -8,17 +8,19 @@ class WsCliPhpSdkTest extends TestCase
     /**
      * @var WsCliPhpSdk
      */
-    protected $wsclisdk;
+    protected $wscli;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->wscli_account = new WsCliAccount;
+        $opts = [];
+        $opts['version'] = 'test 0.0.1';
+        $this->wscli = new WsCli($opts);
     }
 
     public function testNew()
     {
-        $actual = $this->wscli_account;
-        $this->assertInstanceOf('\IsecureFi\WsCliPhpSdk\WsCliAccount', $actual);
+        $this->assertInstanceOf('\IsecureFi\WsCliPhpSdk\WsCli', $this->wscli);
+        echo $this->wscli->version();
     }
 }
