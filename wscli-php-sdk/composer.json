@@ -10,7 +10,7 @@
   ],
   "homepage": "https://www.isecure.fi/",
   "time": "2017-07-01",
-  "license": "proprietary",
+  "license": "MIT",
   "authors": [
     {
       "name": "Dan Forsberg",
