@@ -15,8 +15,10 @@ TAG=$1
 # Tag & build master branch
 #
 git checkout master
-echo -n $1 > $VF
-git add $VF
+echo -n $TAG > $VF
+cat composer.json | jq '.version ="'$TAG'"' > composer.json2
+mv composer.json2 composer.json
+git add $VF composer.json
 git commit -m 'Bump VERSION' $VF
 git push
 git tag -a -m "Release v${TAG}" ${TAG}
