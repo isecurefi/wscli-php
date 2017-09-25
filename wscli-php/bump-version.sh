@@ -18,7 +18,7 @@ git checkout master
 echo -n $TAG > $VF
 cat ../wscli-php-sdk/composer.json | jq '.version ="'$TAG'"' > composer.json2
 mv composer.json2 ../wscli-php-sdk/composer.json
-git add $VF composer.json
+git add $VF ../wscli-php-sdk/composer.json
 git commit -m 'Bump VERSION' $VF
 git push
 git tag -a -m "Release v${TAG}" ${TAG}
