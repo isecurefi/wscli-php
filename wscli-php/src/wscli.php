@@ -10,6 +10,7 @@ use Docopt\Docopt;
 use IsecureFi\WsCliPhpSdk\WsCli;
 use Swagger\Client\ApiException;
 
+global $doc;
 $doc = <<<DOC
 
 ISECure WS-Channel command line client for transferring files with
