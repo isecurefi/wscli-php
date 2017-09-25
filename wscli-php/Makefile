@@ -1,6 +1,6 @@
 .PHONY: build clean dist-clean release comp-release
 
-run: comp cs-fix build coverage
+run: comp cs-fix build # coverage
 	php src/wscli.php --version
 
 release: build comp-release
@@ -34,8 +34,8 @@ build: clean comp
 test: build
 	composer test
 
-coverage: build
-	composer coverage
+#coverage: build
+#	composer coverage
 
 cs-fix:
 	composer cs-fix
