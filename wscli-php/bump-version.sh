@@ -9,6 +9,8 @@ if [ $# -ne 1 ]; then
 fi
 
 VF="../wscli-php-sdk/src/VERSION"
+CF="../wscli-php-sdk/composer.json"
+LF="../wscli-php-sdk/composer.lock"
 TAG=$1
 
 #
@@ -16,10 +18,11 @@ TAG=$1
 #
 git checkout master
 echo -n $TAG > $VF
-cat ../wscli-php-sdk/composer.json | jq '.version ="'$TAG'"' > composer.json2
-mv composer.json2 ../wscli-php-sdk/composer.json
-git add $VF ../wscli-php-sdk/composer.json
-git commit -m 'Bump VERSION' $VF ../wscli-php-sdk/composer.json
+cat $CF | jq '.version ="'$TAG'"' > ${CF}"2"
+mv ${CF}"2" ${CF}
+cd ../wscli-php-sdk/; composer update; cd -
+git add $VF $CF $LF
+git commit -m 'Bump VERSION' $VF $CF $LF
 git push
 git tag -a -m "Release v${TAG}" ${TAG}
 make release
