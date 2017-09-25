@@ -1,83 +1,87 @@
 {
-    "name": "isecurefi/wscli-php-sdk",
-    "description": "ISECure WS-Channel PHP SDK",
-    "type": "library",
-    "version": "0.8.3",
-    "keywords": [
-        "WS-Channel",
-        "wscli-php-sdk",
-        "php-sdk"
-    ],
-    "homepage": "https://www.isecure.fi/",
-    "time": "2017-07-01",
-    "license": "proprietary",
-    "authors": [{
-        "name": "Dan Forsberg",
-        "email": "dan.forsberg@isecure.fi",
-        "homepage": "https://www.isecure.fi",
-        "role": "Developer"
-    }],
-    "support": {
-        "email": "dan.forsberg@isecure.fi"
-    },
-    "repositories": [{
-        "type": "path",
-        "url": "swagger-php-sdk/SwaggerClient-php/",
-        "options": {
-            "symlink": true
-        }
-    }],
-    "require": {
-        "php": ">=5.6.0",
-        "phpseclib/phpseclib": "^2.0",
-        "monolog/monolog": "^1.23",
-        "isecurefi/swagger-wscli-php-sdk": "*",
-        "symfony/yaml": "^3.3",
-        "sebastian/version": "^2.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^5.7 || ^6.0",
-        "squizlabs/php_codesniffer": "^3.1",
-        "friendsofphp/php-cs-fixer": "^2.3",
-        "phpmd/phpmd": "^2.6",
-        "phploc/phploc": "^4.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "IsecureFi\\WsCliPhpSdk\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "IsecureFi\\WsCliPhpSdk\\": [
-                "tests/",
-                "tests/Fake"
-            ]
-        }
-    },
-    "scripts": {
-        "test": [
-            "phpmd src text ./phpmd.xml",
-            "@cs",
-            "phpunit"
-        ],
-        "coverage": [
-            "php -dzend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"
-        ],
-        "cs": [
-            "php-cs-fixer fix -v src",
-            "phpcs --standard=./phpcs.xml src"
-        ],
-        "cs-fix": [
-            "php-cs-fixer fix -v src",
-            "phpcbf src"
-        ],
-        "build": [
-            "rm -rf ./build; mkdir -p ./build/logs ./build/pdepend",
-            "pdepend --jdepend-xml=./build/logs/jdepend.xml --jdepend-chart=./build/pdepend/dependencies.svg --overview-pyramid=./build/pdepend/overview-pyramid.svg src",
-            "phploc --log-csv ./build/logs/phploc.csv src",
-            "@cs",
-            "@test"
-        ]
+  "name": "isecurefi/wscli-php-sdk",
+  "description": "ISECure WS-Channel PHP SDK",
+  "type": "library",
+  "version": "0.8.4",
+  "keywords": [
+    "WS-Channel",
+    "wscli-php-sdk",
+    "php-sdk"
+  ],
+  "homepage": "https://www.isecure.fi/",
+  "time": "2017-07-01",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Dan Forsberg",
+      "email": "dan.forsberg@isecure.fi",
+      "homepage": "https://www.isecure.fi",
+      "role": "Developer"
     }
+  ],
+  "support": {
+    "email": "dan.forsberg@isecure.fi"
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "swagger-php-sdk/SwaggerClient-php/",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "phpseclib/phpseclib": "^2.0",
+    "monolog/monolog": "^1.23",
+    "isecurefi/swagger-wscli-php-sdk": "*",
+    "symfony/yaml": "^3.3",
+    "sebastian/version": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7 || ^6.0",
+    "squizlabs/php_codesniffer": "^3.1",
+    "friendsofphp/php-cs-fixer": "^2.3",
+    "phpmd/phpmd": "^2.6",
+    "phploc/phploc": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "IsecureFi\\WsCliPhpSdk\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "IsecureFi\\WsCliPhpSdk\\": [
+        "tests/",
+        "tests/Fake"
+      ]
+    }
+  },
+  "scripts": {
+    "test": [
+      "phpmd src text ./phpmd.xml",
+      "@cs",
+      "phpunit"
+    ],
+    "coverage": [
+      "php -dzend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"
+    ],
+    "cs": [
+      "php-cs-fixer fix -v src",
+      "phpcs --standard=./phpcs.xml src"
+    ],
+    "cs-fix": [
+      "php-cs-fixer fix -v src",
+      "phpcbf src"
+    ],
+    "build": [
+      "rm -rf ./build; mkdir -p ./build/logs ./build/pdepend",
+      "pdepend --jdepend-xml=./build/logs/jdepend.xml --jdepend-chart=./build/pdepend/dependencies.svg --overview-pyramid=./build/pdepend/overview-pyramid.svg src",
+      "phploc --log-csv ./build/logs/phploc.csv src",
+      "@cs",
+      "@test"
+    ]
+  }
 }
