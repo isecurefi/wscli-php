@@ -151,10 +151,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->getBodyParams(),
-                $this->opts['email'],
-                $this->opts['mode']
-                    );
+                    $this->getBodyParams(),
+                    $this->opts['email'],
+                    $this->opts['mode']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "verifyEmail":
@@ -170,10 +170,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->getBodyParams(),
-                $this->opts['email'],
-                $this->opts['mode']
-                    );
+                    $this->getBodyParams(),
+                    $this->opts['email'],
+                    $this->opts['mode']
+                );
                     $this->log->debug(print_r($resp, true));
                 if ($fromApi && $fromCmd && $fromCmd != $this->opts['<cmd>']) {
                     $this->log->debug("Callbacking to " . $fromApi . "->" . $fromCmd);
@@ -196,11 +196,11 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->getBodyParams(),
-                $this->opts['email'],
-                $this->opts['mode'],
-                $this->opts['phone']
-                    );
+                    $this->getBodyParams(),
+                    $this->opts['email'],
+                    $this->opts['mode'],
+                    $this->opts['phone']
+                );
                     $this->log->debug(print_r($resp, true));
                 if ($fromApi && $fromCmd && $fromCmd != $this->opts['<cmd>']) {
                     $this->log->debug("Callbacking to " . $fromApi . "->" . $fromCmd);
@@ -269,10 +269,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->opts['email'],
-                $this->opts['mode']
-                    );
+                    $this->opts['idtoken'],
+                    $this->opts['email'],
+                    $this->opts['mode']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "loginMFA":
@@ -309,10 +309,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->getBodyParams(),
-                $this->opts['email'],
-                $this->opts['mode']
-                    );
+                    $this->getBodyParams(),
+                    $this->opts['email'],
+                    $this->opts['mode']
+                );
                     $this->opts['code'] = ''; // Reset code if any
                     $this->log->debug(print_r($resp, true));
                 if ($resp['response_code'] == "00" &&
@@ -370,11 +370,11 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->opts['bank'],
-                $this->opts['filestatus'],
-                $this->opts['filetype']
-                    );
+                    $this->opts['idtoken'],
+                    $this->opts['bank'],
+                    $this->opts['filestatus'],
+                    $this->opts['filetype']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "downloadFile":
@@ -383,11 +383,11 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->opts['bank'],
-                $this->opts['filetype'],
-                $this->opts['filereference']
-                    );
+                    $this->opts['idtoken'],
+                    $this->opts['bank'],
+                    $this->opts['filetype'],
+                    $this->opts['filereference']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "uploadFile":
@@ -396,10 +396,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->getBodyParams(),
-                $this->opts['bank']
-                    );
+                    $this->opts['idtoken'],
+                    $this->getBodyParams(),
+                    $this->opts['bank']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "downloadFiles":
@@ -516,8 +516,8 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken']
-                    );
+                    $this->opts['idtoken']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "uploadKey":
@@ -526,9 +526,9 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->getBodyParams() // PgpKey
-                    );
+                    $this->opts['idtoken'],
+                    $this->getBodyParams() // PgpKey
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "deleteKey":
@@ -537,9 +537,9 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->getBodyParams() // PgpKeyId
-                    );
+                    $this->opts['idtoken'],
+                    $this->getBodyParams() // PgpKeyId
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             default:
@@ -565,10 +565,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->getBodyParams(),
-                $this->opts['bank']
-                    );
+                    $this->opts['idtoken'],
+                    $this->getBodyParams(),
+                    $this->opts['bank']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "importCert":
@@ -580,10 +580,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->getBodyParams(),
-                $this->opts['bank']
-                    );
+                    $this->opts['idtoken'],
+                    $this->getBodyParams(),
+                    $this->opts['bank']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "exportCert":
@@ -592,10 +592,10 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->opts['bank'],
-                $this->opts['pgpkeyid']
-                    );
+                    $this->opts['idtoken'],
+                    $this->opts['bank'],
+                    $this->opts['pgpkeyid']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "shareCerts":
@@ -604,9 +604,9 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->opts['extemail']
-                    );
+                    $this->opts['idtoken'],
+                    $this->opts['extemail']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "unshareCerts":
@@ -615,9 +615,9 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken'],
-                $this->opts['extemail']
-                    );
+                    $this->opts['idtoken'],
+                    $this->opts['extemail']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             case "listCerts":
@@ -626,8 +626,8 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken']
-                    );
+                    $this->opts['idtoken']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             default:
@@ -650,8 +650,8 @@ class WsCli
                     return $error;
                 }
                 $resp = $this->${"api"}->${"cmd"}(
-                $this->opts['idtoken']
-                    );
+                    $this->opts['idtoken']
+                );
                     $this->log->debug(print_r($resp, true));
                 return $resp;
             default:
