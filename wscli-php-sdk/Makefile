@@ -34,7 +34,7 @@ cs-fix:
 	composer cs-fix
 
 clean:
-	rm -rf composer.phar composer.lock build/ .php_cs.*
+	rm -rf composer.phar build/ .php_cs.*
 	find . -name "*~" -exec rm -f {} ";" -print
 
 dist-clean: clean
