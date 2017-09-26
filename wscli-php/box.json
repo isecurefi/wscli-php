@@ -13,7 +13,8 @@
         "vendor/phpseclib",
         "vendor/psr",
         "vendor/padraic",
-        "vendor/symfony"
+        "vendor/symfony",
+        "vendor/sebastian/version"
     ],
     "git-version": "package_version",
     "compression": "GZ",
