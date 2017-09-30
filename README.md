@@ -1,4 +1,4 @@
-[![Dependency Status](https://www.versioneye.com/user/projects/59c778be2de28c79bdf1f43e/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59c778be2de28c79bdf1f43e)
+SDK: [![Dependency Status](https://www.versioneye.com/user/projects/59c778be2de28c79bdf1f43e/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59c778be2de28c79bdf1f43e) CLI: [![Dependency Status](https://www.versioneye.com/user/projects/59cfd0fa15f0d723dfb9023f/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59cfd0fa15f0d723dfb9023f)
 
 ## WSCLI command line tool and SDK for PHP
 
