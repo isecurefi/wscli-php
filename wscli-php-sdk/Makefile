@@ -12,6 +12,7 @@ swagger-codegen-cli.jar:
 swagger-php-sdk: swagger-codegen-cli.jar wsapi_v2.json
 	rm -rf swagger-php-sdk
 	java -jar swagger-codegen-cli.jar generate --config swagger-conf.json -i wsapi_v2.json -l php -o swagger-php-sdk
+	cp LICENSE swagger-php-sdk/LICENSE
 
 comp:
 	composer self-update
