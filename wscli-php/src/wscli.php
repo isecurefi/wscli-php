@@ -44,9 +44,9 @@ Usage:
   wscli certs exportCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pgpkeyid=<pgpkeyid>]
   wscli certs shareCerts        [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
   wscli certs unshareCerts      [-c CONF] [-a APIKEY] [-i IDTOKEN] [--extemail=<extemail>]
-  wscli certs enrollCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pincode=<pincode>] [--company=<company>] [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>]
+  wscli certs enrollCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--pincode=<pincode>] [--company=<company>] [--wsuserid=<wsuserid>]
   wscli certs importCert        [-c CONF] [-a APIKEY] [-i IDTOKEN] [-b BANK] [--certificate=<pem>] [--privatekey=<pem>]
-                                [--wsuserid=<wsuserid>] [--wstargetid=<wstargetid>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
+                                [--wsuserid=<wsuserid>] [--enccertificate=<pem>] [--encprivatekey=<pem>]
   wscli pgp listKeys            [-c CONF] [-a APIKEY] [-i IDTOKEN]
   wscli pgp deleteKey           [-c CONF] [-a APIKEY] [-i IDTOKEN] [--pgpkeyid=<pgpkeyid>]
   wscli pgp uploadKey           [-c CONF] [-a APIKEY] [-i IDTOKEN]
@@ -80,7 +80,6 @@ Options:
   --extemail=<extemail>                  Link extemail to this account for certificates sharing
   --code=<code>                          SMS MFA code or email verification code
   --pincode=<pincode>                    PIN code for WS certificate enrollment
-  --wstargetid=<wstargetid>              Use wstargetid in certificate enrollment
   --wsuserid=<wsuserid>                  Use wsuserid in certificate enrollment
   --pgpkeyid=<pgpkeyid>                  PGP/GPG Key Id
   --outfilename=<outfilename>            Output filename for exported cert in PEM format

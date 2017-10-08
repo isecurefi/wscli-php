@@ -734,7 +734,6 @@ class WsCli
             'Name' => array_key_exists('name', $this->opts) ? $this->opts['name'] : '',
             'Phone' => array_key_exists('phone', $this->opts) ? $this->opts['phone'] : '',
             'WsUserId' => array_key_exists('wsuserid', $this->opts) ? $this->opts['wsuserid'] : '',
-            'WsTargetId' => array_key_exists('wstargetid', $this->opts) ? $this->opts['wstargetid'] : '',
             'Certificate' => array_key_exists('certificate', $this->opts) ? $this->opts['certificate'] : '',
             'PrivateKey' => array_key_exists('privatekey', $this->opts) ? $this->opts['privatekey'] : '',
             'EncCertificate' => array_key_exists('enccertificate', $this->opts) ? $this->opts['enccertificate'] : '',

@@ -74,7 +74,7 @@ Name | Type | Description  | Notes
 
 EnrollCert
 
-Provide WS-Channel user id, _WsUserId_, _WsTargetId_, _Company_, and PIN _Code_ for _Bank_ certificate enrollment. _Company_ must match with the contract with the bank and is part of enrollment process. Note that certificate private key is securely generated and stored encrypted on service side and never leaves from there. Certificates are automatically renewed when needed.
+Provide WS-Channel user id, _WsUserId_, _Company_, and PIN _Code_ for _Bank_ certificate enrollment. _Company_ must match with the contract with the bank and is part of enrollment process. Note that certificate private key is securely generated and stored encrypted on service side and never leaves from there. Certificates are automatically renewed when needed.
 
 ### Example
 ```php
@@ -93,7 +93,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 $api_instance = new Swagger\Client\Api\CertsApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 $enroll_cert_req = new \Swagger\Client\Model\EnrollCertReq(); // \Swagger\Client\Model\EnrollCertReq | Certs parameters
-$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, or `alandsbanken`.
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `pop`, `spankki`, or `alandsbanken`.
 
 try {
     $result = $api_instance->enrollCert($authorization, $enroll_cert_req, $bank);
@@ -110,7 +110,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
  **enroll_cert_req** | [**\Swagger\Client\Model\EnrollCertReq**](../Model/\Swagger\Client\Model\EnrollCertReq.md)| Certs parameters |
- **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
 
 ### Return type
 
@@ -150,7 +150,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 
 $api_instance = new Swagger\Client\Api\CertsApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
-$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, or `alandsbanken`.
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `pop`, `spankki`, or `alandsbanken`.
 $pgp_key_id = "pgp_key_id_example"; // string | Short version of a PGP Key id idenfiying the exported Private Key, e.g. `3A3A59B2`
 
 try {
@@ -167,7 +167,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
  **pgp_key_id** | **string**| Short version of a PGP Key id idenfiying the exported Private Key, e.g. &#x60;3A3A59B2&#x60; |
 
 ### Return type
@@ -190,7 +190,7 @@ Name | Type | Description  | Notes
 
 ImportCert
 
-Provide _WsUserId_, _WsTargetId_, _Company_, _PrivateKey_, and _Certificate_ for importing existing WS Channel certificate and private key. _Company_ must match with the contract with the bank. Certificate(s) and private key(s) must be PEM formatted.  - **NOTE:** _EncCcertificate_ and _EncPrivatekey_ are for DanskeBank only.
+Provide _WsUserId_, _Company_, _PrivateKey_, and _Certificate_ for importing existing WS Channel certificate and private key. _Company_ must match with the contract with the bank. Certificate(s) and private key(s) must be PEM formatted.  - **NOTE:** _EncCcertificate_ and _EncPrivatekey_ are for DanskeBank only.
 
 ### Example
 ```php
@@ -209,7 +209,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 $api_instance = new Swagger\Client\Api\CertsApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 $import_cert_req = new \Swagger\Client\Model\ImportCertReq(); // \Swagger\Client\Model\ImportCertReq | Certs parameters
-$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, or `alandsbanken`.
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `pop`, `spankki`, or `alandsbanken`.
 
 try {
     $result = $api_instance->importCert($authorization, $import_cert_req, $bank);
@@ -226,7 +226,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
  **import_cert_req** | [**\Swagger\Client\Model\ImportCertReq**](../Model/\Swagger\Client\Model\ImportCertReq.md)| Certs parameters |
- **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
 
 ### Return type
 

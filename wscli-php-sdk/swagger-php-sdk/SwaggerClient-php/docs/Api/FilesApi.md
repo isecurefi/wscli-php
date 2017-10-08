@@ -33,7 +33,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
-$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `pop`, `spankki`, `alandsbanken` or `SEB`.
 $file_type = "file_type_example"; // string | File reference *id* from list files
 $file_reference = "file_reference_example"; // string | File reference *id* from list files
 
@@ -51,7 +51,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
  **file_type** | **string**| File reference *id* from list files |
  **file_reference** | **string**| File reference *id* from list files |
 
@@ -93,7 +93,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
-$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `pop`, `spankki`, `alandsbanken` or `SEB`.
 $file_type = "file_type_example"; // string | File type from list files
 $file_reference = "file_reference_example"; // string | File reference identifier from list files
 
@@ -111,7 +111,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
  **file_type** | **string**| File type from list files |
  **file_reference** | **string**| File reference identifier from list files |
 
@@ -153,7 +153,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
-$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `pop`, `spankki`, `alandsbanken` or `SEB`.
 $status = "status_example"; // string | Status of the *file*, e.g. `ALL`. `NEW`, `DLD`
 $file_type = "file_type_example"; // string | *Bank* specific *FileType* identifies the file type to be listed
 
@@ -171,7 +171,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
  **status** | **string**| Status of the *file*, e.g. &#x60;ALL&#x60;. &#x60;NEW&#x60;, &#x60;DLD&#x60; | [optional]
  **file_type** | **string**| *Bank* specific *FileType* identifies the file type to be listed | [optional]
 
@@ -214,7 +214,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', 
 $api_instance = new Swagger\Client\Api\FilesApi();
 $authorization = "authorization_example"; // string | Use _IdToken_ from the Login response as the Authorization header
 $upload_file_req = new \Swagger\Client\Model\UploadFileReq(); // \Swagger\Client\Model\UploadFileReq | Files parameters
-$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `spankki`, `alandsbanken` or `SEB`.
+$bank = "bank_example"; // string | *Bank* used for this operation, can have values of `nordea`, `osuuspankki`, `danskebank`, `aktia`, `sp`, `shb`, `pop`, `spankki`, `alandsbanken` or `SEB`.
 
 try {
     $result = $api_instance->uploadFile($authorization, $upload_file_req, $bank);
@@ -231,7 +231,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
  **upload_file_req** | [**\Swagger\Client\Model\UploadFileReq**](../Model/\Swagger\Client\Model\UploadFileReq.md)| Files parameters |
- **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
+ **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
 
 ### Return type
 
