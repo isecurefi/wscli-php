@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ch_resp** | **string** | Challenge copied from server response | 
+**ch_resp** | **string** | Challenge copied from API response | 
 **code** | **string** | Code from SMS | 
 **encrypted** | **string** | RSA encrypted NEW password and timestamp | 
 

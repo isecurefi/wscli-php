@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 InitLogin
 
-Before login, client must fetch `challenge` from the server. Then on login, the challenge must be passed along to the server (as response to the challenge). The challenge is always fresh for some period of time and the server validates it when passed with login. The challenge has form of `base64-string|timestamp|uuid`. For example:  ```ezwXceQ63fV9oWTSJBAE2Zq1Cw5tBIJe+7+Rl8jrgbk=|1475429754114|4017bda8-0a15-4154-a8b7-88069b05cb4e```  **NOTE:** The call must contain the same email as used for registration itself.
+Before login, client must fetch `challenge` from the API. Then on login, the challenge must be passed along to the API (as response to the challenge). The challenge is always fresh for some period of time and the API validates it when passed with login. The challenge has form of `base64-string|timestamp|uuid`. For example:  ```ezwXceQ63fV9oWTSJBAE2Zq1Cw5tBIJe+7+Rl8jrgbk=|1475429754114|4017bda8-0a15-4154-a8b7-88069b05cb4e```  **NOTE:** The call must contain the same email as used for registration itself.
 
 ### Example
 ```php
@@ -87,7 +87,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **login_req** | [**\Swagger\Client\Model\LoginReq**](../Model/\Swagger\Client\Model\LoginReq.md)| Login body parameters |
+ **login_req** | [**\Swagger\Client\Model\LoginReq**](../Model/LoginReq.md)| Login body parameters |
  **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
  **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
 
@@ -136,7 +136,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **login_mfa_req** | [**\Swagger\Client\Model\LoginMFAReq**](../Model/\Swagger\Client\Model\LoginMFAReq.md)| Session parameters |
+ **login_mfa_req** | [**\Swagger\Client\Model\LoginMFAReq**](../Model/LoginMFAReq.md)| Session parameters |
  **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
  **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
 

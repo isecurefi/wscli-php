@@ -64,7 +64,7 @@ No authorization required
 
 InitRegister
 
-Before register (or login), client must fetch `challenge` from the server. Then on register (or login), the challenge must be passed along to the server (as response to the challenge). The challenge is always fresh for some period of time and the server validates it when passed with register (or login). The challenge has form of `base64-string|timestamp|uuid`. For example:  ```ezwXceQ63fV9oWTSJBAE2Zq1Cw5tBIJe+7+Rl8jrgbk=|1475429754114|4017bda8-0a15-4154-a8b7-88069b05cb4e```  **NOTE:** The call must contain the same email as used for registration itself.
+Before register (or login), client must fetch `challenge` from the API. Then on register (or login), the challenge must be passed along to the API (as response to the challenge). The challenge is always fresh for some period of time and the API validates it when passed with register (or login). The challenge has form of `base64-string|timestamp|uuid`. For example:  ```ezwXceQ63fV9oWTSJBAE2Zq1Cw5tBIJe+7+Rl8jrgbk=|1475429754114|4017bda8-0a15-4154-a8b7-88069b05cb4e```  **NOTE:** The call must contain the same email as used for registration itself.
 
 ### Example
 ```php
@@ -136,7 +136,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **password_reset_req** | [**\Swagger\Client\Model\PasswordResetReq**](../Model/\Swagger\Client\Model\PasswordResetReq.md)| Account parameters |
+ **password_reset_req** | [**\Swagger\Client\Model\PasswordResetReq**](../Model/PasswordResetReq.md)| Account parameters |
  **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
  **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
 
@@ -160,7 +160,7 @@ No authorization required
 
 Register
 
-You need to register both *admin* and *data* accounts with the same email address. Both accounts share the same data, but are used for different purposes. *Admin* account must be registered first, then *data* account.  *Admin* account is used to configure setup with **Certs** and **Pgp** operations, while the *data* account is used with **Files** operations only. Both accounts use **Account** and **Session** operations.  *Admin* account always requires SMS MFA during login, whilst *data* account does not. Generally, the *data* account is considered *read-noly* when no PGP keys are configured, since PGP Keys are used to verify file upload signatures and are thus required to successfully upload files with **Files** *UploadFile* operation.  Registrations are independent for both accounts, *admin* and *data* and both require phone number and email verifications.  `email` is the login username for both accounts and `mode` defines the selected &quot;mode&quot; for the login, i.e. *admin* or *data*.  Before registration client must fetch challenge from server (see Account InitRegister operation) and pass it back within the `ChResp` parameter.  The following parameters `name`, `phone`, and `company` are required and must be valid (`phone`, `email`) as they need to be confirmed before registration becomes successful and login possible.  Client must RSA encrypt (OAEP padding) the _password_ and the challenge _timestamp_ as string in the form `password||timestamp`, base64 encode it and provide the resulting string as `Encrypted` parameter. The RSA encryption can be done e.g. for illustration purposes within command line with openssl rsautl: ``` echo -n 'Toddler_..123456789012345||1475175151231' |  openssl rsautl -oaep -encrypt -pubin -inkey server_rsa_public_key.pem |  base64  ```  The **test** server's RSA public key is as follows:  ``` -----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkuSaoSZztGAIGDTY7Rff psBHJJT1k207UodOJbYFhHAq0lWJnvMPLl5Q1DUUZdTGtTdL8Dsaj/Bo2+gSykMM R5QiKewvQsLfvqjwOO8JDItnhJl0lUqcPpdQV4M/Ai3YNRjNcVy4a+pichqtSAWl 9S1HV01MNeouk8PEr/zoUasmgfO3mz6N6XTUtF/tIi8K2kBOsLAtqltihFSd/zT8 ifYZE9cZTJ09lUs7kMz1wxFIsiegaE1jUYV+VSLu3PJ97oKhQpqop8EnkBAoBl6r mdmFryBQIdakPIdd4rO5Yg+to10n4u7Wij9ePIwWMfbqY4QoW5nXqMgFJQkIt4TG eQIDAQAB -----END PUBLIC KEY-----  ```  The **production** server's RSA public key is as follows:  ``` -----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQ EA7wx4l7P3eLsaEyK7ZRMEg5urEHwaEoY9LjkYcpMw 9gmPIi3RoGjQX7HzPad2D7ES2yIGdmyxjN8R2LyFa8 keEE+VY3ISYzP2cOjd/zDkX01yjDXQLRxntXbtqIyp GQAzmZbCyIB226ZKEE+ldh6MYyM41YWYikfocYssFE jY7fpPGeUg4FOmHmyWIZeMkXYovskoi1jZ1Ay1qn95 XlpA/Ptru2efro4T1xksv4WBBrj8bMNwdDpf4oyzH2 PKYkn3/KlNTBCHlAmzP0jd4pIaN0tAf2m8TcNq7kuB zyfs8AcCUj870p8SEiko0PMx6K+zVsTVWsxfUX+/+k mapmp/AwIDAQAB -----END PUBLIC KEY-----  ```    - **NOTE:** Password must be at least 20 characters long, have lower and upper case letters, numbers, and special characters. - **NOTE:** Phone number must be provided with country code, e.g. `+358404982201`.
+You need to register both *admin* and *data* accounts with the same email address. Both accounts share the same data, but are used for different purposes. *Admin* account must be registered first, then *data* account.  *Admin* account is used to configure setup with **Certs** and **Pgp** operations, while the *data* account is used with **Files** operations only. Both accounts use **Account** and **Session** operations.  *Admin* account always requires SMS MFA during login, whilst *data* account does not. Generally, the *data* account is considered *read-noly* when no PGP keys are configured, since PGP Keys are used to verify file upload signatures and are thus required to successfully upload files with **Files** *UploadFile* operation.  Registrations are independent for both accounts, *admin* and *data* and both require phone number and email verifications.  `email` is the login username for both accounts and `mode` defines the selected &quot;mode&quot; for the login, i.e. *admin* or *data*.  Before registration client must fetch challenge from API (see Account InitRegister operation) and pass it back within the `ChResp` parameter.  The following parameters `name`, `phone`, and `company` are required and must be valid (`phone`, `email`) as they need to be confirmed before registration becomes successful and login possible.  Client must RSA encrypt (OAEP padding) the _password_ and the challenge _timestamp_ as string in the form `password||timestamp`, base64 encode it and provide the resulting string as `Encrypted` parameter. The RSA encryption can be done e.g. for illustration purposes within command line with openssl rsautl: ``` echo -n 'Toddler_..123456789012345||1475175151231' |  openssl rsautl -oaep -encrypt -pubin -inkey server_rsa_public_key.pem |  base64  ```  The **test** API's RSA public key is as follows:  ``` -----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkuSaoSZztGAIGDTY7Rff psBHJJT1k207UodOJbYFhHAq0lWJnvMPLl5Q1DUUZdTGtTdL8Dsaj/Bo2+gSykMM R5QiKewvQsLfvqjwOO8JDItnhJl0lUqcPpdQV4M/Ai3YNRjNcVy4a+pichqtSAWl 9S1HV01MNeouk8PEr/zoUasmgfO3mz6N6XTUtF/tIi8K2kBOsLAtqltihFSd/zT8 ifYZE9cZTJ09lUs7kMz1wxFIsiegaE1jUYV+VSLu3PJ97oKhQpqop8EnkBAoBl6r mdmFryBQIdakPIdd4rO5Yg+to10n4u7Wij9ePIwWMfbqY4QoW5nXqMgFJQkIt4TG eQIDAQAB -----END PUBLIC KEY-----  ```  The **production** API's RSA public key is as follows:  ``` -----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7wx4l7P3eLsaEyK7ZRME g5urEHwaEoY9LjkYcpMw9gmPIi3RoGjQX7HzPad2D7ES2yIGdmyxjN8R2LyFa8ke EE+VY3ISYzP2cOjd/zDkX01yjDXQLRxntXbtqIypGQAzmZbCyIB226ZKEE+ldh6M YyM41YWYikfocYssFEjY7fpPGeUg4FOmHmyWIZeMkXYovskoi1jZ1Ay1qn95XlpA /Ptru2efro4T1xksv4WBBrj8bMNwdDpf4oyzH2PKYkn3/KlNTBCHlAmzP0jd4pIa N0tAf2m8TcNq7kuBzyfs8AcCUj870p8SEiko0PMx6K+zVsTVWsxfUX+/+kmapmp/ AwIDAQAB -----END PUBLIC KEY-----  ```    - **NOTE:** Password must be at least 20 characters long, have lower and upper case letters, numbers, and special characters. - **NOTE:** Phone number must be provided with country code, e.g. `+358404982201`.
 
 ### Example
 ```php
@@ -185,7 +185,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **register_req** | [**\Swagger\Client\Model\RegisterReq**](../Model/\Swagger\Client\Model\RegisterReq.md)| Account parameters |
+ **register_req** | [**\Swagger\Client\Model\RegisterReq**](../Model/RegisterReq.md)| Account parameters |
  **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
  **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
 
@@ -234,7 +234,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **verify_email_req** | [**\Swagger\Client\Model\VerifyEmailReq**](../Model/\Swagger\Client\Model\VerifyEmailReq.md)| Account parameters |
+ **verify_email_req** | [**\Swagger\Client\Model\VerifyEmailReq**](../Model/VerifyEmailReq.md)| Account parameters |
  **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
  **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
 
@@ -284,7 +284,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **verify_phone_req** | [**\Swagger\Client\Model\VerifyPhoneReq**](../Model/\Swagger\Client\Model\VerifyPhoneReq.md)| Account parameters |
+ **verify_phone_req** | [**\Swagger\Client\Model\VerifyPhoneReq**](../Model/VerifyPhoneReq.md)| Account parameters |
  **email** | **string**| Email address as the account username, e.g. &#x60;dan.forsberg@isecure.fi&#x60; |
  **mode** | **string**| Administer account with &#x60;admin&#x60; mode, exchange files with &#x60;data&#x60; mode |
  **phone** | **string**| Phone number with country code, e.g. &#x60;+358401234567&#x60; |

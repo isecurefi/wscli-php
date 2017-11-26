@@ -48,7 +48,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **delete_key_req** | [**\Swagger\Client\Model\DeleteKeyReq**](../Model/\Swagger\Client\Model\DeleteKeyReq.md)| Pgp parameters |
+ **delete_key_req** | [**\Swagger\Client\Model\DeleteKeyReq**](../Model/DeleteKeyReq.md)| Pgp parameters |
 
 ### Return type
 
@@ -158,7 +158,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **upload_key_req** | [**\Swagger\Client\Model\UploadKeyReq**](../Model/\Swagger\Client\Model\UploadKeyReq.md)| ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;export&#x60; (exporting cert private key) or &#x60;authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;.  **NOTE**: The same PGP key can not be used for both &#x60;export&#x60; and &#x60;authorize&#x60; purpose at the same time. |
+ **upload_key_req** | [**\Swagger\Client\Model\UploadKeyReq**](../Model/UploadKeyReq.md)| ASCII armored PGP Key in &#x60;PgpKey&#x60; and key purpose, i.e. &#x60;export&#x60; (exporting cert private key) or &#x60;authorize&#x60; (upload content authorization verification) in &#x60;PgpKeyPurpose&#x60;.  **NOTE**: The same PGP key can not be used for both &#x60;export&#x60; and &#x60;authorize&#x60; purpose at the same time. |
 
 ### Return type
 

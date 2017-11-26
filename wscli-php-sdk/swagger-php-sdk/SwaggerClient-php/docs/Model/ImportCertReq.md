@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **enc_certificate** | **string** | Certificate in PEM format (encryption certificate for DanskeBank) | [optional] 
 **enc_privatekey** | **string** | Private key in PEM format (encryption certificate for DanskeBank) | [optional] 
 **private_key** | **string** | Private key in PEM format | 
-**ws_user_id** | **string** | WebServices channel user id as in contract with bank | 
+**ws_user_id** | **string** | *SEPA WebService*s channel user id as in contract with bank | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

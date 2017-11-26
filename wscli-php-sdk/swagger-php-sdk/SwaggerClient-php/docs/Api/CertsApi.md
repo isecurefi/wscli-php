@@ -52,7 +52,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **config_certs_req** | [**\Swagger\Client\Model\ConfigCertsReq**](../Model/\Swagger\Client\Model\ConfigCertsReq.md)| Certs handling settings |
+ **config_certs_req** | [**\Swagger\Client\Model\ConfigCertsReq**](../Model/ConfigCertsReq.md)| Certs handling settings |
 
 ### Return type
 
@@ -74,7 +74,7 @@ Name | Type | Description  | Notes
 
 EnrollCert
 
-Provide WS-Channel user id, _WsUserId_, _Company_, and PIN _Code_ for _Bank_ certificate enrollment. _Company_ must match with the contract with the bank and is part of enrollment process. Note that certificate private key is securely generated and stored encrypted on service side and never leaves from there. Certificates are automatically renewed when needed.
+Provide WS-Channel user id, _WsUserId_, _Company_, and PIN _Code_ for _Bank_ certificate enrollment. _Company_ must match with the contract with the bank and is part of enrollment process. Note that certificate private key is securely generated and stored encrypted with AWS KMS encrypted authentication on API side. Certificates are automatically renewed when needed.
 
 ### Example
 ```php
@@ -109,7 +109,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **enroll_cert_req** | [**\Swagger\Client\Model\EnrollCertReq**](../Model/\Swagger\Client\Model\EnrollCertReq.md)| Certs parameters |
+ **enroll_cert_req** | [**\Swagger\Client\Model\EnrollCertReq**](../Model/EnrollCertReq.md)| Certs parameters |
  **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
 
 ### Return type
@@ -225,7 +225,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **import_cert_req** | [**\Swagger\Client\Model\ImportCertReq**](../Model/\Swagger\Client\Model\ImportCertReq.md)| Certs parameters |
+ **import_cert_req** | [**\Swagger\Client\Model\ImportCertReq**](../Model/ImportCertReq.md)| Certs parameters |
  **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, or &#x60;alandsbanken&#x60;. |
 
 ### Return type

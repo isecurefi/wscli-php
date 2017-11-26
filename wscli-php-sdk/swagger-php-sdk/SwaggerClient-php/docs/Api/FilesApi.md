@@ -135,7 +135,7 @@ Name | Type | Description  | Notes
 
 ListFiles
 
-Asks _bank_ to list downloadable files matching filters. _Status_ can be e.g. _NEW_, _ALL_, or _DLD_. _Filetype_ is bank specific, see bank specification. _Bank_ is the name of the bank. Returns a list of _FileDescriptors_.  - **NOTE:** Certificate must be enrolled before files can be listed, downloaded or uploaded.  - **NOTE:** The uploaded files do not show up on the file listing.
+Asks _bank_ to list downloadable files matching filters. _Status_ can be e.g. _NEW_, _ALL_, or _DLD_. _Filetype_ is bank specific (ALL is not accepted), see bank specification. _Bank_ is the name of the bank. Returns a list of _FileDescriptors_.  - **NOTE:** Certificate must be enrolled before files can be listed, downloaded or uploaded.  - **NOTE:** The uploaded files do not show up on the file listing.
 
 ### Example
 ```php
@@ -230,7 +230,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **authorization** | **string**| Use _IdToken_ from the Login response as the Authorization header |
- **upload_file_req** | [**\Swagger\Client\Model\UploadFileReq**](../Model/\Swagger\Client\Model\UploadFileReq.md)| Files parameters |
+ **upload_file_req** | [**\Swagger\Client\Model\UploadFileReq**](../Model/UploadFileReq.md)| Files parameters |
  **bank** | **string**| *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. |
 
 ### Return type

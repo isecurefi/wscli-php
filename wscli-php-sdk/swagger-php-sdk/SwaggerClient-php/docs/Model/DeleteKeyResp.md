@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**pgp_keys** | [**\Swagger\Client\Model\PgpKeyDescriptor[]**](PgpKeyDescriptor.md) | List of PGP keys in service | 
+**pgp_keys** | [**\Swagger\Client\Model\PgpKeyDescriptor[]**](PgpKeyDescriptor.md) | List of PGP keys in API | 
 **response_code** | **string** | Two digit response code in string format | 
 **response_text** | **string** | Human readable response text | 
 
