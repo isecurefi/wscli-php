@@ -82,6 +82,30 @@ $ sudo wscli --rollback
 > backends. Other languages are also supported on request (C#,
 > Javascript, Python, ..).*
 
+### Create configuration file
+
+Create `~/.wscli/settings.yaml` file to keep default values for your
+setup. wscli will also add session information into the file, so your
+session is available for wscli commands readily.
+
+```
+settings:
+    filetype: KTL
+    filestatus: ALL
+    bank: nordea
+    environment: testing
+    name: 'Dan Forsberg'
+    phone: '+358404835507'
+    email: dforsber@gmail.com
+    company: 'ISECure Oy'
+    apikey: <add your apikey or "0" for new regs and update once registered>
+    password: <add 20 char long pw with big/small chars and spec chars and numbers>
+    mode: admin
+```
+
+Note that the session information is not shown in the example above.
+
+
 ## WSCLI SDK for PHP
 
 `wscli` uses WSCLI SDK for PHP that is based on OpenAPI 2.0 generated
