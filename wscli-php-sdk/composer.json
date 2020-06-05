@@ -2,7 +2,7 @@
   "name": "isecurefi/wscli-php-sdk",
   "description": "ISECure WS-Channel PHP SDK",
   "type": "library",
-  "version": "v1.0.0",
+  "version": "v1.0.1",
   "keywords": [
     "WS-Channel",
     "wscli-php-sdk",
