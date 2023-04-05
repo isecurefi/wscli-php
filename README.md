@@ -27,7 +27,7 @@ always requires SMS one-time password per login session
 e.g. filesystem (with proper permissions) for automation and managemnt
 credentials used separately (`admin` account password and phone).
 
-*To-Be-Done*: PGP keys can be used to sign file uploads (with `data`
+_To-Be-Done_: PGP keys can be used to sign file uploads (with `data`
 account) for authorization decisions, `n` of `m` signatures required
 scheme, if needed. These PGP keys are imported as `authorization`
 keys. Certificates and more precisely, their private keys, can be
@@ -49,6 +49,29 @@ only one set of bank certificates.
 > addition, the login session is preserved and checked in the settings
 > file for expiration, which makes using the command line client
 > easier.**
+
+### Run wscli on Docker
+
+You can run `wscli` through docker container.
+
+Here is an example minimal `Dockerfile`.
+
+```shell
+FROM php:5.6-zts-jessie
+RUN curl -LSs https://isecurefi.github.io/wscli-php/installer.php | php && \
+    cp wscli.phar /usr/local/bin/wscli && \
+    cp wscli.phar.pubkey /usr/local/bin/wscli.pubkey
+```
+
+And commands to use it. It assumes that you have `~/.wscli/settings.yaml`
+configuration file properly setup. So, it runs the `wscli:latest` docker
+container and the `wscli` command in it that we just installed when we
+built the container.
+
+```shell
+docker build -t wscli:latest .
+docker run -v ${HOME}/.wscli:/root/.wscli wscli wscli session login
+```
 
 ### Install wscli tool
 
@@ -76,11 +99,11 @@ $ sudo wscli --update
 $ sudo wscli --rollback
 ```
 
-> *NOTE: The `wscli` itself is distributed as PHAR file. PHP was
+> _NOTE: The `wscli` itself is distributed as PHAR file. PHP was
 > selected as the programming language to write beefed up SDK and
 > command line client as most of our clients use PHP on their
 > backends. Other languages are also supported on request (C#,
-> Javascript, Python, ..).*
+> Javascript, Python, ..)._
 
 ### Create configuration file
 
@@ -105,7 +128,6 @@ settings:
 
 Note that the session information is not shown in the example above.
 
-
 ## WSCLI SDK for PHP
 
 `wscli` uses WSCLI SDK for PHP that is based on OpenAPI 2.0 generated
@@ -127,11 +149,11 @@ $ wscli session login
 $ wscli files listFiles --bank=nordea --status=ALL --filetype=KTL
 ```
 
-NOTE: *On the other parts than `account` and `session` the SDK is basically
+NOTE: _On the other parts than `account` and `session` the SDK is basically
 on the same level OpenAPI 2.0 generated SDK. However, on the `files` API,
 the SDK adds support for downloading set of files similar to the
 listing files API. It just downloads file one by one using the
-corresponding `downloadFile` API and by first calling `listFiles`.*
+corresponding `downloadFile` API and by first calling `listFiles`._
 
 ### Download WSCLI SDK for PHP
 
@@ -144,8 +166,7 @@ description are available online. See also
 [wscli-php pages](https://isecurefi.github.io/wscli-php/).
 
 - `wscli-php-sdk` includes beefed up OpenAPI 2.0 generated ISECure
-WS-Channel API client SDK to ease integration with PHP
+  WS-Channel API client SDK to ease integration with PHP
 
 - Command line tool `wscli` uses `wscli-php-sdk` and is distributed as
-single file PHAR.
-
+  single file PHAR.
