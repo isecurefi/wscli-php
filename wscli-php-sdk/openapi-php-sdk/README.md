@@ -1,0 +1,237 @@
+# WsApiClient
+
+The API provides secure file exchange with all common banks in Finland via *SEPA WebServices* channel on the API side towards the banks, including certificate enrollment (PKI) with automatic renewals.
+
+The API specification in OpenAPI v2 format can be found on GitHub [isecurefi/wsapi-v2](https://github.com/isecurefi/wsapi-v2). Command line CLI and beefed-up PHP SDK are also available on GitHub [isecurefi/wscli-php](https://github.com/isecurefi/wscli-php).
+
+```
+% export SESSION=~/.wscli/settings.yaml
+% wscli session login -c $SESSION
+% export APIKEY=`yq -r .settings.apikey $SESSION`
+% export IDTOKEN=`yq -r .settings.idtoken $SESSION`
+%
+% curl -H Authorization:$IDTOKEN \\ 
+       -H x-api-key:$APIKEY \\ 
+       https://ws-api.isecure.fi/v2/files/danskebank
+```
+
+API provides simple role based access control (RBAC) and user account management, password recovery, and SMS based Multi Factor Authentication based on AWS Cognito Your User Pool managed service.
+
+*NOTE: The API endpoint for production is the same as for test, but without `test.` in the URL. Production and test APIs are deployd on separate AWS accounts*.
+
+*NOTE: The API is run on AWS API Gateway and with AWS Lambda backend. When Lambda functions are cold, there is a small delay in response time. Additionally, banks have considerable delays in their processings, especially with certificate enrollments.*
+
+### Service enrollment
+
+Every integrator (partner) has own *API Key* and every user account belongs to one integrator. *API Key* is bound with service subscription. In other words, enrolling fresh *API Key* requires service agreement before file transfers are allowed on production accounts.
+
+If user registers with `0` *API Key* (i.e. no *API Key*) she gets a fresh *API Key* and becomes the *API Key* owner. The *API Key* owner account can list all users under the same *API Key*, see the *Integrator API*. Integrators (partners) registers their own *API Key* owner accounts and use it to register their client accounts.
+
+*NOTE: API call rate limits are set and tracked per API Key by AWS API Gateway*.
+
+### Account management
+
+A user (email address) can register either *admin* or *data* or both roles. The role in the API is referred to as *mode*. Both modes have separate passwords and provide differing capabilities for the user.
+
+Login always requires account mode parameter in addition to user's email address and password. *Admin* mode login always requires an additional SMS one-time-password (MFA), whilst with *data* mode password is enough (suitable for automation). *Admin* mode is used to configure the account (e.g. adding PGP keys and sharing certs) and *data* mode to exchange files. Listing files is allowed on both modes.
+
+*NOTE: Integrator (partner) registers her customers by using her API Key from the API Key owner account.*
+
+### Bank certificate enrollment
+
+The *SEPA WebServices* connection to the bank requires enrolling PKI certificate with the bank. The *Admin* mode can enroll certificates for different banks, but only one certificate per bank. The corresponding private key is stored encrypted with AWS KMS service.
+
+### Bank certificate sharing
+
+It is possible to share the same bank certificate with multiple accounts. Certificate sharing between accounts can be configured when accounts have the same API Key. Account that holds the certificate can share/unshare it with another account (*admin* mode operation). Note that only the account that has the certificate can PGP export the certificate and corresponding private key. This allows creating e.g. one *admin* mode only account and multiple *data* mode only accounts, where the *admin* account shares its certificates with other *data* accounts.
+
+An account can never have multiple certificates per bank, be it shared or account's enrolled certificate. This is because the API requires identification of the bank, but not the certificate and private key pair.
+
+### Access security
+
+Access is secured with TLS on Amazon Web Services (AWS) API Gateway. Inside TLS, secure sessions are established by using email address as username and by RSA encrypting password along with dynamic username specific parameters fetched from the API with `InitRegister` or `InitLogin` API commands (challenge response).
+
+Successful login provides a session token (AWS Cognito User Pool). Authorization happens with the session token (`Authorization`) and *API Key* (`x-api-key`) headers.
+
+Administrative actions require SMS based MFA authentication (see *admin* mode). User account management is handled with AWS Cognito User Pools and each user (email) has separate *admin* and/or *data* mode (role) accounts sharing the same API account data.
+
+### CHANGELOG
+
+**2.6.0** :: 2021-06-14
+- Added token revocation for logout (AWS SDK based new capability), no changes to the API itself.
+
+**2.5.0** :: 2020-04-19
+- Removed OPTIONS
+- Fixed Login response.
+
+For more information, please visit [https://www.isecure.fi/](https://www.isecure.fi/).
+
+## Installation & Usage
+
+### Requirements
+
+PHP 8.1 and later.
+
+### Composer
+
+To install the bindings via [Composer](https://getcomposer.org/), add the following to `composer.json`:
+
+```json
+{
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/isecurefi/wsapi-php-client.git"
+    }
+  ],
+  "require": {
+    "isecurefi/wsapi-php-client": "*@dev"
+  }
+}
+```
+
+Then run `composer install`
+
+### Manual Installation
+
+Download the files and include `autoload.php`:
+
+```php
+<?php
+require_once('/path/to/WsApiClient/vendor/autoload.php');
+```
+
+## Getting Started
+
+Please follow the [installation procedure](#installation--usage) and then run the following:
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+
+
+$apiInstance = new IsecureFi\WsApi\Client\Api\AccountApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$email = 'email_example'; // string | Email address as the account username, e.g. `dan.forsberg@isecure.fi`
+$mode = 'mode_example'; // string | Administer account with `admin` mode, exchange files with `data` mode
+
+try {
+    $result = $apiInstance->initPasswordReset($email, $mode);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling AccountApi->initPasswordReset: ', $e->getMessage(), PHP_EOL;
+}
+
+```
+
+## API Endpoints
+
+All URIs are relative to *https://ws-api.test.isecure.fi/v2*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+*AccountApi* | [**initPasswordReset**](docs/Api/AccountApi.md#initpasswordreset) | **GET** /account/{Email}/{Mode}/password | InitPasswordReset
+*AccountApi* | [**initRegister**](docs/Api/AccountApi.md#initregister) | **GET** /account/{Email}/{Mode} | InitRegister
+*AccountApi* | [**passwordReset**](docs/Api/AccountApi.md#passwordreset) | **POST** /account/{Email}/{Mode}/password | PasswordReset
+*AccountApi* | [**register**](docs/Api/AccountApi.md#register) | **PUT** /account/{Email}/{Mode} | Register
+*AccountApi* | [**verifyEmail**](docs/Api/AccountApi.md#verifyemail) | **POST** /account/{Email}/{Mode} | VerifyEmail
+*AccountApi* | [**verifyPhone**](docs/Api/AccountApi.md#verifyphone) | **POST** /account/{Email}/{Mode}/{Phone} | VerifyPhone
+*CertsApi* | [**configCerts**](docs/Api/CertsApi.md#configcerts) | **POST** /certs/ | ConfigCerts
+*CertsApi* | [**enrollCert**](docs/Api/CertsApi.md#enrollcert) | **POST** /certs/{Bank} | EnrollCert
+*CertsApi* | [**exportCert**](docs/Api/CertsApi.md#exportcert) | **GET** /certs/{Bank} | ExportCert
+*CertsApi* | [**importCert**](docs/Api/CertsApi.md#importcert) | **PUT** /certs/{Bank} | ImportCert
+*CertsApi* | [**listCerts**](docs/Api/CertsApi.md#listcerts) | **GET** /certs/ | ListCerts
+*CertsApi* | [**shareCerts**](docs/Api/CertsApi.md#sharecerts) | **PUT** /certs/shared/{ExtEmail} | ShareCerts
+*CertsApi* | [**unshareCerts**](docs/Api/CertsApi.md#unsharecerts) | **DELETE** /certs/shared/{ExtEmail} | UnshareCerts
+*FilesApi* | [**deleteFile**](docs/Api/FilesApi.md#deletefile) | **DELETE** /files/{Bank}/{FileType}/{FileReference} | DeleteFile
+*FilesApi* | [**downloadFile**](docs/Api/FilesApi.md#downloadfile) | **GET** /files/{Bank}/{FileType}/{FileReference} | DownloadFile
+*FilesApi* | [**listFiles**](docs/Api/FilesApi.md#listfiles) | **GET** /files/{Bank} | ListFiles
+*FilesApi* | [**uploadFile**](docs/Api/FilesApi.md#uploadfile) | **PUT** /files/{Bank} | UploadFile
+*IntegratorApi* | [**listAccounts**](docs/Api/IntegratorApi.md#listaccounts) | **GET** /integrator/accounts | ListAccounts
+*PgpApi* | [**deleteKey**](docs/Api/PgpApi.md#deletekey) | **DELETE** /pgp | DeleteKey
+*PgpApi* | [**listKeys**](docs/Api/PgpApi.md#listkeys) | **GET** /pgp | ListKeys
+*PgpApi* | [**uploadKey**](docs/Api/PgpApi.md#uploadkey) | **PUT** /pgp | UploadKey
+*SessionApi* | [**initLogin**](docs/Api/SessionApi.md#initlogin) | **GET** /session/{Email}/{Mode} | InitLogin
+*SessionApi* | [**login**](docs/Api/SessionApi.md#login) | **POST** /session/{Email}/{Mode} | Login
+*SessionApi* | [**loginMFA**](docs/Api/SessionApi.md#loginmfa) | **PUT** /session/{Email}/{Mode}/mfacode | LoginMFA
+*SessionApi* | [**logout**](docs/Api/SessionApi.md#logout) | **DELETE** /session/{Email}/{Mode} | Logout
+
+## Models
+
+- [AccountDescriptor](docs/Model/AccountDescriptor.md)
+- [CertDescriptor](docs/Model/CertDescriptor.md)
+- [CertsAndKeys](docs/Model/CertsAndKeys.md)
+- [ConfigCertsReq](docs/Model/ConfigCertsReq.md)
+- [DeleteKeyReq](docs/Model/DeleteKeyReq.md)
+- [DeleteKeyResp](docs/Model/DeleteKeyResp.md)
+- [DownloadFileResp](docs/Model/DownloadFileResp.md)
+- [EnrollCertReq](docs/Model/EnrollCertReq.md)
+- [ErrorResponse](docs/Model/ErrorResponse.md)
+- [ExportCertResp](docs/Model/ExportCertResp.md)
+- [FileDescriptor](docs/Model/FileDescriptor.md)
+- [ImportCertReq](docs/Model/ImportCertReq.md)
+- [InitLoginResp](docs/Model/InitLoginResp.md)
+- [InitRegisterResp](docs/Model/InitRegisterResp.md)
+- [ListAccountsResp](docs/Model/ListAccountsResp.md)
+- [ListCertsResp](docs/Model/ListCertsResp.md)
+- [ListFilesResp](docs/Model/ListFilesResp.md)
+- [ListKeysResp](docs/Model/ListKeysResp.md)
+- [LoginMFAReq](docs/Model/LoginMFAReq.md)
+- [LoginMFAResp](docs/Model/LoginMFAResp.md)
+- [LoginReq](docs/Model/LoginReq.md)
+- [LoginResp](docs/Model/LoginResp.md)
+- [PasswordResetReq](docs/Model/PasswordResetReq.md)
+- [PgpKeyDescriptor](docs/Model/PgpKeyDescriptor.md)
+- [RegisterReq](docs/Model/RegisterReq.md)
+- [RegisterResp](docs/Model/RegisterResp.md)
+- [Response](docs/Model/Response.md)
+- [ShareCertsResp](docs/Model/ShareCertsResp.md)
+- [UnshareCertsResp](docs/Model/UnshareCertsResp.md)
+- [UploadFileReq](docs/Model/UploadFileReq.md)
+- [UploadKeyReq](docs/Model/UploadKeyReq.md)
+- [VerifyEmailReq](docs/Model/VerifyEmailReq.md)
+- [VerifyPhoneReq](docs/Model/VerifyPhoneReq.md)
+
+## Authorization
+
+Authentication schemes defined for the API:
+### Authorizer
+
+- **Type**: API key
+- **API key parameter name**: Authorization
+- **Location**: HTTP header
+
+
+### X-Api-Key
+
+- **Type**: API key
+- **API key parameter name**: x-api-key
+- **Location**: HTTP header
+
+
+## Tests
+
+To run the tests, use:
+
+```bash
+composer install
+vendor/bin/phpunit
+```
+
+## Author
+
+dan.forsberg@isecure.fi
+
+## About this package
+
+This PHP package is automatically generated by the [OpenAPI Generator](https://openapi-generator.tech) project:
+
+- API version: `v2.6.0`
+    - Package version: `2.0.0`
+    - Generator version: `7.22.0`
+- Build package: `org.openapitools.codegen.languages.PhpClientCodegen`

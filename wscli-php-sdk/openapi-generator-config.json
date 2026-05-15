@@ -1,0 +1,11 @@
+{
+  "invokerPackage": "IsecureFi\\WsApi\\Client",
+  "composerVendorName": "isecurefi",
+  "composerProjectName": "wsapi-client",
+  "gitUserId": "isecurefi",
+  "gitRepoId": "wsapi-php-client",
+  "artifactVersion": "2.0.0",
+  "packageName": "WsApiClient",
+  "hideGenerationTimestamp": true,
+  "variableNamingConvention": "camelCase"
+}

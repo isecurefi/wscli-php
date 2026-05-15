@@ -1,25 +1,16 @@
 {
-    "chmod": "0755",
-    "key": "wscli-signing.key",
-    "files": [
-        "vendor/autoload.php"
-    ],
-    "directories": [
-        "src",
-        "vendor/composer",
-        "vendor/docopt",
-        "vendor/isecurefi",
-        "vendor/monolog",
-        "vendor/phpseclib",
-        "vendor/psr",
-        "vendor/padraic",
-        "vendor/symfony",
-        "vendor/sebastian/version"
-    ],
-    "git-version": "package_version",
-    "compression": "GZ",
-    "shebang": "#!/usr/bin/env php",
-    "main": "src/wscli.php",
+    "$schema": "vendor/humbug/box/res/schema.json",
+    "main": "bin/wscli",
     "output": "wscli.phar",
-    "stub": true
+    "compression": "GZ",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Php",
+        "KevinGH\\Box\\Compactor\\Json"
+    ],
+    "directories": ["src", "bin"],
+    "directories-bin": ["bin"],
+    "force-autodiscovery": true,
+    "exclude-composer-files": false,
+    "git": "git-version",
+    "banner": "ISECure WS-Channel command-line client. https://github.com/isecurefi/wscli-php"
 }
