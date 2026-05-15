@@ -42,3 +42,4 @@ wscli-php-sdk/wsapi_v2.json
 # Local config / settings that may carry secrets
 .settings.yaml
 wscli-php/.settings.yaml
+.test-account/

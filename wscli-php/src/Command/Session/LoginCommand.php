@@ -68,18 +68,26 @@ final class LoginCommand extends AbstractWsCliCommand
             return $this->handleApiException($e, $output);
         }
 
+        // When the account exists but its email isn't verified yet, the API
+        // returns 2xx with an `accessToken` but no `idToken`/`apiKey`. The
+        // user must then call `account:verify-email` with that token. Surface
+        // it here so the operator (or test harness) can pick it up.
         $this->persist($input, [
-            'email'      => $email,
-            'mode'       => $mode,
-            'idtoken'    => $resp->getIdToken(),
-            'apikey'     => $resp->getApiKey(),
-            'expiresin'  => $resp->getExpiresIn(),
+            'email'       => $email,
+            'mode'        => $mode,
+            'idtoken'     => $resp->getIdToken(),
+            'apikey'      => $resp->getApiKey(),
+            'expiresin'   => $resp->getExpiresIn(),
+            'accesstoken' => $resp->getAccessToken(),
         ]);
 
         return $this->emit($input, $output, [
-            'idtoken' => $resp->getIdToken(),
-            'apikey'  => $resp->getApiKey(),
-            'expiresIn' => $resp->getExpiresIn(),
+            'idtoken'     => $resp->getIdToken(),
+            'apikey'      => $resp->getApiKey(),
+            'expiresIn'   => $resp->getExpiresIn(),
+            'accessToken' => $resp->getAccessToken(),
+            'responseCode'=> $resp->getResponseCode(),
+            'responseText'=> $resp->getResponseText(),
         ]);
     }
 

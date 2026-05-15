@@ -103,11 +103,21 @@ final class Challenge
             . chunk_split(base64_encode($der), 64, "\n")
             . "-----END PUBLIC KEY-----\n";
 
+        // Force phpseclib's pure-PHP OAEP engine: PHP's openssl_public_encrypt()
+        // ignores the 5th-argument hash phpseclib3 tries to pass, so the
+        // OpenSSL path silently produces an OAEP-SHA1 ciphertext that the
+        // ws-api.test.isecure.fi backend rejects with "oaep decoding error".
+        // The pure-PHP path produces ciphertext that the service accepts.
+        RSA::forceEngine('PHP');
+
         $loaded = PublicKeyLoader::loadPublicKey($pem);
         if (!$loaded instanceof RsaPublicKey) {
             throw new \RuntimeException('Service public key did not parse as an RSA public key.');
         }
-        $key = $loaded->withPadding(RSA::ENCRYPTION_PKCS1);
+        $key = $loaded
+            ->withPadding(RSA::ENCRYPTION_OAEP)
+            ->withHash('sha1')
+            ->withMGFHash('sha1');
 
         $plain = $password . '||' . substr($challenge, 45, 13);
         $cipher = $key->encrypt($plain);

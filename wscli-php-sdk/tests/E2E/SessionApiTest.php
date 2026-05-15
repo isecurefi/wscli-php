@@ -53,9 +53,9 @@ final class SessionApiTest extends E2ETestCase
     public function logout_revokes_the_session(): void
     {
         $email = $this->requireEnv('WSAPI_TEST_EMAIL');
-        [$idToken, $_] = $this->loginAsDataUser();
+        [$idToken, $apiKey] = $this->loginAsDataUser();
 
-        $resp = $this->sessionApi()->logout($idToken, $email, 'data');
+        $resp = $this->sessionApi()->logout($idToken, $apiKey, $email, 'data');
         self::assertNotNull($resp);
     }
 
