@@ -1,0 +1,16 @@
+{
+    "$schema": "vendor/humbug/box/res/schema.json",
+    "main": "bin/wscli",
+    "output": "wscli.phar",
+    "compression": "GZ",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Php",
+        "KevinGH\\Box\\Compactor\\Json"
+    ],
+    "directories": ["src", "bin"],
+    "directories-bin": ["bin"],
+    "force-autodiscovery": true,
+    "exclude-composer-files": false,
+    "git": "git-version",
+    "banner": "ISECure WS-Channel command-line client. https://github.com/isecurefi/wscli-php"
+}

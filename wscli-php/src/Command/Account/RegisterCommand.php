@@ -6,6 +6,7 @@ namespace IsecureFi\WsCli\Command\Account;
 
 use IsecureFi\WsApi\Client\ApiException;
 use IsecureFi\WsApi\Client\Model\RegisterReq;
+use IsecureFi\WsApi\Client\Model\RegisterResp;
 use IsecureFi\WsCli\Command\AbstractWsCliCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,6 +68,10 @@ final class RegisterCommand extends AbstractWsCliCommand
         } catch (ApiException $e) {
             return $this->handleApiException($e, $output);
         }
+        if (!$resp instanceof RegisterResp) {
+            $output->writeln('<error>register returned an error: ' . json_encode($resp) . '</error>');
+            return self::FAILURE;
+        }
 
         $this->persist($input, [
             'email'   => $email,
@@ -77,9 +82,9 @@ final class RegisterCommand extends AbstractWsCliCommand
             'company' => $company,
         ]);
         return $this->emit($input, $output, [
-            'apikey'      => $resp->getApiKey(),
-            'accessToken' => $resp->getAccessToken(),
-            'responseCode'=> $resp->getResponseCode(),
+            'apikey'       => $resp->getApiKey(),
+            'responseCode' => $resp->getResponseCode(),
+            'responseText' => $resp->getResponseText(),
         ]);
     }
 }

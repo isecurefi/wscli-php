@@ -27,8 +27,8 @@ final class FilesApiTest extends E2ETestCase
 
         $resp = $this->filesApi()->listFiles($idToken, $apiKey, $this->bank);
         self::assertNotNull($resp);
-        $files = $resp->getFiles();
-        self::assertIsArray($files, 'listFiles returns a Files array (may be empty)');
+        $files = $resp->getFileDescriptors();
+        self::assertIsArray($files, 'listFiles returns a FileDescriptors array (may be empty)');
     }
 
     #[Test]
@@ -43,24 +43,36 @@ final class FilesApiTest extends E2ETestCase
         $fileName = 'e2e-upload-' . date('Ymd-His') . '.xml';
         $contents = base64_encode("<e2e probe payload " . bin2hex(random_bytes(8)) . ">");
 
+        $before = array_map(
+            static fn ($d) => $d->getFileReference(),
+            $this->filesApi()->listFiles($idToken, $apiKey, $this->bank, 'ALL', $fileType)->getFileDescriptors() ?? [],
+        );
+
         $upload = $this->filesApi()->uploadFile(
             $idToken,
             $apiKey,
             $this->bank,
             new UploadFileReq([
-                'fileName' => $fileName,
-                'fileType' => $fileType,
+                'fileName'     => $fileName,
+                'fileType'     => $fileType,
                 'fileContents' => $contents,
-                'signature' => '',
+                'signature'    => '',
             ]),
         );
-        self::assertNotNull($upload);
-        $ref = $upload->getFileReference();
-        self::assertNotEmpty($ref, 'uploadFile must return a fileReference');
+        self::assertSame('00', $upload->getResponseCode(), 'uploadFile must succeed: ' . (string)$upload->getResponseText());
+
+        // Upload returns only Response (no fileReference) — diff listFiles to find the new ref.
+        $after = $this->filesApi()->listFiles($idToken, $apiKey, $this->bank, 'ALL', $fileType)->getFileDescriptors() ?? [];
+        $newRefs = array_values(array_diff(
+            array_map(static fn ($d) => $d->getFileReference(), $after),
+            $before,
+        ));
+        self::assertNotEmpty($newRefs, 'expected at least one new file after upload');
+        $ref = (string)$newRefs[0];
 
         try {
             $download = $this->filesApi()->downloadFile($idToken, $apiKey, $this->bank, $fileType, $ref);
-            self::assertSame($contents, $download->getFileContents(), 'downloaded contents match what we uploaded');
+            self::assertSame($contents, $download->getContent(), 'downloaded contents match what we uploaded');
         } finally {
             $delete = $this->filesApi()->deleteFile($idToken, $apiKey, $this->bank, $fileType, $ref);
             self::assertNotNull($delete);

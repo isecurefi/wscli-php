@@ -51,7 +51,7 @@ final class DownloadFileCommand extends AbstractWsCliCommand
         }
         $target = (string)($this->opts['output-file'] ?? '');
         if ($target !== '') {
-            $decoded = base64_decode((string)$resp->getFileContents(), true);
+            $decoded = base64_decode((string)$resp->getContent(), true);
             if ($decoded === false) {
                 $output->writeln('<error>fileContents is not valid base64; refusing to write binary garbage.</error>');
                 return self::FAILURE;

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace IsecureFi\WsCli\Command\Files;
 
 use IsecureFi\WsApi\Client\ApiException;
+use IsecureFi\WsApi\Client\Model\DownloadFileResp;
+use IsecureFi\WsApi\Client\Model\ListFilesResp;
 use IsecureFi\WsCli\Command\AbstractWsCliCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,11 +58,15 @@ final class DownloadFilesCommand extends AbstractWsCliCommand
         } catch (ApiException $e) {
             return $this->handleApiException($e, $output);
         }
+        if (!$list instanceof ListFilesResp) {
+            $output->writeln('<error>listFiles returned an error: ' . json_encode($list) . '</error>');
+            return self::FAILURE;
+        }
 
         $only = (string)($this->opts['filereference'] ?? '');
         $written = [];
 
-        foreach (($list->getFiles() ?? []) as $file) {
+        foreach (($list->getFileDescriptors() ?? []) as $file) {
             $ref = (string)$file->getFileReference();
             if ($only !== '' && $only !== $ref) {
                 continue;
@@ -77,7 +83,11 @@ final class DownloadFilesCommand extends AbstractWsCliCommand
                 $output->writeln(sprintf('<error>download %s failed: %s</error>', $ref, $e->getMessage()));
                 continue;
             }
-            $decoded = base64_decode((string)$resp->getFileContents(), true);
+            if (!$resp instanceof DownloadFileResp) {
+                $output->writeln("<error>$ref: download returned an error response, skipping.</error>");
+                continue;
+            }
+            $decoded = base64_decode((string)$resp->getContent(), true);
             if ($decoded === false) {
                 $output->writeln("<error>$ref: invalid base64 payload, skipping.</error>");
                 continue;

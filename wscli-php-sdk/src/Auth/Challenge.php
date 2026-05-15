@@ -8,6 +8,7 @@ use IsecureFi\WsApi\Client\Api\SessionApi;
 use IsecureFi\WsApi\Client\Api\AccountApi;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\RSA\PublicKey as RsaPublicKey;
 
 /**
  * Handles the challenge-response handshake used by the ISECure WS-Channel API:
@@ -102,7 +103,11 @@ final class Challenge
             . chunk_split(base64_encode($der), 64, "\n")
             . "-----END PUBLIC KEY-----\n";
 
-        $key = PublicKeyLoader::loadPublicKey($pem)->withPadding(RSA::ENCRYPTION_PKCS1);
+        $loaded = PublicKeyLoader::loadPublicKey($pem);
+        if (!$loaded instanceof RsaPublicKey) {
+            throw new \RuntimeException('Service public key did not parse as an RSA public key.');
+        }
+        $key = $loaded->withPadding(RSA::ENCRYPTION_PKCS1);
 
         $plain = $password . '||' . substr($challenge, 45, 13);
         $cipher = $key->encrypt($plain);

@@ -27,7 +27,12 @@ final class LogoutCommand extends AbstractWsCliCommand
             return self::INVALID;
         }
         try {
-            $this->sessionApi()->logout((string)$this->opts['idtoken'], $email, $mode);
+            $this->sessionApi()->logout(
+                (string)$this->opts['idtoken'],
+                (string)$this->opts['apikey'],
+                $email,
+                $mode,
+            );
         } catch (ApiException $e) {
             // Still clear local state below — server may already consider us logged out.
             $this->handleApiException($e, $output);

@@ -11,6 +11,7 @@ use IsecureFi\WsCli\Command\AbstractWsCliCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
@@ -93,6 +94,7 @@ final class LoginCommand extends AbstractWsCliCommand
             return null;
         }
         $helper = $this->getHelper('question');
+        assert($helper instanceof QuestionHelper);
         $q = (new Question('Password: '))->setHidden(true)->setHiddenFallback(false);
         return $helper->ask($input, $output, $q);
     }
@@ -107,6 +109,8 @@ final class LoginCommand extends AbstractWsCliCommand
             $output->writeln(sprintf('<error>MFA required. Session token: %s. Pass --code=<smscode>.</error>', $session));
             return null;
         }
-        return $this->getHelper('question')->ask($input, $output, new Question('SMS code: '));
+        $helper = $this->getHelper('question');
+        assert($helper instanceof QuestionHelper);
+        return $helper->ask($input, $output, new Question('SMS code: '));
     }
 }

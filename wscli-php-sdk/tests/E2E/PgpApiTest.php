@@ -20,7 +20,7 @@ final class PgpApiTest extends E2ETestCase
 
         $resp = $this->pgpApi()->listKeys($idToken, $apiKey);
         self::assertNotNull($resp);
-        $keys = $resp->getKeys();
+        $keys = $resp->getPgpKeys();
         self::assertIsArray($keys);
     }
 
@@ -43,7 +43,7 @@ final class PgpApiTest extends E2ETestCase
 
         // Find the freshly uploaded key id and delete it.
         $list = $this->pgpApi()->listKeys($idToken, $apiKey);
-        $latest = $list->getKeys()[count($list->getKeys()) - 1] ?? null;
+        $latest = $list->getPgpKeys()[count($list->getPgpKeys()) - 1] ?? null;
         self::assertNotNull($latest, 'expected listKeys to include the freshly uploaded key');
 
         $resp = $this->pgpApi()->deleteKey(
