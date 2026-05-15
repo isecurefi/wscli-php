@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+(static function (): void {
+    $autoload = null;
+    foreach ([
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/../../vendor/autoload.php',
+        __DIR__ . '/../../../autoload.php',
+    ] as $candidate) {
+        if (is_file($candidate)) {
+            $autoload = $candidate;
+            break;
+        }
+    }
+    if ($autoload === null) {
+        fwrite(STDERR, "wscli: Composer autoloader not found. Run `composer install`.\n");
+        exit(1);
+    }
+    require $autoload;
+
+    exit((new \IsecureFi\WsCli\Application())->run());
+})();
