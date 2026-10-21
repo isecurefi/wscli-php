@@ -11,8 +11,8 @@ The WS-Channel service is documented as
 WebServices file transfers with banks in Finland and handles certificate
 enrollment (PKI) with automatic renewals.
 
-The service has two account modes per email: **`admin`** (configuration, SMS
-MFA on every login) and **`data`** (file transfers, no MFA — suitable for
+The service has two account modes per email: **`admin`** (configuration, SMS or
+authenticator/TOTP MFA on every login) and **`data`** (file transfers, no MFA — suitable for
 automation). Both modes share the same email and phone. The intended pattern
 is to keep `data` credentials on a server filesystem (mode 0600) and use
 `admin` separately when configuring the account.
@@ -123,10 +123,22 @@ All commands group by API tag with a `tag:operation` naming scheme.
 ### Session
 ```
 wscli session:init-login   --email --mode
-wscli session:login        --email --mode --password [--code --session] [--noninteractive]
-wscli session:login-mfa    --email --code --session
+wscli session:login        --email --mode --password [--code --session] [--mfa-type=totp|sms] [--noninteractive]
+wscli session:login-mfa    --email --mode=admin --code --session [--challenge-name]
 wscli session:logout       --email --mode
 ```
+
+`session:login` prompts for the factor requested by the server and preserves its
+challenge type when submitting the code. Authenticator accounts display
+`Authenticator code:`; SMS accounts display `SMS code:`. Code entry is hidden.
+The stand-alone `session:login-mfa` command accepts
+`--challenge-name=SOFTWARE_TOKEN_MFA` for TOTP and defaults to `SMS_MFA` for
+existing scripts. When the server offers a choice of factors, the CLI displays
+a menu with authenticator first when available. Use `--mfa-type=totp` or
+`--mfa-type=sms` to select an offered method without the menu; noninteractive
+selection requires this option. The choice applies to this login and does not
+change the account’s preferred factor. Failed or incomplete MFA returns
+a nonzero exit code and leaves the saved session unchanged.
 
 ### Account
 ```

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace IsecureFi\WsCli\Command;
 
+use GuzzleHttp\ClientInterface;
 use IsecureFi\WsApi\Auth\Challenge;
 use IsecureFi\WsApi\Client\Api\AccountApi;
 use IsecureFi\WsApi\Client\Api\CertsApi;
@@ -30,7 +31,7 @@ abstract class AbstractWsCliCommand extends Command
     /** @var array<string, mixed> Merged options: CLI > config file. */
     protected array $opts = [];
 
-    public function __construct(?string $name = null)
+    public function __construct(?string $name = null, protected ?ClientInterface $httpClient = null)
     {
         parent::__construct($name);
         $this->envResolver = new EnvironmentResolver();
@@ -39,17 +40,17 @@ abstract class AbstractWsCliCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('config',      'c', InputOption::VALUE_REQUIRED, 'Path to settings.yaml.')
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Path to settings.yaml.')
             ->addOption('environment', null, InputOption::VALUE_REQUIRED, 'API environment (test|production).')
-            ->addOption('host',        null, InputOption::VALUE_REQUIRED, 'Override the API base URL.')
-            ->addOption('json',        null, InputOption::VALUE_NONE,     'Emit machine-readable JSON output.')
-            ->addOption('no-save',     null, InputOption::VALUE_NONE,     'Do not persist session changes back to settings.yaml.');
+            ->addOption('host', null, InputOption::VALUE_REQUIRED, 'Override the API base URL.')
+            ->addOption('json', null, InputOption::VALUE_NONE, 'Emit machine-readable JSON output.')
+            ->addOption('no-save', null, InputOption::VALUE_NONE, 'Do not persist session changes back to settings.yaml.');
 
         if ($this->wantsCredentials()) {
             $this
-                ->addOption('email',   'e', InputOption::VALUE_REQUIRED, 'Account email.')
-                ->addOption('mode',    'm', InputOption::VALUE_REQUIRED, 'Account mode: admin or data.')
-                ->addOption('apikey',  'a', InputOption::VALUE_REQUIRED, 'Integrator API key.')
+                ->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'Account email.')
+                ->addOption('mode', 'm', InputOption::VALUE_REQUIRED, 'Account mode: admin or data.')
+                ->addOption('apikey', 'a', InputOption::VALUE_REQUIRED, 'Integrator API key.')
                 ->addOption('idtoken', 'i', InputOption::VALUE_REQUIRED, 'Authorization IdToken from a prior login.');
         }
     }
@@ -100,8 +101,8 @@ abstract class AbstractWsCliCommand extends Command
         );
 
         $this->challenge = new Challenge(
-            new SessionApi(null, $this->config),
-            new AccountApi(null, $this->config),
+            $this->sessionApi(),
+            $this->accountApi(),
         );
 
         $this->validate($input);
@@ -112,7 +113,7 @@ abstract class AbstractWsCliCommand extends Command
      */
     protected function validate(InputInterface $input): void
     {
-        if ($this->requiresAdminMode() && strtolower((string)($this->opts['mode'] ?? '')) !== 'admin') {
+        if ($this->requiresAdminMode() && strtolower((string) ($this->opts['mode'] ?? '')) !== 'admin') {
             throw new \InvalidArgumentException('This command requires --mode=admin.');
         }
         if ($this->requiresAuthenticatedSession()) {
@@ -147,12 +148,12 @@ abstract class AbstractWsCliCommand extends Command
 
     protected function sessionApi(): SessionApi
     {
-        return new SessionApi(null, $this->config);
+        return new SessionApi($this->httpClient, $this->config);
     }
 
     protected function accountApi(): AccountApi
     {
-        return new AccountApi(null, $this->config);
+        return new AccountApi($this->httpClient, $this->config);
     }
 
     protected function filesApi(): FilesApi
@@ -204,7 +205,7 @@ abstract class AbstractWsCliCommand extends Command
     private function writeHuman(OutputInterface $output, mixed $payload): void
     {
         if (is_scalar($payload) || $payload === null) {
-            $output->writeln((string)$payload);
+            $output->writeln((string) $payload);
             return;
         }
         $output->writeln(json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));

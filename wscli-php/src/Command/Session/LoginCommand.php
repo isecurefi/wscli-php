@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace IsecureFi\WsCli\Command\Session;
 
 use IsecureFi\WsApi\Client\ApiException;
-use IsecureFi\WsApi\Client\Model\LoginMFAReq;
 use IsecureFi\WsApi\Client\Model\LoginReq;
+use IsecureFi\WsCli\Auth\SessionLogin;
 use IsecureFi\WsCli\Command\AbstractWsCliCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
-#[AsCommand(name: 'session:login', description: 'Login (data mode: password only; admin mode: password + SMS MFA).')]
+#[AsCommand(name: 'session:login', description: 'Login (data mode: password only; admin mode: password + SMS or authenticator MFA).')]
 final class LoginCommand extends AbstractWsCliCommand
 {
     protected function configure(): void
@@ -23,15 +24,16 @@ final class LoginCommand extends AbstractWsCliCommand
         parent::configure();
         $this
             ->addOption('password', null, InputOption::VALUE_REQUIRED, 'Account password (>=20 chars).')
-            ->addOption('code',     null, InputOption::VALUE_REQUIRED, 'SMS MFA code (admin mode).')
-            ->addOption('session',  null, InputOption::VALUE_REQUIRED, 'MFA session token from a prior login leg.')
+            ->addOption('code', null, InputOption::VALUE_REQUIRED, 'SMS or authenticator verification code (admin mode).')
+            ->addOption('mfa-type', null, InputOption::VALUE_REQUIRED, 'Choose totp or sms when the server offers MFA selection.')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'MFA session token from a prior login leg.')
             ->addOption('noninteractive', null, InputOption::VALUE_NONE, 'Never prompt; fail if input is missing.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $email = (string)($this->opts['email'] ?? '');
-        $mode  = strtolower((string)($this->opts['mode'] ?? ''));
+        $email = (string) ($this->opts['email'] ?? '');
+        $mode  = strtolower((string) ($this->opts['mode'] ?? ''));
         if ($email === '' || !in_array($mode, ['admin', 'data'], true)) {
             $output->writeln('<error>--email and --mode (admin|data) are required.</error>');
             return self::INVALID;
@@ -46,26 +48,34 @@ final class LoginCommand extends AbstractWsCliCommand
             $challengeStr = $this->challenge->fetch($email, $mode);
             $encrypted    = $this->challenge->encryptPassword($password, $challengeStr, $environment);
 
-            $resp = $this->sessionApi()->login(
+            $login = new SessionLogin($this->config, $this->httpClient);
+            $resp = $login->login(
                 $email,
                 $mode,
                 new LoginReq(['chResp' => $challengeStr, 'encrypted' => $encrypted]),
             );
 
             // Admin path -> additional MFA leg.
-            if ($resp->getSession()) {
-                $code = $this->resolveMfaCode($input, $output, (string)$resp->getSession());
+            if (!empty($resp['Session'])) {
+                if (($resp['ChallengeName'] ?? null) === 'SELECT_MFA_TYPE') {
+                    $selected = $this->resolveMfaType($input, $output, $resp['MfaOptions'] ?? []);
+                    $resp = $login->selectFactor($email, (string) $resp['Session'], $selected);
+                }
+                $factor = SessionLogin::factor($resp['ChallengeName'] ?? 'SMS_MFA');
+                $code = $this->resolveMfaCode($input, $output, $factor);
                 if ($code === null) {
                     return self::FAILURE;
                 }
-                $resp = $this->sessionApi()->loginMFA(
-                    $email,
-                    'admin',
-                    new LoginMFAReq(['code' => $code, 'session' => (string)$resp->getSession()]),
-                );
+                $resp = $login->mfa($email, $code, (string) $resp['Session'], $factor);
+            }
+            if (empty($resp['AccessToken'])) {
+                SessionLogin::requireSession($resp);
             }
         } catch (ApiException $e) {
             return $this->handleApiException($e, $output);
+        } catch (\RuntimeException $e) {
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
+            return self::FAILURE;
         }
 
         // When the account exists but its email isn't verified yet, the API
@@ -75,20 +85,55 @@ final class LoginCommand extends AbstractWsCliCommand
         $this->persist($input, [
             'email'       => $email,
             'mode'        => $mode,
-            'idtoken'     => $resp->getIdToken(),
-            'apikey'      => $resp->getApiKey(),
-            'expiresin'   => $resp->getExpiresIn(),
-            'accesstoken' => $resp->getAccessToken(),
+            'idtoken'     => ($resp['IdToken'] ?? null),
+            'apikey'      => ($resp['ApiKey'] ?? null),
+            'expiresin'   => ($resp['ExpiresIn'] ?? null),
+            'accesstoken' => ($resp['AccessToken'] ?? null),
         ]);
 
         return $this->emit($input, $output, [
-            'idtoken'     => $resp->getIdToken(),
-            'apikey'      => $resp->getApiKey(),
-            'expiresIn'   => $resp->getExpiresIn(),
-            'accessToken' => $resp->getAccessToken(),
-            'responseCode'=> $resp->getResponseCode(),
-            'responseText'=> $resp->getResponseText(),
+            'idtoken'     => ($resp['IdToken'] ?? null),
+            'apikey'      => ($resp['ApiKey'] ?? null),
+            'expiresIn'   => ($resp['ExpiresIn'] ?? null),
+            'accessToken' => ($resp['AccessToken'] ?? null),
+            'responseCode' => ($resp['ResponseCode'] ?? null),
+            'responseText' => ($resp['ResponseText'] ?? null),
         ]);
+    }
+
+    private function resolveMfaType(InputInterface $input, OutputInterface $output, mixed $offered): string
+    {
+        $methods = ['totp' => 'SOFTWARE_TOKEN_MFA', 'sms' => 'SMS_MFA'];
+        $available = is_array($offered)
+            ? array_filter($methods, static fn(string $factor): bool => in_array($factor, $offered, true))
+            : [];
+        if ($available === []) {
+            throw new \RuntimeException('The server offered no supported MFA methods; settings were not changed.');
+        }
+        $choice = $this->opts['mfa-type'] ?? null;
+        if ($choice !== null) {
+            if (!is_string($choice) || !isset($available[$choice])) {
+                throw new \InvalidArgumentException('--mfa-type must be totp or sms and offered by the server.');
+            }
+            return $available[$choice];
+        }
+        if ($input->getOption('noninteractive') || !$input->isInteractive()) {
+            throw new \RuntimeException('MFA selection required. Provide --mfa-type=totp or --mfa-type=sms.');
+        }
+        $labels = [];
+        foreach ($available as $method => $factor) {
+            $labels[$factor] = $method === 'totp' ? 'Authenticator (TOTP)' : 'SMS';
+        }
+        $helper = $this->getHelper('question');
+        assert($helper instanceof QuestionHelper);
+        $question = new ChoiceQuestion('Verification method:', array_values($labels), 0);
+        $question->setMaxAttempts(3);
+        $answer = $helper->ask($input, $output, $question);
+        $factor = array_search($answer, $labels, true);
+        if ($factor === false) {
+            throw new \RuntimeException('No MFA method selected; settings were not changed.');
+        }
+        return $factor;
     }
 
     private function resolvePassword(InputInterface $input, OutputInterface $output): ?string
@@ -107,18 +152,18 @@ final class LoginCommand extends AbstractWsCliCommand
         return $helper->ask($input, $output, $q);
     }
 
-    private function resolveMfaCode(InputInterface $input, OutputInterface $output, string $session): ?string
+    private function resolveMfaCode(InputInterface $input, OutputInterface $output, string $factor): ?string
     {
         $code = $this->opts['code'] ?? null;
         if (is_string($code) && $code !== '') {
             return $code;
         }
         if ($input->getOption('noninteractive') || ! $input->isInteractive()) {
-            $output->writeln(sprintf('<error>MFA required. Session token: %s. Pass --code=<smscode>.</error>', $session));
+            $output->writeln('<error>MFA required. Run interactively or provide --code for the required factor.</error>');
             return null;
         }
         $helper = $this->getHelper('question');
         assert($helper instanceof QuestionHelper);
-        return $helper->ask($input, $output, new Question('SMS code: '));
+        return $helper->ask($input, $output, (new Question($factor === 'SOFTWARE_TOKEN_MFA' ? 'Authenticator code: ' : 'SMS code: '))->setHidden(true)->setHiddenFallback(false));
     }
 }
