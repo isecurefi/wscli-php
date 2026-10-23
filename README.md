@@ -3,7 +3,7 @@
 `wscli` is the [ISECure](https://www.isecure.fi) WS-Channel SaaS command-line
 client. It is built on a modern OpenAPI Generator 7 PHP client wrapped by a
 small auth helper (`IsecureFi\WsApi\Auth\Challenge`) and exposed through a
-Symfony Console application. Requires **PHP 8.3+**.
+Symfony Console application. Requires **PHP 8.3.36+, 8.4.27+, or 8.5.12+** within those minor branches.
 
 The WS-Channel service is documented as
 [OpenAPI 2.0](https://github.com/isecurefi/wsapi-v2) /
@@ -36,7 +36,7 @@ multiple `data` accounts via one `admin` owner.
 | `wscli-php-sdk/openapi-php-sdk/` | The regenerated client (namespace `IsecureFi\WsApi\Client`). Rebuild with `npx @openapitools/openapi-generator-cli generate -i wsapi_v2.json -g php -o openapi-php-sdk -c openapi-generator-config.json`. |
 | `wscli-php/` | The CLI: Symfony Console application (`IsecureFi\WsCli\Application`) with 27 commands. |
 | `wscli-php/box.json` | Box 4 phar build config. |
-| `Dockerfile` (repo root) | Multi-stage PHP 8.3 image that compiles and ships `wscli.phar` only. |
+| `Dockerfile` (repo root) | Multi-stage PHP 8.3.36 image that compiles and ships `wscli.phar` only. |
 | `.dev/Dockerfile` | Developer container for running tests / phpstan / Box locally without depending on the host PHP install. |
 
 ---
@@ -44,7 +44,7 @@ multiple `data` accounts via one `admin` owner.
 ## Run wscli with Docker
 
 The repo root ships a multi-stage `Dockerfile` that builds the phar from
-source and runs it on PHP 8.3:
+source and runs it on PHP 8.3.36:
 
 ```shell
 docker build -t wscli:latest .
@@ -52,6 +52,13 @@ docker run -v "$HOME/.wscli:/root/.wscli" wscli session:login --json
 ```
 
 ---
+
+The runtime is pinned by version and image digest in both Dockerfiles. The
+October 21, 2026 [PHP security release](https://www.php.net/archive/2026.php#2026-10-21-5)
+fixes CVE-2026-109618 and CVE-2026-109619. Composer requirements reject older
+patches in each supported branch. A PHAR contains application code, **not PHP**;
+upgrade the interpreter on every host running it as well. The CLI checks its
+runtime before loading dependencies, including when invoked from a PHAR.
 
 ## Install from a release phar
 
@@ -64,12 +71,13 @@ $ ./wscli.phar --version
 $ sudo mv wscli.phar /usr/local/bin/wscli
 ```
 
-Build from source (requires PHP 8.3 + Composer + Box 4):
+Build from source (requires a patched PHP runtime + Composer + Box 4):
 
 ```shell
+$ composer install --working-dir=tools/box
 $ cd wscli-php-sdk && composer install
 $ cd ../wscli-php   && composer install
-$ vendor/bin/box compile
+$ composer phar
 $ ./wscli.phar --version
 ```
 
@@ -266,13 +274,13 @@ gate list — every mutating test is opt-in via a `WSAPI_TEST_ALLOW_*`
 flag, and uploaded artifacts (files, PGP keys, cert shares) are
 cleaned up in `tearDown`.
 
-The repo also includes `.dev/Dockerfile` — a PHP 8.3-cli image with
+The repo also includes `.dev/Dockerfile` — a PHP 8.3.36-cli image with
 Composer + the required extensions so tests are reproducible regardless
 of the host install:
 
 ```shell
-docker build -t wscli-php-dev:8.3 .dev/
-docker run --rm -v "$PWD":/app -w /app/wscli-php wscli-php-dev:8.3 \
+docker build -t wscli-php-dev:8.3.36 .dev/
+docker run --rm -v "$PWD":/app -w /app/wscli-php wscli-php-dev:8.3.36 \
     vendor/bin/phpunit
 ```
 
@@ -283,3 +291,29 @@ docker run --rm -v "$PWD":/app -w /app/wscli-php wscli-php-dev:8.3 \
 - Releases: <https://github.com/isecurefi/wscli-php/releases>
 - API spec: <https://github.com/isecurefi/wsapi-v2>
 - API docs: <https://isecure.fi/wsapi_v2/index.html>
+
+Box is installed separately under `tools/box` so its build-time polyfill
+replacements cannot pull the compiler into the runtime dependency graph.
+
+## Inline UploadFile responses
+
+Some banks return a report directly from UploadFile. The SDK returns an
+`UploadFileResp` (a subclass of `Response`) whose `getContent(): ?string` retains
+the optional Base64 `Content`. Ordinary upload acknowledgements return `null`.
+The synchronous and asynchronous methods both preserve it without decoding or
+issuing a download request. The CLI includes `Content` in its normal JSON output:
+
+```shell
+wscli files:upload --bank osuuspankki --filetype camt.060.001.02 \
+  --filename balance-query.xml --filepath balance-query.xml --json > upload-response.json
+```
+
+Read `ResponseCode` before using a response. For a successful query, decode
+`Content` with strict Base64 decoding to obtain the bank's report. The bank's
+query format and signing requirements still apply.
+
+The checked-in `UploadFileResp` extension and UploadFile return types prepare
+support for the pending API contract. When regenerating the OpenAPI client, use
+the updated UploadFile schema and retain the patched PHP constraints; the
+regression tests must continue to pass. No API specification has been published
+as part of this change.

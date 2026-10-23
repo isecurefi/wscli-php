@@ -158,7 +158,7 @@ abstract class AbstractWsCliCommand extends Command
 
     protected function filesApi(): FilesApi
     {
-        return new FilesApi(null, $this->config);
+        return new FilesApi($this->httpClient, $this->config);
     }
 
     protected function certsApi(): CertsApi

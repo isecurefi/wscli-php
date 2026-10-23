@@ -4,6 +4,13 @@
 declare(strict_types=1);
 
 (static function (): void {
+    require_once __DIR__ . '/../src/RuntimeRequirement.php';
+    if (!\IsecureFi\WsCli\RuntimeRequirement::isSupported(PHP_VERSION_ID)) {
+        fwrite(STDERR, 'wscli: Requires ' . \IsecureFi\WsCli\RuntimeRequirement::DESCRIPTION
+            . '; running ' . PHP_VERSION . ". Upgrade PHP before running wscli.\n");
+        exit(1);
+    }
+
     $autoload = null;
     foreach ([
         __DIR__ . '/../vendor/autoload.php',

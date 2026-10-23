@@ -1,0 +1,12 @@
+.git
+.private
+.test-account
+**/vendor
+**/.phpunit.cache
+**/*.log
+**/.settings.yaml
+**/*.pem
+**/*.key
+**/*.phar
+**/swagger-codegen-cli.jar
+**/openapi-generator-cli.jar

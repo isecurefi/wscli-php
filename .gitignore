@@ -43,3 +43,6 @@ wscli-php-sdk/wsapi_v2.json
 .settings.yaml
 wscli-php/.settings.yaml
 .test-account/
+
+# Isolated task worktrees and verification evidence
+.private/

@@ -240,7 +240,7 @@ try {
 ## `uploadFile()`
 
 ```php
-uploadFile($authorization, $xApiKey, $bank, $uploadFileReq): \IsecureFi\WsApi\Client\Model\Response
+uploadFile($authorization, $xApiKey, $bank, $uploadFileReq): \IsecureFi\WsApi\Client\Model\UploadFileResp
 ```
 
 UploadFile
@@ -295,7 +295,7 @@ try {
 
 ### Return type
 
-[**\IsecureFi\WsApi\Client\Model\Response**](../Model/Response.md)
+[**\IsecureFi\WsApi\Client\Model\UploadFileResp**](../Model/UploadFileResp.md)
 
 ### Authorization
 

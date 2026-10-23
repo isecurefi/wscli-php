@@ -70,7 +70,7 @@ For more information, please visit [https://www.isecure.fi/](https://www.isecure
 
 ### Requirements
 
-PHP 8.1 and later.
+PHP 8.3.36+, 8.4.27+, or 8.5.12+ within those minor branches.
 
 ### Composer
 
@@ -193,6 +193,7 @@ Class | Method | HTTP request | Description
 - [ShareCertsResp](docs/Model/ShareCertsResp.md)
 - [UnshareCertsResp](docs/Model/UnshareCertsResp.md)
 - [UploadFileReq](docs/Model/UploadFileReq.md)
+- [UploadFileResp](docs/Model/UploadFileResp.md)
 - [UploadKeyReq](docs/Model/UploadKeyReq.md)
 - [VerifyEmailReq](docs/Model/VerifyEmailReq.md)
 - [VerifyPhoneReq](docs/Model/VerifyPhoneReq.md)

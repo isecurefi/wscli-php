@@ -1,4 +1,4 @@
-FROM php:8.3-cli
+FROM php:8.3.36-cli@sha256:74caa458ad8d6c5e401eb9f8841a62faeab9b7be42b54cd37986d7685f857618
 
 RUN set -eux; \
     apt-get update; \

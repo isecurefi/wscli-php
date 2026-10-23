@@ -30,7 +30,7 @@
     }
   ],
   "require": {
-    "php": "^8.3",
+    "php": "~8.3.36 || ~8.4.27 || ~8.5.12",
     "ext-json": "*",
     "ext-openssl": "*",
     "isecurefi/wscli-php-sdk": "^2.0",
@@ -44,7 +44,7 @@
     "phpunit/phpunit": "^11.0",
     "phpstan/phpstan": "^1.10",
     "friendsofphp/php-cs-fixer": "^3.50",
-    "humbug/box": "^4.6"
+    "composer/semver": "^3.4"
   },
   "bin": ["bin/wscli"],
   "autoload": {
@@ -64,7 +64,7 @@
     "cs":     ["php-cs-fixer fix -v src tests --dry-run --diff"],
     "cs-fix": ["php-cs-fixer fix -v src tests"],
     "stan":   ["phpstan analyse src --level=5"],
-    "phar":   ["box compile -v"]
+    "phar":   ["../tools/box/vendor/bin/box compile -v"]
   },
   "extra": {
     "branch-alias": {

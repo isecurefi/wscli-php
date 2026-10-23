@@ -1,0 +1,14 @@
+{
+  "name": "isecurefi/wscli-build-tools",
+  "description": "Isolated PHAR compiler; never shipped in the CLI runtime.",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": "~8.3.36 || ~8.4.27 || ~8.5.12",
+    "humbug/box": "4.7.0"
+  },
+  "config": {
+    "allow-plugins": false,
+    "sort-packages": true
+  }
+}

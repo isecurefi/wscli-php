@@ -1356,7 +1356,7 @@ class FilesApi
      *
      * @throws \IsecureFi\WsApi\Client\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \IsecureFi\WsApi\Client\Model\Response|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse
+     * @return \IsecureFi\WsApi\Client\Model\UploadFileResp|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse
      */
     public function uploadFile($authorization, $xApiKey, $bank, $uploadFileReq, string $contentType = self::contentTypes['uploadFile'][0])
     {
@@ -1377,7 +1377,7 @@ class FilesApi
      *
      * @throws \IsecureFi\WsApi\Client\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \IsecureFi\WsApi\Client\Model\Response|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \IsecureFi\WsApi\Client\Model\UploadFileResp|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
     public function uploadFileWithHttpInfo($authorization, $xApiKey, $bank, $uploadFileReq, string $contentType = self::contentTypes['uploadFile'][0])
     {
@@ -1409,7 +1409,7 @@ class FilesApi
             switch($statusCode) {
                 case 201:
                     return $this->handleResponseWithDataType(
-                        '\IsecureFi\WsApi\Client\Model\Response',
+                        '\IsecureFi\WsApi\Client\Model\UploadFileResp',
                         $request,
                         $response,
                     );
@@ -1455,7 +1455,7 @@ class FilesApi
             }
 
             return $this->handleResponseWithDataType(
-                '\IsecureFi\WsApi\Client\Model\Response',
+                '\IsecureFi\WsApi\Client\Model\UploadFileResp',
                 $request,
                 $response,
             );
@@ -1464,7 +1464,7 @@ class FilesApi
                 case 201:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\IsecureFi\WsApi\Client\Model\Response',
+                        '\IsecureFi\WsApi\Client\Model\UploadFileResp',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1548,7 +1548,7 @@ class FilesApi
      */
     public function uploadFileAsyncWithHttpInfo($authorization, $xApiKey, $bank, $uploadFileReq, string $contentType = self::contentTypes['uploadFile'][0])
     {
-        $returnType = '\IsecureFi\WsApi\Client\Model\Response';
+        $returnType = '\IsecureFi\WsApi\Client\Model\UploadFileResp';
         $request = $this->uploadFileRequest($authorization, $xApiKey, $bank, $uploadFileReq, $contentType);
 
         return $this->client
