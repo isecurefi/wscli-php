@@ -317,3 +317,31 @@ support for the pending API contract. When regenerating the OpenAPI client, use
 the updated UploadFile schema and retain the patched PHP constraints; the
 regression tests must continue to pass. No API specification has been published
 as part of this change.
+
+
+## Opt-in password profile (unpublished preview)
+
+Owner scope (2026-11-08): draft and local testing only. This work does not
+authorize server deployment, tenant-policy activation or SDK publication.
+
+This source adds `password-rsa-oaep-sha256-v1` on existing v2 routes. Availability
+is environment-specific: the SDK requires matching server discovery and never
+falls back if an older server ignores the selector. Existing configuration keeps
+the legacy profile. After server policy activation, new tenants must select the
+new profile; grandfathered tenants can use either profile, including new accounts.
+
+Use `IsecureFi\WsApi\Auth\PasswordProfile($configuration, $guzzleClient)` for
+explicit adoption. Its `register(email, mode, password, tenant, company, name,
+phone)` and `login(email, mode, password)` return the API response without changing
+MFA requirements. Use `initPasswordReset(email, mode)` followed by
+`passwordReset(email, mode, code, newPassword)` on the same helper. Continue login
+MFA with the existing SMS/TOTP helpers. The existing `Challenge` helper remains
+legacy; it never auto-upgrades or falls back.
+
+The profile uses direct RSA-3072/4096 OAEP with SHA-256/MGF1-SHA-256 and an empty
+label. The binary envelope binds the exact challenge and preserves 1–283 UTF-8
+password bytes without normalization. Discovery is not authorization. Admin MFA
+still applies. Do not log password envelopes, tokens, codes or raw auth bodies.
+Reset uses its own discovery; never substitute an InitLogin challenge or
+automatically retry code delivery/password mutation. This preview is not a
+production availability or NIST/FIPS certification claim.
