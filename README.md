@@ -321,8 +321,12 @@ as part of this change.
 
 ## Opt-in password profile (unpublished preview)
 
-Owner scope (2026-11-08): draft and local testing only. This work does not
-authorize server deployment, tenant-policy activation or SDK publication.
+Qualification (2026-11-08): this unpublished source passed local checks and
+bounded hosted registration/login tests on ordinary gpgtest, including Admin MFA
+and 283-byte UTF-8 passwords. RSA-3072 and RSA-4096 login were exercised.
+Production authentication deployment and SDK publication remain excluded.
+The PHP qualification uses the profile helper and existing HTTP MFA continuation;
+it does not establish an automatic MFA state machine.
 
 This source adds `password-rsa-oaep-sha256-v1` on existing v2 routes. Availability
 is environment-specific: the SDK requires matching server discovery and never
