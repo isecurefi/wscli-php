@@ -7,21 +7,28 @@ namespace IsecureFi\WsApi\Auth;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use IsecureFi\WsApi\Client\Configuration;
+use IsecureFi\WsApi\Client\Api\SessionApi;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\PublicKey;
 
-/** Opt-in password envelope only. Existing Challenge and MFA helpers remain available. */
+/** Standard password authentication helper. Stronger profile is the default; legacy is explicit. */
 final class PasswordProfile
 {
     public const NAME = 'password-rsa-oaep-sha256-v1';
+    public const LEGACY = 'legacy';
     private Configuration $config;
     /** @var array<string,string>|null */
     private ?array $reset = null;
     private ?string $resetIdentity = null;
 
-    public function __construct(Configuration $config, private readonly ClientInterface $client)
+    public function __construct(Configuration $config, private readonly ClientInterface $client,
+        private readonly string $profile = self::NAME, private readonly ?string $legacyEnvironment = null)
     {
+        if (!in_array($profile, [self::NAME, self::LEGACY], true) ||
+            ($profile === self::LEGACY && !in_array($legacyEnvironment, [Challenge::ENV_TEST, 'testing', Challenge::ENV_PRODUCTION], true))) {
+            throw new \InvalidArgumentException('Select a supported profile and an explicit environment for legacy.');
+        }
         $this->config = clone $config;
         $uri = parse_url($config->getHost());
         if (($uri['scheme'] ?? '') !== 'https' || isset($uri['user']) || isset($uri['pass']) || isset($uri['query']) || isset($uri['fragment'])) {
@@ -74,8 +81,8 @@ final class PasswordProfile
     public function login(string $email, string $mode, string $password): array
     {
         $path = $this->path('session', $email, $mode);
-        $discovery = $this->send('GET', $path . '?EncryptionProfile=' . self::NAME);
-        return $this->send('POST', $path, self::encrypt($discovery, $password));
+        $discovery = $this->discovery($path);
+        return $this->send('POST', $path, $this->envelope($discovery, $password));
     }
 
     /** @return array<string,mixed> */
@@ -83,8 +90,8 @@ final class PasswordProfile
         string $company, string $name, string $phone): array
     {
         $path = $this->path('account', $email, $mode);
-        $discovery = $this->send('GET', $path . '?EncryptionProfile=' . self::NAME . '&ApiKey=' . rawurlencode($tenant));
-        return $this->send('PUT', $path, self::encrypt($discovery, $password) +
+        $discovery = $this->discovery($path, $tenant);
+        return $this->send('PUT', $path, $this->envelope($discovery, $password) +
             ['ApiKey'=>$tenant, 'Company'=>$company, 'Name'=>$name, 'Phone'=>$phone]);
     }
 
@@ -92,7 +99,8 @@ final class PasswordProfile
     {
         $this->reset = null; $this->resetIdentity = null;
         $path = $this->path('account', $email, $mode) . '/password';
-        $this->reset = self::validate($this->send('GET', $path . '?EncryptionProfile=' . self::NAME));
+        $value = $this->discovery($path);
+        $this->reset = $this->profile === self::NAME ? self::validate($value) : [];
         $this->resetIdentity = $path;
     }
 
@@ -105,7 +113,32 @@ final class PasswordProfile
         if ($discovery === null || $identity !== $path || !preg_match('/\A[0-9]{6}\z/', $code)) {
             throw new \InvalidArgumentException('Initialize password reset for this identity first.');
         }
-        return $this->send('POST', $path, self::encrypt($discovery, $password) + ['Code'=>$code]);
+        if ($this->profile === self::LEGACY) {
+            $discovery = $this->discovery($this->path('session', $email, $mode));
+        }
+        return $this->send('POST', $path, $this->envelope($discovery, $password) + ['Code'=>$code]);
+    }
+
+    /** @return array<string,mixed> */
+    private function discovery(string $path, ?string $tenant = null): array
+    {
+        if ($this->profile === self::NAME) {
+            $path .= '?EncryptionProfile=' . self::NAME;
+            if ($tenant !== null) $path .= '&ApiKey=' . rawurlencode($tenant);
+        }
+        return $this->send('GET', $path);
+    }
+
+    /** @param array<string,mixed> $discovery @return array<string,string> */
+    private function envelope(array $discovery, string $password): array
+    {
+        if ($this->profile === self::NAME) return self::encrypt($discovery, $password);
+        $challenge = $discovery['Challenge'] ?? null;
+        if (!is_string($challenge) || $challenge === '') {
+            throw new \InvalidArgumentException('Invalid legacy challenge.');
+        }
+        $legacy = new Challenge(new SessionApi($this->client, $this->config));
+        return ['ChResp' => $challenge, 'Encrypted' => $legacy->encryptPassword($password, $challenge, $this->legacyEnvironment)];
     }
 
     private function path(string $resource, string $email, string $mode): string
