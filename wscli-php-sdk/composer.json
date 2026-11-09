@@ -2,7 +2,7 @@
   "name": "isecurefi/wscli-php-sdk",
   "description": "ISECure WS-Channel PHP SDK — auth helpers wrapping the OpenAPI-generated client.",
   "type": "library",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "keywords": ["WS-Channel", "wscli-php-sdk", "php-sdk", "isecure"],
   "homepage": "https://www.isecure.fi/",
   "license": "MIT",
