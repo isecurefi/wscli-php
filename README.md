@@ -319,12 +319,14 @@ regression tests must continue to pass. No API specification has been published
 as part of this change.
 
 
-## Opt-in password profile (unpublished preview)
+## Opt-in password profile (gpgtest)
 
-Qualification (2026-11-08): this unpublished source passed local checks and
+Qualification (2026-11-08): this implementation passed local checks and
 bounded hosted registration/login tests on ordinary gpgtest, including Admin MFA
 and 283-byte UTF-8 passwords. RSA-3072 and RSA-4096 login were exercised.
-Production authentication deployment and SDK publication remain excluded.
+The stronger profile is currently available on gpgtest only. Existing configuration
+keeps legacy authentication for production; SDK installation does not activate
+the new profile.
 
 Additional qualification (2026-11-09): this SDK passed Data/Admin TOTP login,
 reset initialization and invalid reset-code rejection against gpgtest Login 28.
@@ -354,5 +356,12 @@ label. The binary envelope binds the exact challenge and preserves 1–283 UTF-8
 password bytes without normalization. Discovery is not authorization. Admin MFA
 still applies. Do not log password envelopes, tokens, codes or raw auth bodies.
 Reset uses its own discovery; never substitute an InitLogin challenge or
-automatically retry code delivery/password mutation. This preview is not a
-production availability or NIST/FIPS certification claim.
+automatically retry code delivery/password mutation. This feature does not establish
+production availability or NIST/FIPS certification.
+
+### Install the 2.1.0 SDK release
+
+Download the `wscli-php-sdk-2.1.0.tar.gz` GitHub release asset, extract it,
+and run `composer install` in `wscli-php-sdk/`. The archive includes the
+generated client used by its local Composer dependency. This release adds the
+opt-in PHP SDK helper; it does not add automatic profile selection to the CLI.
