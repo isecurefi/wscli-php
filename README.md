@@ -319,14 +319,15 @@ regression tests must continue to pass. No API specification has been published
 as part of this change.
 
 
-## Opt-in password profile (gpgtest)
+## Default password profile and legacy migration
 
 Qualification (2026-11-08): this implementation passed local checks and
 bounded hosted registration/login tests on ordinary gpgtest, including Admin MFA
 and 283-byte UTF-8 passwords. RSA-3072 and RSA-4096 login were exercised.
-The stronger profile is currently available on gpgtest only. Existing configuration
-keeps legacy authentication for production; SDK installation does not activate
-the new profile.
+Version 3.0.0 uses the stronger profile by default for password operations.
+It is available on ordinary gpgtest and production V2. Select `PasswordProfile::LEGACY` with an explicit legacy environment
+only for a grandfathered tenant that needs legacy authentication. There is no
+endpoint inference or automatic fallback.
 
 Additional qualification (2026-11-09): this SDK passed Data/Admin TOTP login,
 reset initialization and invalid reset-code rejection against gpgtest Login 28.
@@ -339,12 +340,11 @@ it does not establish an automatic MFA state machine.
 
 This source adds `password-rsa-oaep-sha256-v1` on existing v2 routes. Availability
 is environment-specific: the SDK requires matching server discovery and never
-falls back if an older server ignores the selector. Existing configuration keeps
-the legacy profile. After server policy activation, new tenants must select the
-new profile; grandfathered tenants can use either profile, including new accounts.
+falls back if an older server ignores the selector. New tenants require the
+stronger profile; grandfathered tenants can use either profile, including new accounts.
 
-Use `IsecureFi\WsApi\Auth\PasswordProfile($configuration, $guzzleClient)` for
-explicit adoption. Its `register(email, mode, password, tenant, company, name,
+Use `IsecureFi\WsApi\Auth\PasswordProfile($configuration, $guzzleClient)` as
+the standard password-authentication helper. Its omitted profile defaults to the stronger envelope. Its `register(email, mode, password, tenant, company, name,
 phone)` and `login(email, mode, password)` return the API response without changing
 MFA requirements. Use `initPasswordReset(email, mode)` followed by
 `passwordReset(email, mode, code, newPassword)` on the same helper. Continue login
@@ -357,11 +357,15 @@ password bytes without normalization. Discovery is not authorization. Admin MFA
 still applies. Do not log password envelopes, tokens, codes or raw auth bodies.
 Reset uses its own discovery; never substitute an InitLogin challenge or
 automatically retry code delivery/password mutation. This feature does not establish
-production availability or NIST/FIPS certification.
+NIST/FIPS certification or successful recovery-code delivery.
 
-### Install the 2.1.0 SDK release
+### Install the 3.0.0 SDK release
 
-Download the `wscli-php-sdk-2.1.0.tar.gz` GitHub release asset, extract it,
+Download the `wscli-php-sdk-3.0.0.tar.gz` GitHub release asset, extract it,
 and run `composer install` in `wscli-php-sdk/`. The archive includes the
-generated client used by its local Composer dependency. This release adds the
-opt-in PHP SDK helper; it does not add automatic profile selection to the CLI.
+generated client used by its local Composer dependency. The CLI and generated low-level
+client are unchanged; migrate password operations to the standard helper.
+For explicit legacy behavior construct `PasswordProfile($config, $http,
+PasswordProfile::LEGACY, Challenge::ENV_PRODUCTION)` (or `ENV_TEST`).
+The low-level `Challenge` helper is an explicit legacy API, not an automatic
+fallback or stronger-profile discovery client.
