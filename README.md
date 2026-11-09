@@ -325,6 +325,13 @@ Qualification (2026-11-08): this unpublished source passed local checks and
 bounded hosted registration/login tests on ordinary gpgtest, including Admin MFA
 and 283-byte UTF-8 passwords. RSA-3072 and RSA-4096 login were exercised.
 Production authentication deployment and SDK publication remain excluded.
+
+Additional qualification (2026-11-09): this SDK passed Data/Admin TOTP login,
+reset initialization and invalid reset-code rejection against gpgtest Login 28.
+The reset reached Cognito and was refused with CodeMismatchException. Login also
+passed after an operator-managed synthetic password change. That change is not
+a public password-reset test: successful reset with a delivered code remains
+unqualified. Operator-confirmed email/phone attributes do not prove delivery.
 The PHP qualification uses the profile helper and existing HTTP MFA continuation;
 it does not establish an automatic MFA state machine.
 
