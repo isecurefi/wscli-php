@@ -389,3 +389,22 @@ file references with `files:download` to retrieve individual files.
 
 `files:list` preserves the bank's response code/text and exits unsuccessfully
 when `ResponseCode` is not `00`; an error must not be treated as an empty list.
+
+## Dependency security checks
+
+Run Composer's advisory audit for every locked dependency set (including development tools):
+
+```shell
+composer audit --locked --working-dir=wscli-php
+composer audit --locked --working-dir=wscli-php-sdk
+composer audit --locked --working-dir=tools/box
+```
+
+Each project also exposes `composer run audit`. The generated client's runtime
+dependencies are included in both consumer lockfiles. Its standalone development
+dependencies can be resolved and audited separately with Composer.
+
+After updating dependencies, run both unit suites and rebuild the PHAR: existing
+PHAR installations contain bundled dependencies and need the rebuilt artifact.
+See [the 2026-11-11 dependency audit](docs/dependency-security-audit-2026-11-11.md)
+for findings, scope and qualification.

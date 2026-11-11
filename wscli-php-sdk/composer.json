@@ -2,7 +2,7 @@
   "name": "isecurefi/wscli-php-sdk",
   "description": "ISECure WS-Channel PHP SDK — auth helpers wrapping the OpenAPI-generated client.",
   "type": "library",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "keywords": ["WS-Channel", "wscli-php-sdk", "php-sdk", "isecure"],
   "homepage": "https://www.isecure.fi/",
   "license": "MIT",
@@ -33,7 +33,7 @@
     "isecurefi/wsapi-php-client": "^2.0",
     "phpseclib/phpseclib": "^3.0",
     "monolog/monolog": "^3.5",
-    "symfony/yaml": "^7.0",
+    "symfony/yaml": "^7.4.23",
     "guzzlehttp/guzzle": "^7.8"
   },
   "require-dev": {
@@ -53,6 +53,7 @@
     }
   },
   "scripts": {
+    "audit": ["composer audit --locked"],
     "test": ["phpunit"],
     "test:unit": ["phpunit --testsuite=unit"],
     "test:e2e": ["phpunit --testsuite=e2e"],

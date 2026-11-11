@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.2 — 2026-11-11
+
+- Fix the Symfony YAML and Filesystem advisories by updating to 7.4.23; require patched YAML for fresh CLI/SDK installations.
+- Refresh compatible runtime/development dependencies and update Box to 4.7.1.
+- Add repeatable Composer audit commands and record dependency-audit evidence.
+
 ## 3.0.1 — 2026-11-11
 
 - Add inclusive `--startdate` and `--enddate` filters to `files:list`, with date validation and matching synchronous/asynchronous PHP SDK query parameters.
