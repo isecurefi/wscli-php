@@ -10,7 +10,7 @@ use Symfony\Component\Console\Application as BaseApplication;
 final class Application extends BaseApplication
 {
     public const NAME    = 'wscli';
-    public const VERSION = '2.0.0';
+    public const VERSION = '2.0.1';
 
     public function __construct()
     {

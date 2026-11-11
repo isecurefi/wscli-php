@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c15ca3ce46a5b740ef34fff11932b667",
+    "content-hash": "b441a1b2d534811ea3b771f34cc17435",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -339,11 +339,11 @@
         },
         {
             "name": "isecurefi/wsapi-php-client",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "dist": {
                 "type": "path",
                 "url": "../wscli-php-sdk/openapi-php-sdk",
-                "reference": "b8eb259cf1d0bb70bf633dede478bd4b925c3a1f"
+                "reference": "422fd77536347a8552216b69843aa1cc34645d8d"
             },
             "require": {
                 "ext-curl": "*",
@@ -395,11 +395,11 @@
         },
         {
             "name": "isecurefi/wscli-php-sdk",
-            "version": "2.0.0",
+            "version": "3.0.1",
             "dist": {
                 "type": "path",
                 "url": "../wscli-php-sdk",
-                "reference": "6c10f5663d2c09553fd4e1b195b2e50da22495de"
+                "reference": "99655bdbbc2754f2618608e1841c963301a2baba"
             },
             "require": {
                 "ext-curl": "*",
