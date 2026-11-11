@@ -369,3 +369,23 @@ For explicit legacy behavior construct `PasswordProfile($config, $http,
 PasswordProfile::LEGACY, Challenge::ENV_PRODUCTION)` (or `ENV_TEST`).
 The low-level `Challenge` helper is an explicit legacy API, not an automatic
 fallback or stronger-profile discovery client.
+
+## Recovering previously downloaded bank files
+
+Use a bounded date range when listing historical files; an unrestricted `ALL`
+listing can exceed the service's response limits:
+
+```shell
+wscli files:list --environment=production --bank=osuuspankki \
+  --filetype=pain.002.001.02 --filestatus=ALL \
+  --startdate=2026-11-08 --enddate=2026-11-10 --json
+```
+
+Dates use `YYYY-MM-DD` and are inclusive. Either bound can be supplied alone;
+bank support and the meaning of the file date depend on the bank. For OP, the
+filter selects when the file was saved in the bank channel, not the payment's
+execution date. Include later dates if feedback arrived later. Use returned
+file references with `files:download` to retrieve individual files.
+
+`files:list` preserves the bank's response code/text and exits unsuccessfully
+when `ResponseCode` is not `00`; an error must not be treated as an empty list.

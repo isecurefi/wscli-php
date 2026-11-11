@@ -957,15 +957,17 @@ class FilesApi
      * @param  string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
      * @param  string|null $status Status of the *file*, e.g. &#x60;ALL&#x60;. &#x60;NEW&#x60;, &#x60;DLD&#x60; (optional)
      * @param  string|null $fileType *Bank* specific *FileType* identifies the file type to be listed (optional)
+     * @param  string|null $startDate Inclusive start date (YYYY-MM-DD).
+     * @param  string|null $endDate Inclusive end date (YYYY-MM-DD).
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listFiles'] to see the possible values for this operation
      *
      * @throws \IsecureFi\WsApi\Client\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \IsecureFi\WsApi\Client\Model\ListFilesResp|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse
      */
-    public function listFiles($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0])
+    public function listFiles($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0], ?string $startDate = null, ?string $endDate = null)
     {
-        list($response) = $this->listFilesWithHttpInfo($authorization, $xApiKey, $bank, $status, $fileType, $contentType);
+        list($response) = $this->listFilesWithHttpInfo($authorization, $xApiKey, $bank, $status, $fileType, $contentType, $startDate, $endDate);
         return $response;
     }
 
@@ -979,15 +981,17 @@ class FilesApi
      * @param  string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
      * @param  string|null $status Status of the *file*, e.g. &#x60;ALL&#x60;. &#x60;NEW&#x60;, &#x60;DLD&#x60; (optional)
      * @param  string|null $fileType *Bank* specific *FileType* identifies the file type to be listed (optional)
+     * @param  string|null $startDate Inclusive start date (YYYY-MM-DD).
+     * @param  string|null $endDate Inclusive end date (YYYY-MM-DD).
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listFiles'] to see the possible values for this operation
      *
      * @throws \IsecureFi\WsApi\Client\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \IsecureFi\WsApi\Client\Model\ListFilesResp|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse|\IsecureFi\WsApi\Client\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listFilesWithHttpInfo($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0])
+    public function listFilesWithHttpInfo($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0], ?string $startDate = null, ?string $endDate = null)
     {
-        $request = $this->listFilesRequest($authorization, $xApiKey, $bank, $status, $fileType, $contentType);
+        $request = $this->listFilesRequest($authorization, $xApiKey, $bank, $status, $fileType, $contentType, $startDate, $endDate);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1124,14 +1128,16 @@ class FilesApi
      * @param  string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
      * @param  string|null $status Status of the *file*, e.g. &#x60;ALL&#x60;. &#x60;NEW&#x60;, &#x60;DLD&#x60; (optional)
      * @param  string|null $fileType *Bank* specific *FileType* identifies the file type to be listed (optional)
+     * @param  string|null $startDate Inclusive start date (YYYY-MM-DD).
+     * @param  string|null $endDate Inclusive end date (YYYY-MM-DD).
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listFiles'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listFilesAsync($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0])
+    public function listFilesAsync($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0], ?string $startDate = null, ?string $endDate = null)
     {
-        return $this->listFilesAsyncWithHttpInfo($authorization, $xApiKey, $bank, $status, $fileType, $contentType)
+        return $this->listFilesAsyncWithHttpInfo($authorization, $xApiKey, $bank, $status, $fileType, $contentType, $startDate, $endDate)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1149,15 +1155,17 @@ class FilesApi
      * @param  string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
      * @param  string|null $status Status of the *file*, e.g. &#x60;ALL&#x60;. &#x60;NEW&#x60;, &#x60;DLD&#x60; (optional)
      * @param  string|null $fileType *Bank* specific *FileType* identifies the file type to be listed (optional)
+     * @param  string|null $startDate Inclusive start date (YYYY-MM-DD).
+     * @param  string|null $endDate Inclusive end date (YYYY-MM-DD).
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listFiles'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listFilesAsyncWithHttpInfo($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0])
+    public function listFilesAsyncWithHttpInfo($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0], ?string $startDate = null, ?string $endDate = null)
     {
         $returnType = '\IsecureFi\WsApi\Client\Model\ListFilesResp';
-        $request = $this->listFilesRequest($authorization, $xApiKey, $bank, $status, $fileType, $contentType);
+        $request = $this->listFilesRequest($authorization, $xApiKey, $bank, $status, $fileType, $contentType, $startDate, $endDate);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1203,12 +1211,14 @@ class FilesApi
      * @param  string $bank *Bank* used for this operation, can have values of &#x60;nordea&#x60;, &#x60;osuuspankki&#x60;, &#x60;danskebank&#x60;, &#x60;aktia&#x60;, &#x60;sp&#x60;, &#x60;shb&#x60;, &#x60;pop&#x60;, &#x60;spankki&#x60;, &#x60;alandsbanken&#x60; or &#x60;SEB&#x60;. (required)
      * @param  string|null $status Status of the *file*, e.g. &#x60;ALL&#x60;. &#x60;NEW&#x60;, &#x60;DLD&#x60; (optional)
      * @param  string|null $fileType *Bank* specific *FileType* identifies the file type to be listed (optional)
+     * @param  string|null $startDate Inclusive start date (YYYY-MM-DD).
+     * @param  string|null $endDate Inclusive end date (YYYY-MM-DD).
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listFiles'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listFilesRequest($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0])
+    public function listFilesRequest($authorization, $xApiKey, $bank, $status = null, $fileType = null, string $contentType = self::contentTypes['listFiles'][0], ?string $startDate = null, ?string $endDate = null)
     {
 
         // verify the required parameter 'authorization' is set
@@ -1260,6 +1270,20 @@ class FilesApi
             false, // explode
             false // required
         ) ?? []);
+
+        foreach (['StartDate' => $startDate, 'EndDate' => $endDate] as $name => $date) {
+            if ($date !== null) {
+                $parsed = preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/D', $date)
+                    ? \DateTimeImmutable::createFromFormat('!Y-m-d', $date) : false;
+                if (!$parsed || $parsed->format('Y-m-d') !== $date) {
+                    throw new \InvalidArgumentException($name . ' must be a valid YYYY-MM-DD date.');
+                }
+                $queryParams[$name] = $date;
+            }
+        }
+        if ($startDate !== null && $endDate !== null && $startDate > $endDate) {
+            throw new \InvalidArgumentException('StartDate must not be after EndDate.');
+        }
 
         // header params
         if ($authorization !== null) {

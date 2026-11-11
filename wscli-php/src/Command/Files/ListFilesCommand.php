@@ -20,7 +20,9 @@ final class ListFilesCommand extends AbstractWsCliCommand
         $this
             ->addOption('bank',       'b', InputOption::VALUE_REQUIRED, 'Bank slug.')
             ->addOption('filetype',   null, InputOption::VALUE_REQUIRED, 'Bank file type (e.g. KTL).')
-            ->addOption('filestatus', null, InputOption::VALUE_REQUIRED, 'Bank file status (e.g. NEW, ALL).');
+            ->addOption('filestatus', null, InputOption::VALUE_REQUIRED, 'Bank file status (e.g. NEW, ALL).')
+            ->addOption('startdate', null, InputOption::VALUE_REQUIRED, 'Inclusive start date (YYYY-MM-DD).')
+            ->addOption('enddate', null, InputOption::VALUE_REQUIRED, 'Inclusive end date (YYYY-MM-DD).');
     }
 
     protected function requiresAuthenticatedSession(): bool
@@ -45,10 +47,12 @@ final class ListFilesCommand extends AbstractWsCliCommand
                 $bank,
                 $status,
                 $fileType,
+                startDate: isset($this->opts['startdate']) ? (string) $this->opts['startdate'] : null,
+                endDate: isset($this->opts['enddate']) ? (string) $this->opts['enddate'] : null,
             );
         } catch (ApiException $e) {
             return $this->handleApiException($e, $output);
         }
-        return $this->emit($input, $output, $resp);
+        return $this->emit($input, $output, $resp, $resp->getResponseCode() === '00' ? self::SUCCESS : self::FAILURE);
     }
 }

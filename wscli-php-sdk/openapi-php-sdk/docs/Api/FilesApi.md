@@ -165,7 +165,7 @@ try {
 ## `listFiles()`
 
 ```php
-listFiles($authorization, $xApiKey, $bank, $status, $fileType): \IsecureFi\WsApi\Client\Model\ListFilesResp
+listFiles($authorization, $xApiKey, $bank, $status, $fileType, $contentType, $startDate, $endDate): \IsecureFi\WsApi\Client\Model\ListFilesResp
 ```
 
 ListFiles
@@ -309,3 +309,12 @@ try {
 [[Back to top]](#) [[Back to API list]](../../README.md#endpoints)
 [[Back to Model list]](../../README.md#models)
 [[Back to README]](../../README.md)
+
+Date-filtered listing (optional named arguments preserve existing positional calls):
+
+```php
+$apiInstance->listFiles($authorization, $xApiKey, $bank, 'ALL', $fileType,
+    startDate: '2026-11-08', endDate: '2026-11-10');
+```
+
+`startDate` and `endDate` are inclusive `YYYY-MM-DD` dates.
